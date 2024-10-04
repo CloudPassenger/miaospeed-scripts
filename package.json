@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Media Unlock Checking Scripts for MiaoSpeed",
   "scripts": {
-    "build": "babel src/checks --out-dir dist --extensions \".ts\""
+    "build": "node build.js"
   },
   "keywords": [],
   "author": "CloudPassenger",
