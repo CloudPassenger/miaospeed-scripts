@@ -9,13 +9,6 @@ import {
 } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
-const T_ORIGINAL_ONLY = "仅自制";
-
-/*
-Example: 
-{"client":{"ip":"143.47.226.18","asn":"31898","location":{"city":"London","country":"GB"}},"targets":[{"name":"https://ipv4-c075-lhr005-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=82&e=1727966875&t=ywvU7QOITULqTMOpDMbayU4ZPm0ldKjCXmhzUA","url":"https://ipv4-c075-lhr005-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=82&e=1727966875&t=ywvU7QOITULqTMOpDMbayU4ZPm0ldKjCXmhzUA","location":{"city":"Slough","country":"GB"}},{"name":"https://ipv4-c071-lhr005-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=82&e=1727966875&t=WnaXzpaHYWsx4vU2TjX-nuqnHR229CYylwKZvg","url":"https://ipv4-c071-lhr005-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=82&e=1727966875&t=WnaXzpaHYWsx4vU2TjX-nuqnHR229CYylwKZvg","location":{"city":"Slough","country":"GB"}},{"name":"https://ipv4-c141-lhr004-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=205&e=1727966875&t=hsqeAuDZmADgB60P5ShSKx4ZEIEZXRdJCzalPg","url":"https://ipv4-c141-lhr004-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=205&e=1727966875&t=hsqeAuDZmADgB60P5ShSKx4ZEIEZXRdJCzalPg","location":{"city":"London","country":"GB"}},{"name":"https://ipv4-c108-arn001-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=198&e=1727966875&t=UkHC1K07ceC1LdzBBjzrgaxpL4Ov27TBb-5chA","url":"https://ipv4-c108-arn001-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=198&e=1727966875&t=UkHC1K07ceC1LdzBBjzrgaxpL4Ov27TBb-5chA","location":{"city":"Stockholm","country":"SE"}},{"name":"https://ipv4-c113-arn001-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=35&e=1727966875&t=XTpXUlzT3YyW2rak49STsqFuOL_afHO4fTMFhQ","url":"https://ipv4-c113-arn001-ix.1.oca.nflxvideo.net/speedtest?c=gb&n=31898&v=35&e=1727966875&t=XTpXUlzT3YyW2rak49STsqFuOL_afHO4fTMFhQ","location":{"city":"Stockholm","country":"SE"}}]}
-*/
-
 type Location = {
   city: string;
   country: string;
