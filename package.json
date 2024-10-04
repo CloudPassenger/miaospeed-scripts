@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Media Unlock Checking Scripts for MiaoSpeed",
   "scripts": {
-    "build": "node build.js"
+    "build": "rimraf dist && node build.js"
   },
   "keywords": [],
   "author": "CloudPassenger",
@@ -11,6 +11,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.0",
     "@rollup/plugin-typescript": "^12.1.0",
+    "rimraf": "^6.0.1",
     "rollup": "^4.24.0",
     "rollup-plugin-cleanup": "^3.2.1",
     "tslib": "^2.7.0",
