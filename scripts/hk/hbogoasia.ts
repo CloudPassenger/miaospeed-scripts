@@ -2,6 +2,16 @@ import { C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
 import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+type ResponseBody = {
+  territory?: string;
+  country?: string;
+  continent?: string;
+  city?: Record<string, string>;
+  tv: boolean;
+  channelPartnerIds: string[];
+  ip: string;
+};
+
 function handler(): HandlerResult {
   const response = fetch(
     "https://api2.hbogoasia.com/v1/geog?lang=undefined&version=0&bundleId=www.hbogoasia.com",
@@ -23,7 +33,7 @@ function handler(): HandlerResult {
     };
   } else if (response.statusCode === 200) {
     const content = response.body;
-    const data = safeParse(content);
+    const data = safeParse<ResponseBody>(content);
 
     if (!data) {
       return {
@@ -61,6 +71,6 @@ function handler(): HandlerResult {
       background: C_UNK,
     };
   }
-};
+}
 
 export default handler;
