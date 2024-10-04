@@ -146,3 +146,23 @@ declare function fetch(url: string, params?: FetchParams): FetchResponse;
 interface HandlerFunction {
   (): HandlerResult;
 }
+
+
+/**
+ * 脚本元数据
+ * 可用于生成脚本注释
+ *
+ * @interface ScriptMetaData
+ */
+interface ScriptMetaData {
+  /** 平台名称 */
+  name: string;
+  /** 平台描述 */
+  description: string;
+  /** 脚本作者 */
+  author?: string;
+  /** 可用地区 */
+  regions?: string[];
+  /** 标签 */
+  tags?: string[];
+}

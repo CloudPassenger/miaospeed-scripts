@@ -10,7 +10,8 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "strict": false
   },
   "include": [
     "scripts/**/*",

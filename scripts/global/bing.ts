@@ -2,6 +2,11 @@ import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Bing
+// @description: 检测 Bing 是否为国际版
+// @regions: global
+// @tags: tool, ai
+
 function handler(): HandlerResult {
   const response = fetch("https://www.bing.com/", {
     method: "GET",
