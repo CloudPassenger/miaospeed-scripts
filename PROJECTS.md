@@ -31,17 +31,17 @@
 ## 台湾
 - [ ] KKTV
 - [ ] LiTV
-- [ ] 4GTV
+- [x] 4GTV
 - [ ] MyVideo
 - [ ] Line TV
 - [ ] Hami Video
-- [ ] Catchplay+
-- [ ] Bahamut / 動畫瘋
+- [x] Catchplay+
+- [x] Bahamut / 動畫瘋
 - [x] HBO GO Asia
-- [ ] Bilibili 台港澳
+- [x] Bilibili 台港澳
 
 ## 日本
-- [ ] Abema
+- [x] Abema
 - [ ] Niconico
 - [ ] music.jp
 - [ ] DMM
@@ -138,7 +138,7 @@
 - [ ] KOCOWA+
 
 ## 英国
-- [ ] BBC iPlayer
+- [x] BBC iPlayer
 - [ ] Channel 4
 - [ ] Channel 5
 - [ ] Sky Go
