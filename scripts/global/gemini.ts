@@ -15,7 +15,7 @@ function handler(): HandlerResult {
   });
 
   // Check if the content is not available
-  if (!response || response.statusCode != 200) {
+  if (!response || response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,

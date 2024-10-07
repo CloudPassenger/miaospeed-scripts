@@ -41,7 +41,7 @@ function handler(): HandlerResult {
     retry: 3,
   });
 
-  if (!response || response.statusCode != 200) {
+  if (!response || response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
