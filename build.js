@@ -155,7 +155,7 @@ async function processFiles() {
     scriptConfig: {
       scripts: metadataArray.map((item, index) => {
         return {
-          type: 'gofunc',
+          type: 'gojajs',
           name: item.name || item.id,
           rank: index,
           content: path.posix.join('resources/scripts', item.path),
