@@ -9,6 +9,8 @@ const cleanup = require('rollup-plugin-cleanup');
 const srcDir = path.resolve(__dirname, 'scripts');
 const distDir = path.resolve(__dirname, 'dist');
 
+const YAML = require('yaml');
+
 /**
  * 确保文件夹存在
  */
@@ -42,7 +44,7 @@ function getAllFiles(dir, ext, fileList = []) {
  * 解析元数据
  *
  * @param {*} content 文件内容
- * @return {*} { name: string, description: string, regions: string[], tags: string[]
+ * @return {*} { name: string, description: string, regions: string[], tags: string[], priority: number }
  */
 function parseMetadata(content) {
   const lines = content.split('\n');
@@ -54,7 +56,10 @@ function parseMetadata(content) {
       const value = match[2].trim();
       if (key === 'regions' || key === 'tags') {
         metadata[key] = value.split(',').map(item => item.trim());
-      } else {
+      } else if (key === 'priority') {
+        metadata[key] = parseInt(value);
+      }
+      else {
         metadata[key] = value;
       }
     }
@@ -127,7 +132,72 @@ async function processFiles() {
     console.log(`✨ Built ${outputPath}`);
   }
 
-  fs.writeFileSync(path.join(distDir, 'index.json'), JSON.stringify(metadataArray, null, 2));
+  // 按照 priority 排序，值越小排名越前
+  metadataArray.sort((a, b) => {
+    if (a.priority && b.priority) {
+      return a.priority - b.priority;
+    } else if (a.priority) {
+      return -1;
+    } else if (b.priority) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
+
+  console.log('📝 Writing index.json...');
+  const indexJsonContent = JSON.stringify(metadataArray, null, 2);
+  fs.writeFileSync(path.join(distDir, 'index.json'), indexJsonContent);
+
+  // Metadata Array to yaml
+  const koipyConfig = {
+    scriptConfig: {
+      scripts: metadataArray.map((item, index) => {
+        return {
+          type: 'gofunc',
+          name: item.name || item.id,
+          rank: index,
+          content: path.posix.join('resources/scripts', item.path),
+        }
+      })
+    },
+    rules: [
+      {
+        name: '全部项目',
+        script: metadataArray.map(item => item.name || item.id),
+      },
+      {
+        name: '国际平台',
+        script: metadataArray.filter((item) => item.regions && item.regions.includes('global')).map(item => item.name || item.id),
+      },
+      {
+        name: '香港平台',
+        script: metadataArray.filter((item) => item.regions && item.regions.includes('hk')).map(item => item.name || item.id),
+      },
+      {
+        name: '台湾平台',
+        script: metadataArray.filter((item) => item.regions && item.regions.includes('tw')).map(item => item.name || item.id),
+      },
+      {
+        name: '流媒体服务',
+        script: metadataArray.filter((item) => item.tags && item.tags.includes('stream')).map(item => item.name || item.id),
+      },
+      {
+        name: 'AI工具',
+        script: metadataArray.filter((item) => item.tags && item.tags.includes('ai')).map(item => item.name || item.id),
+      },
+      {
+        name: '外服游戏',
+        script: metadataArray.filter((item) => item.tags && item.tags.includes('game')).map(item => item.name || item.id),
+      }
+    ]
+  }
+  const koipyYamlContent = YAML.stringify(koipyConfig);
+
+  // 写入 koipy.yaml
+  console.log('📝 Writing config.yaml for Koipy...');
+  fs.writeFileSync(path.join(distDir, 'config.yaml'), koipyYamlContent);
 
   console.log('📦 All scripts built successfully.');
 }
