@@ -2,6 +2,12 @@ import { C_FAIL, C_UNL } from "@/consts/colors";
 import { T_FAIL, M_NETWORK, M_PARSE, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Hami Video
+// @description: 检测 Hami Video 解锁状态
+// @regions: tw
+// @tags: stream, video, live
+// @priority: 33
+
 type ResponseBody = {
   LogSN: string;
   code: string;

@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: 哔哩国际
+// @description: 检测 Bilibili 国际版 解锁状态
+// @regions: tw, hk
+// @tags: stream, video, anime
+// @priority: 30
+
 enum REGIONS {
   HKMO = "HKMO",
   TW = "TW",

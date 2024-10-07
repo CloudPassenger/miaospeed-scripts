@@ -9,6 +9,12 @@ import {
 } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Reddit
+// @description: 检测 Reddit 是否可匿名浏览
+// @regions: global
+// @tags: social
+// @priority: 11
+
 function handler() {
   const redditResponse = fetch("https://www.reddit.com/", {
     method: "GET",

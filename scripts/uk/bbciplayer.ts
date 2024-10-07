@@ -1,6 +1,12 @@
 import { C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 
+// @name: BBC iPlayer
+// @description: 检测 BBC iPlayer 解锁状态
+// @regions: uk
+// @tags: stream, video, live
+// @priority: 50
+
 function handler(): HandlerResult {
   const response = fetch(
     "https://open.live.bbc.co.uk/mediaselector/6/select/version/2.0/mediaset/pc/vpid/bbc_one_london/format/json/jsfunc/JS_callbacks0",

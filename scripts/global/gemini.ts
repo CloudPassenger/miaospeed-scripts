@@ -2,6 +2,12 @@ import { C_FAIL, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Google Gemini
+// @description: 检测 Google Gemini 在当前地区是否可用
+// @regions: global
+// @tags: ai
+// @priority: 8
+
 function handler(): HandlerResult {
   // Send a request to the Google Gemini URL
   const response = fetch("https://gemini.google.com", {

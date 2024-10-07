@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: 4GTV
+// @description: 检测 4GTV 解锁状态
+// @regions: tw
+// @tags: stream, video, live
+// @priority: 35
+
 type ResponseBody = {
   Success?: boolean;
   Status?: number;

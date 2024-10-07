@@ -2,6 +2,12 @@ import { C_NA, C_UNL, C_UNK } from "@/consts/colors";
 import { T_NA, T_UNK, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: 爱奇艺国际版
+// @description: 检测 iQiyi Global 在当前地区是否可用
+// @regions: global
+// @tags: stream, video
+// @priority: 10
+
 function handler(): HandlerResult {
   const response = fetch("https://www.iq.com/?lang=en_us", {
     headers: {

@@ -2,6 +2,12 @@ import { C_FAIL, C_UNL } from "@/consts/colors";
 import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: KKTV
+// @description: 检测 KKTV 解锁状态
+// @regions: tw
+// @tags: stream, video, live
+// @priority: 37
+
 type ResponseBody = {
   status: {
     type: string;

@@ -2,6 +2,12 @@ import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/consts/colors";
 import { T_FAIL, T_NA, T_UNK, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Now E
+// @description: 检测 Now E 解锁状态
+// @regions: hk
+// @tags: stream, video
+// @priority: 20
+
 type ResponseBody = {
   responseCode: string;
   callerReferenceNo: string;

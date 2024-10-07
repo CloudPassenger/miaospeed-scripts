@@ -2,6 +2,12 @@ import { C_NA, C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
 import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNK, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_ANDROID, UA_WINDOWS } from "@/consts/ua";
 
+// @name: ChatGPT
+// @description: 检测 ChatGPT 在当前地区是否可用
+// @regions: global
+// @tags: ai
+// @priority: 6
+
 /** 支持使用 ChatGPT 的国家 */
 const GPT_SUPPORT_COUNTRY = [
   "AL",

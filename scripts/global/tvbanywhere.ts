@@ -2,6 +2,12 @@ import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/consts/colors";
 import { T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 import { UA_ANDROID } from "@/consts/ua";
 
+// @name: TVB Anywhere
+// @description: 检测 TVB Anywhere 解锁状态
+// @regions: global
+// @tags: stream, video
+// @priority: 8
+
 type ResponseBody = {
   ip: string;
   country: string;

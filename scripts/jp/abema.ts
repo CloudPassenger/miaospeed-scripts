@@ -8,6 +8,12 @@ import {
 } from "@/consts/text";
 import { UA_ANDROID } from "@/consts/ua";
 
+// @name: Abema
+// @description: 检测 Abema TV 网络电视解锁状态
+// @regions: jp
+// @tags: stream, video, live
+// @priority: 40
+
 type ResponseBody = {
   isoCountryCode?: string;
   timeZone?: string;

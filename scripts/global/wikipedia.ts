@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNK, C_UNL } from "@/consts/colors";
 import { T_ALLOW, T_BLOCK, T_DENY, T_NA, T_PASS, T_UNK } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Wikipedia 编辑权限
+// @description: 检测 Wikipedia 编辑权限是否已解锁
+// @regions: global
+// @tags: scholar
+// @priority: 12
+
 function handler(): HandlerResult {
   var content = fetch(
     "https://en.wikipedia.org/w/index.php?title=Wikipedia:WikiProject_on_open_proxies&action=edit",

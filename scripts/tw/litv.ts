@@ -2,6 +2,12 @@ import { C_FAIL, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: LiTV
+// @description: 检测 LiTV 解锁状态
+// @regions: tw
+// @tags: stream, video, live
+// @priority: 36
+
 function handler(): HandlerResult {
   const response = fetch("https://www.litv.tv/api/get-urls-no-auth", {
     method: "POST",

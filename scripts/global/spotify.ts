@@ -1,6 +1,12 @@
 import { C_FAIL, C_NA, C_UNK, C_UNL } from "@/consts/colors";
-import { T_ALLOW, T_BLOCK, T_DENY, T_FAIL, T_NA, T_PASS, T_UNK, T_UNL } from "@/consts/text";
+import { T_ALLOW, T_DENY, T_FAIL, T_NA, T_PASS, T_UNK, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
+
+// @name: Spotify
+// @description: 检测 Spotify 在当前地区是否可注册
+// @regions: global
+// @tags: stream, music
+// @priority: 9
 
 type ResponseBody = {
   status: number;

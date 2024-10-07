@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, M_RESPONSE, T_FAIL, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Tiktok
+// @description: 检测 Tiktok 是否可用
+// @regions: global
+// @tags: social
+// @priority: 3
+
 function handler(): HandlerResult {
   const response = fetch("https://www.tiktok.com/explore", {
     method: "GET",

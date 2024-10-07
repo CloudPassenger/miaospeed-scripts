@@ -2,6 +2,12 @@ import { T_FAIL, T_UNL, M_NETWORK, M_STATUS, M_PARSE } from "@/consts/text";
 import { C_FAIL, C_UNL } from "@/consts/colors";
 import { UA_ANDROID } from "@/consts/ua";
 
+// @name: ViuTV
+// @description: 检测 ViuTV 本地内容 解锁状态
+// @regions: hk
+// @tags: stream, video
+// @priority: 20
+
 function handler() {
   const response = fetch("https://api.viu.now.com/p8/3/getLiveURL", {
     method: "POST",

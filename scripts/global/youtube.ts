@@ -1,6 +1,13 @@
 import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 
+
+// @name: YouTube
+// @description: 检测 YouTube Premium 在当前地区是否可用
+// @regions: global
+// @tags: stream, video
+// @priority: 4
+
 function handler(): HandlerResult {
   const response = fetch("https://www.youtube.com/premium", {
     method: "GET",

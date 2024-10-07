@@ -2,6 +2,12 @@ import { C_NA, C_FAIL, C_UNL } from "@/consts/colors";
 import { M_IP_BLOCK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Disney+
+// @description: 检测 Disney+ 解锁状态
+// @regions: global
+// @tags: stream, video
+// @priority: 3
+
 const cookie =
   "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&latitude=0&longitude=0&platform=browser&subject_token=DISNEYASSERTION&subject_token_type=urn%3Abamtech%3Aparams%3Aoauth%3Atoken-type%3Adevice";
 const gql =

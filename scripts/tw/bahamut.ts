@@ -10,6 +10,12 @@ import {
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 import { parseCookies } from "@/utils";
 
+// @name: 動畫瘋
+// @description: 检测 Bahamut / 動畫瘋 解锁状态
+// @regions: tw
+// @tags: stream, video, anime
+// @priority: 31
+
 function handler(): HandlerResult  {
   // 获取设备ID
   const deviceIdResponse = fetch(

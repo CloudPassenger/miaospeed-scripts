@@ -2,6 +2,12 @@ import { C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
 import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: HBO Go Asia
+// @description: 检测 HBO Go Asia 解锁状态
+// @regions: tw, hk
+// @tags: stream, video, movie, anime
+// @priority: 33
+
 type ResponseBody = {
   territory?: string;
   country?: string;

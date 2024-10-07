@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Viu+
+// @description: 检测 Viu+ 解锁状态
+// @regions: global
+// @tags: stream, video
+// @priority: 8
+
 function handler(): HandlerResult {
   const response = fetch("https://www.viu.com", {
     method: "GET",

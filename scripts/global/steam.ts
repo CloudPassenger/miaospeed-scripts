@@ -3,6 +3,12 @@ import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 import { parseCookies } from "@/utils";
 
+// @name: Steam 货币
+// @description: 检测 Steam 货币
+// @regions: global
+// @tags: game
+// @priority: 12
+
 function handler(): HandlerResult {
   const steamResponse = fetch("https://store.steampowered.com", {
     method: "GET",

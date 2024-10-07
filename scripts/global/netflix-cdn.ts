@@ -9,6 +9,12 @@ import {
 } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Netflix CDN
+// @description: 检测 Netflix CDN 地理位置
+// @regions: global
+// @tags: stream, video
+// @priority: 2
+
 type Location = {
   city: string;
   country: string;

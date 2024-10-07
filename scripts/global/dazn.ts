@@ -9,6 +9,12 @@ import {
 } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Dazn
+// @description: 检测 Dazn 在当前地区是否可用
+// @regions: global
+// @tags: stream, video
+// @priority: 4
+
 function handler(): HandlerResult {
   const response = fetch("https://startup.core.indazn.com/misl/v5/Startup", {
     method: "POST",

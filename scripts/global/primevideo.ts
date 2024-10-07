@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL, C_UNK } from "@/consts/colors";
 import { M_NETWORK, M_STATUS, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: Amazon Prime Video
+// @description: 检测 Amazon Prime Video 在当前地区是否可用
+// @regions: global
+// @tags: stream, video
+// @priority: 5
+
 function handler(): HandlerResult {
   const response = fetch("https://www.primevideo.com", {
     method: "GET",

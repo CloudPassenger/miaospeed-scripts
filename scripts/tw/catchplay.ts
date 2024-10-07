@@ -2,6 +2,12 @@ import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
 import { M_STATUS, M_NETWORK, M_PARSE, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: CatchPlay+
+// @description: 检测 CatchPlay+ 解锁状态
+// @regions: tw
+// @tags: stream, video, movie
+// @priority: 39
+
 const AUTHORIZATION_HEADER =
   "Basic NTQ3MzM0NDgtYTU3Yi00MjU2LWE4MTEtMzdlYzNkNjJmM2E0Ok90QzR3elJRR2hLQ01sSDc2VEoy";
 

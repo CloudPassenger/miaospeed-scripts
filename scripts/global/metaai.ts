@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Meta.AI
+// @description: 检测 Meta AI 在当前地区是否可用
+// @regions: global
+// @tags: ai
+// @priority: 9
+
 function handler(): HandlerResult {
   const response = fetch("https://www.meta.ai/", {
     method: "GET",

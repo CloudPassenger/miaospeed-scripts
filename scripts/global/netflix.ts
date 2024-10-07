@@ -2,6 +2,12 @@ import { C_NA, C_FAIL, C_UNL, C_UNK, C_WARN } from "@/consts/colors";
 import { T_FAIL, T_NA, T_UNK, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
+// @name: Netflix
+// @description: 检测 Netflix 可用性
+// @regions: global
+// @tags: stream, video
+// @priority: 1
+
 const T_ORIGINAL_ONLY = "仅自制";
 
 function handler(): HandlerResult {

@@ -2,6 +2,12 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
+// @name: 香港開電視
+// @description: 检测 HoyTV / 香港開電視 解锁状态
+// @regions: hk
+// @tags: stream, video
+// @priority: 20
+
 function handler(): HandlerResult {
   const response = fetch(
     "https://hoytv-live-stream.hoy.tv/ch78/index-fhd.m3u8",
