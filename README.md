@@ -1,5 +1,7 @@
 # miaospeed-scripts
 
+[![Build and Release](https://github.com/CloudPassenger/miaospeed-scripts/actions/workflows/build.yml/badge.svg)](https://github.com/CloudPassenger/miaospeed-scripts/actions/workflows/build.yml)
+
 一些用于 [miaospeed](https://github.com/AirportR/miaospeed) 的网络测试脚本
 
 主要用于检测区域限制内容/特定地区流媒体的可用性
