@@ -197,7 +197,7 @@ async function processFiles() {
 
   // 写入 koipy.yaml
   console.log('📝 Writing config.yaml for Koipy...');
-  fs.writeFileSync(path.join(distDir, 'config.yaml'), koipyYamlContent);
+  fs.writeFileSync(path.join(distDir, 'koipy-config.yaml'), koipyYamlContent);
 
   console.log('📦 All scripts built successfully.');
 }
