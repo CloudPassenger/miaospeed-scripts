@@ -74,14 +74,14 @@
 - [ ] Rakuten Magazine
 
 ## 韩国
-- [] Wavve
-- [] Tving
-- [] Watcha
-- [] Coupang Play
-- [] SpotvNow
-- [] NaverTV
-- [] Afreeca
-- [] KBS
+- [ ] Wavve
+- [ ] Tving
+- [ ] Watcha
+- [ ] Coupang Play
+- [ ] SpotvNow
+- [ ] NaverTV
+- [ ] Afreeca
+- [ ] KBS
 
 ## 美国
 
