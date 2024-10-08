@@ -30,7 +30,7 @@ function handler(): HandlerResult {
   const cookies = parseCookies(steamResponse.cookies);
 
   if (cookies["steamCountry"]) {
-    const steamCountryValue = cookies["steamCountry"];
+    const steamCountryValue = cookies["steamCountry"] as string;
     const regionIndex = steamCountryValue.indexOf("%");
 
     if (regionIndex === -1) {
@@ -39,7 +39,7 @@ function handler(): HandlerResult {
         background: C_FAIL,
       };
     }
-    const region = steamCountryValue.substring(0, regionIndex).toLowerCase();
+    const region = steamCountryValue.substring(0, regionIndex).toUpperCase();
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,

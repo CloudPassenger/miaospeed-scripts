@@ -55,8 +55,8 @@ function handler() {
 
   if (statusCode === 403 && body.includes("blocked")) {
     return {
-      text: T_DENY,
-      background: C_NA,
+      text: T_FAIL,
+      background: C_FAIL,
     };
   }
 

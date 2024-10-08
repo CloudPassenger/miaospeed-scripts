@@ -26,7 +26,8 @@ function handler(): HandlerResult {
     };
   }
 
-  const location = response.headers["location"];
+  const location = response.redirects[0];
+  println(response.redirects);
   if (location) {
     const region = location.split("/")[4];
     if (region === "no-service") {
@@ -36,7 +37,7 @@ function handler(): HandlerResult {
       };
     } else {
       return {
-        text: `${T_UNL}(${region})`,
+        text: `${T_UNL}(${region.toUpperCase()})`,
         background: C_UNL,
       };
     }

@@ -52,16 +52,12 @@ function bilibiliTest(url: string): null | boolean {
     return null; // Network Error
   }
 
-  const code = safeParse<BodyResponse>(response.body)?.code;
-  if (!code) {
-    return null;
-  }
-
-  if ([-10403, 10004001, 10003003].indexOf(code) > -1) return false;
   if (response.statusCode === 412) return false;
-  if (code === 0) return true;
 
-  return null;
+  println(response.body); // Ensure 200 OK
+  const code = safeParse<BodyResponse>(response.body)?.code;
+  if (code === 0) return true;
+  return false;
 }
 
 function handler(): HandlerResult {
