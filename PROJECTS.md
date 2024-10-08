@@ -1,4 +1,4 @@
-# 解锁检测地区&脚本 进度表
+# 适配计划
 
 ## 全球
 
@@ -29,12 +29,12 @@
 - [ ] Hoy TV / 香港開電視
 
 ## 台湾
-- [ ] KKTV
-- [ ] LiTV
+- [x] KKTV
+- [x] LiTV
 - [x] 4GTV
-- [ ] MyVideo
-- [ ] Line TV
-- [ ] Hami Video
+- [x] MyVideo
+- [x] Line TV
+- [x] Hami Video
 - [x] Catchplay+
 - [x] Bahamut / 動畫瘋
 - [x] HBO GO Asia
