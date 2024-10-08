@@ -1,0 +1,62 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [ published ]
+
+jobs:
+  build-and-release:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+
+      - name: Install pnpm package manager
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Create release archive
+        run: |
+          cd dist
+          zip -r ../scripts.zip * -x koipy-config.yaml index.json
+
+      - name: Update Nightly Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            scripts.zip
+            dist/koipy-config.yaml
+            dist/index.json
+          name: 'Nightly Release'
+          tag_name: 'nightly'
+          prerelease: true
+          body: '🆕 Nightly Build'
+          generate_release_notes: true
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'create' && startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            scripts.zip
+            dist/koipy-config.yaml
+            dist/index.json
+          generate_release_notes: true
