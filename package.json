@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "Media Unlock Checking Scripts for MiaoSpeed",
   "scripts": {
+    "new": "node template.js",
     "build": "rimraf dist && node build.js"
   },
   "keywords": [],
   "author": "CloudPassenger",
-  "license": "ISC",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
+    "@inquirer/prompts": "^7.0.0",
     "@rollup/plugin-commonjs": "^28.0.0",
     "@rollup/plugin-typescript": "^12.1.0",
+    "@types/mustache": "^4.2.5",
+    "mustache": "^4.2.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.24.0",
     "rollup-plugin-cleanup": "^3.2.1",
