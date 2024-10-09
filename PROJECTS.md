@@ -26,7 +26,7 @@
 - [x] MyTVSuper
 - [x] HBO GO Asia
 - [ ] SonyLiv
-- [ ] Hoy TV / 香港開電視
+- [x] Hoy TV / 香港開電視
 
 ## 台湾
 - [x] KKTV
@@ -74,14 +74,14 @@
 - [ ] Rakuten Magazine
 
 ## 韩国
-- [ ] Wavve
-- [ ] Tving
+- [x] Wavve
+- [x] Tving
 - [ ] Watcha
 - [ ] Coupang Play
 - [ ] SpotvNow
-- [ ] NaverTV
+- [x] NaverTV
 - [ ] Afreeca
-- [ ] KBS
+- [x] KBS
 
 ## 美国
 
