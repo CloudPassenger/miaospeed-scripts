@@ -170,6 +170,10 @@ async function processFiles() {
         script: metadataArray.map(item => item.name || item.id),
       },
       {
+        name: '实用工具',
+        script: metadataArray.filter((item) => item.regions && item.tags.includes('tool')).map(item => item.name || item.id),
+      },
+      {
         name: '国际平台',
         script: metadataArray.filter((item) => item.regions && item.regions.includes('global')).map(item => item.name || item.id),
       },
@@ -186,7 +190,7 @@ async function processFiles() {
         script: metadataArray.filter((item) => item.tags && item.tags.includes('stream')).map(item => item.name || item.id),
       },
       {
-        name: 'AI工具',
+        name: 'AI平台',
         script: metadataArray.filter((item) => item.tags && item.tags.includes('ai')).map(item => item.name || item.id),
       },
       {

@@ -5,7 +5,7 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 // @name: Bing
 // @description: 检测 Bing 是否为国际版
 // @regions: global
-// @tags: tool, ai
+// @tags: search-engine, ai
 // @priority: 6
 
 function handler(): HandlerResult {
