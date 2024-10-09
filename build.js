@@ -5,6 +5,7 @@ const rollup = require('rollup');
 const typescript = require('@rollup/plugin-typescript');
 const commonjs = require('@rollup/plugin-commonjs');
 const cleanup = require('rollup-plugin-cleanup');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const srcDir = path.resolve(__dirname, 'scripts');
 const distDir = path.resolve(__dirname, 'dist');
@@ -87,6 +88,7 @@ async function processFiles() {
       plugins: [
         commonjs(),
         typescript(),
+        nodeResolve(),
         cleanup({
           comments: 'none',
           extensions: ['js', 'jsx', 'ts', 'tsx'],
