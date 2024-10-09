@@ -33,7 +33,7 @@ function ensureDirExistence(file) {
 
   const is_mobile = await select({ message: 'Use User-Agent for mobile?', choices: [{ name: 'Yes', value: true }, { name: 'No', value: false }], required: true});
 
-  const filepath = await input({ message: 'Please enter the path for new script, eg: new/example.ts', default: 'new/' + scriptName.toLowerCase().replace(/ /g, '_') + '.ts', required: true });
+  const filepath = await input({ message: 'Please enter the path for new script, eg: new/example.ts', default: regions.split(',')[0].trim() + '/' + scriptName.toLowerCase().replace(/ /g, '_') + '.ts', required: true });
 
   // input data
   const view = {
