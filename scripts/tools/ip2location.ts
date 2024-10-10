@@ -2,11 +2,11 @@ import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
 import { M_NETWORK, T_FAIL, T_NA } from "@/consts/text";
 import { SEC_CH_UA, UA_CURL, UA_WINDOWS } from "@/consts/ua";
 
-// @name: IP质量(V6)
-// @description: 检测出口节点的 IPv6 质量
+// @name: IP2Location
+// @description: 检测出口节点的 IP 质量，使用 IP2Location 接口
 // @regions: global
 // @tags: ip, quality, tool
-// @priority: 3
+// @priority: 2
 
 /** Types */
 interface IP2LocationResult {
@@ -159,16 +159,16 @@ function getPublicIp(protocol: "4" | "6" = "4"): string | null {
 }
 
 function handler(): HandlerResult {
-  const ipv6 = getPublicIp("6");
+  const ipv4 = getPublicIp("4");
 
-  if (!ipv6) {
+  if (!ipv4) {
     return {
-      text: `无IPv6`,
+      text: `N/A - 无IPv4`,
       background: C_NA,
     };
   }
 
-  const ip2locationUrl = `https://www.ip2location.io/${ipv6}`;
+  const ip2locationUrl = `https://www.ip2location.io/${ipv4}`;
 
   const response = fetch(ip2locationUrl, {
     method: "GET",
