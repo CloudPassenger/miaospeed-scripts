@@ -8,7 +8,7 @@ import { {{#is_mobile}}UA_ANDROID{{/is_mobile}}{{^is_mobile}}UA_WINDOWS{{/is_mob
 // @tags: {{tags}}
 // @priority: {{priority}}
 
-type BodyResponse = {
+type ResponseBody = {
   code: number;
   region: string;
   message?: string;
@@ -43,7 +43,7 @@ function handler(): HandlerResult {
   }
 
   const body = response.body;
-  const data = safeParse<BodyResponse>(body);
+  const data = safeParse<ResponseBody>(body);
 
   if (data.code === 0) {
     const region = data.region.toUpperCase();

@@ -8,7 +8,7 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @tags: stream, ott
 // @priority: 50
 
-type BodyResponse = {
+type ResponseBody = {
   header: {
     message: string;
     status: number;
@@ -67,7 +67,7 @@ function handler(): HandlerResult {
   }
 
   const body = response.body;
-  const data = safeParse<BodyResponse>(body);
+  const data = safeParse<ResponseBody>(body);
 
   if (data && data.body && data.body.result && data.body.result.code) {
     const code = data.body.result.code;

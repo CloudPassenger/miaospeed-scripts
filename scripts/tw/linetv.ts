@@ -8,7 +8,7 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @tags: stream, video, live
 // @priority: 35
 
-type BodyResponse = {
+type ResponseBody = {
   code?: number;
   message?: string;
   countryCode?: number;
@@ -92,7 +92,7 @@ function handler(): HandlerResult {
     };
   }
 
-  const apiData = safeParse<BodyResponse>(apiResponse.body);
+  const apiData = safeParse<ResponseBody>(apiResponse.body);
 
   if (!apiData) {
     return {

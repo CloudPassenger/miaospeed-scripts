@@ -11,7 +11,7 @@ import { SHA1 } from "jshashes";
 // @priority: 50
 
 /** Type */
-export interface BodyResponse {
+export interface ResponseBody {
   statusCode?: "SUCCESS";
   errorCode?: string;
   result?: Result;
@@ -180,7 +180,7 @@ function handler(): HandlerResult {
   }
 
   const body = response.body;
-  const data = safeParse<BodyResponse>(body);
+  const data = safeParse<ResponseBody>(body);
 
   println("[Naver TV] Result\n" + JSON.stringify(data));
 

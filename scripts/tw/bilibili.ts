@@ -27,7 +27,7 @@ const REGION_URLs = {
 
 type RegionCheckResults = Record<REGIONS, boolean | null>;
 
-type BodyResponse = {
+type ResponseBody = {
   code?: number;
   message?: string;
 };
@@ -55,7 +55,7 @@ function bilibiliTest(url: string): null | boolean {
   if (response.statusCode === 412) return false;
 
   println(response.body); // Ensure 200 OK
-  const code = safeParse<BodyResponse>(response.body)?.code;
+  const code = safeParse<ResponseBody>(response.body)?.code;
   if (code === 0) return true;
   return false;
 }
