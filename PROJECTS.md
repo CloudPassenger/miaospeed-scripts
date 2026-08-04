@@ -96,39 +96,39 @@
 
 ## 美国
 
-- [ ] Shudder
-- [ ] BritBox
+- [x] Shudder
+- [x] BritBox
 - [x] SonyLiv
 - [ ] Hotstar
-- [ ] NBA TV
-- [ ] Fubo TV
-- [ ] Tubi TV
-- [ ] Meta AI
-- [ ] AMC+
+- [x] NBA TV
+- [x] Fubo TV
+- [x] Tubi TV
+- [x] Meta AI
+- [x] AMC+
 - [ ] Viaplay
-- [ ] FOX
-- [ ] Hulu
-- [ ] NFL+
-- [ ] ESPN+
-- [ ] MGM+
-- [ ] Starz
-- [ ] Philo
-- [ ] FXNOW
-- [ ] TLC GO
+- [x] FOX
+- [ ] Hulu（上游实现依赖硬编码且已过期的登录 Cookie，暂不适配）
+- [x] NFL+
+- [ ] ESPN+（上游实现依赖硬编码且可能已失效的设备 Token，暂不适配）
+- [ ] MGM+（上游实现依赖复杂 GraphQL 流程与硬编码调试头，暂不适配）
+- [x] Starz
+- [x] Philo
+- [x] FXNOW
+- [x] TLC GO
 - [ ] HBO Max
-- [ ] CW TV
-- [ ] Sling TV
-- [ ] Pluto TV
-- [ ] Acorn TV
+- [x] CW TV
+- [x] Sling TV
+- [x] Pluto TV
+- [x] Acorn TV
 - [ ] SHOWTIME
-- [ ] encoreTVB
-- [ ] Discovery+
-- [ ] Paramount+
-- [ ] Peacock TV
-- [ ] Crunchyroll
-- [ ] DirecTV Stream
-- [ ] KOCOWA+
-- [ ] Crackle
+- [x] encoreTVB
+- [x] Discovery+
+- [x] Paramount+
+- [x] Peacock TV
+- [x] Crunchyroll
+- [x] DirecTV Stream
+- [x] KOCOWA+
+- [x] Crackle
 - [ ] MathsSpot Roblox
 
 ## 加拿大
