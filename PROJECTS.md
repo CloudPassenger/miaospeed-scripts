@@ -19,6 +19,14 @@
 - [x] Meta.AI
 - [x] Reddit
 - [x] Wikipedia
+- [x] Grok
+- [x] Perplexity AI
+- [x] Mistral AI
+- [x] Poe
+- [x] Coze
+- [x] Microsoft Copilot
+- [x] DeepSeek
+- [x] Kimi
 
 ## 香港
 - [x] Now E
