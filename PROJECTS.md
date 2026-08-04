@@ -33,7 +33,7 @@
 - [x] ViuTV
 - [x] MyTVSuper
 - [x] HBO GO Asia
-- [ ] SonyLiv
+- [x] SonyLiv
 - [x] Hoy TV / 香港開電視
 
 ## 台湾
@@ -47,6 +47,8 @@
 - [x] Bahamut / 動畫瘋
 - [x] HBO GO Asia
 - [x] Bilibili 台港澳
+- [x] friDay 影音
+- [x] Ofiii
 
 ## 日本
 - [x] Abema
@@ -95,7 +97,7 @@
 
 - [ ] Shudder
 - [ ] BritBox
-- [ ] SonyLiv
+- [x] SonyLiv
 - [ ] Hotstar
 - [ ] NBA TV
 - [ ] Fubo TV
@@ -142,7 +144,7 @@
 - [ ] Setanta Sports
 - [ ] Sky Show Time
 - [ ] HBO Max
-- [ ] SonyLiv
+- [x] SonyLiv
 - [ ] KOCOWA+
 
 ## 英国
@@ -188,7 +190,7 @@
 
 ## 东南亚
 - [ ] Bilibili 东南亚
-- [ ] SonyLiv
+- [x] SonyLiv
 - [ ] HotStar
 - [ ] CatchPlay+
 
@@ -204,7 +206,7 @@
 - [ ] Acorn TV
 - [ ] BritBox
 - [ ] Paramount+
-- [ ] SonyLiv
+- [x] SonyLiv
 - [ ] KOCOWA+
 - [ ] AMC+
 
