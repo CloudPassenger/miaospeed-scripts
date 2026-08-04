@@ -99,13 +99,13 @@
 - [x] Shudder
 - [x] BritBox
 - [x] SonyLiv
-- [ ] Hotstar
+- [x] Hotstar
 - [x] NBA TV
 - [x] Fubo TV
 - [x] Tubi TV
 - [x] Meta AI
 - [x] AMC+
-- [ ] Viaplay
+- [x] Viaplay
 - [x] FOX
 - [ ] Hulu（上游实现依赖硬编码且已过期的登录 Cookie，暂不适配）
 - [x] NFL+
@@ -115,7 +115,7 @@
 - [x] Philo
 - [x] FXNOW
 - [x] TLC GO
-- [ ] HBO Max
+- [x] HBO Max
 - [x] CW TV
 - [x] Sling TV
 - [x] Pluto TV
@@ -129,24 +129,24 @@
 - [x] DirecTV Stream
 - [x] KOCOWA+
 - [x] Crackle
-- [ ] MathsSpot Roblox
+- [x] MathsSpot Roblox（欧洲区脚本同源，跨区适用）
 
 ## 加拿大
 - [x] Crave
 - [x] CBC Gem
 
 ## 南美
-- [ ] Claro Video
-- [ ] DirecTV GO
-- [ ] HBO Max Latino
+- [ ] Claro Video（上游无对应实现，暂不适配）
+- [x] DirecTV GO
+- [ ] HBO Max Latino（上游无对应实现，暂不适配）
 
 ## 欧洲
 - [x] Rakuten TV EU
 - [x] Setanta Sports
 - [x] Sky Show Time
-- [ ] HBO Max
+- [x] HBO Max（美区脚本同源，跨区适用）
 - [x] SonyLiv
-- [x] KOCOWA+
+- [x] KOCOWA+（美区脚本同源，跨区适用）
 - [x] TNT Sports
 - [x] Eurosport RO
 - [x] Viaplay
@@ -157,8 +157,8 @@
 - [x] Channel 5
 - [x] Sky Go
 - [x] ITVX
-- [ ] Hotstar
-- [ ] MathsSpot Roblox
+- [x] Hotstar（全球脚本同源，跨区适用）
+- [x] MathsSpot Roblox
 - [x] Discovery+ UK
 - [x] BritBox UK
 
@@ -222,7 +222,7 @@
 - [x] NBA TV（美区脚本同源，跨区适用）
 - [x] Acorn TV（美区脚本同源，跨区适用）
 - [x] BritBox（美区脚本同源，跨区适用）
-- [ ] Paramount+
+- [x] Paramount+（美区脚本同源，跨区适用）
 - [x] SonyLiv
 - [x] KOCOWA+（美区脚本同源，跨区适用）
 - [x] AMC+（美区脚本同源，跨区适用）
@@ -230,12 +230,12 @@
 ## 澳大利亚
 - [x] Stan
 - [x] Binge
-- [ ] Doc Play
+- [x] Doc Play
 - [x] 7Plus
 - [x] Channel 9
 - [x] 10 Play
 - [x] ABC iView
-- [ ] Optus Sports
+- [ ] Optus Sports（上游无对应实现，暂不适配）
 - [x] Kayo Sports
 - [x] SBS on Demand
 
