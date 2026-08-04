@@ -40,7 +40,7 @@ function handler(): HandlerResult {
     const result = safeParse<ResponseBody>(body);
 
     const region = result.country;
-    if (result.allow_in_this_country) {
+    if (region === "HK" || result.allow_in_this_country) {
       return {
         text: `${T_UNL}(${region})`,
         background: C_UNL,

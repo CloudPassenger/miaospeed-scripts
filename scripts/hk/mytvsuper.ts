@@ -28,6 +28,11 @@ function handler(): HandlerResult {
       text: T_NA,
       background: C_NA,
     };
+  } else if (response.statusCode === 403) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
+    };
   } else if (response.statusCode == 200) {
     const body = safeParse<ResponseBody>(response.body);
     const region = body.region;

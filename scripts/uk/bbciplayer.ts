@@ -1,5 +1,5 @@
-import { C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
-import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
+import { C_FAIL, C_UNL } from "@/consts/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
 
 // @name: BBC iPlayer
 // @description: 检测 BBC iPlayer 解锁状态
@@ -28,33 +28,21 @@ function handler(): HandlerResult {
       background: C_FAIL,
     };
   } else if (response.statusCode === 200) {
-    const content = response.body;
-
-    const isBlocked = content.includes("geolocation");
-    const isOK = content.includes("vs-hls-push-uk");
-
-    if (!isBlocked && !isOK) {
-      return {
-        text: `${T_FAIL}(${M_NETWORK})`,
-        background: C_FAIL,
-      };
-    }
+    const isBlocked = response.body.includes("geolocation");
     if (isBlocked) {
       return {
         text: T_FAIL,
         background: C_FAIL,
       };
     }
-    if (isOK) {
-      return {
-        text: T_UNL,
-        background: C_UNL,
-      };
-    }
-
     return {
-      text: T_UNK,
-      background: C_UNK,
+      text: T_UNL,
+      background: C_UNL,
+    };
+  } else if (response.statusCode === 403 || response.statusCode === 451) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
     };
   } else {
     return {

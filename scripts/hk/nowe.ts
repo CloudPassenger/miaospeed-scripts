@@ -55,7 +55,8 @@ function handler(): HandlerResult {
       };
     } else if (
       data.responseCode === "SUCCESS" ||
-      data.responseCode === "PRODUCT_INFORMATION_INCOMPLETE"
+      data.responseCode === "ASSET_MISSING" ||
+      data.responseCode === "NOT_LOGIN"
     ) {
       return {
         text: T_UNL,
@@ -63,8 +64,8 @@ function handler(): HandlerResult {
       };
     } else {
       return {
-        text: T_FAIL,
-        background: C_FAIL,
+        text: T_UNK,
+        background: C_UNK,
       };
     }
   } else {

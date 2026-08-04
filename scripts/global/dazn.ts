@@ -41,6 +41,11 @@ function handler(): HandlerResult {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
     };
+  } else if (response.statusCode === 403) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
+    };
   } else if (response.statusCode === 200) {
     const data = safeParse(response.body);
 

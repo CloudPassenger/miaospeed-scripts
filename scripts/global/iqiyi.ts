@@ -1,5 +1,5 @@
-import { C_NA, C_UNL, C_UNK } from "@/consts/colors";
-import { T_NA, T_UNK, T_UNL } from "@/consts/text";
+import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
 // @name: 爱奇艺国际版
@@ -9,7 +9,7 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @priority: 10
 
 function handler(): HandlerResult {
-  const response = fetch("https://www.iq.com/?lang=en_us", {
+  const response = fetch("https://www.iq.com", {
     headers: {
       "User-Agent": UA_WINDOWS,
     },
@@ -23,38 +23,27 @@ function handler(): HandlerResult {
       text: T_NA,
       background: C_NA,
     };
-  } else if (response.statusCode == 200) {
-    let info = response.body;
-    var index = info.indexOf("intlPageInfo.pbInfos = {");
-    if (index > 0) {
-      var sinfo = info.substring(index, index + 110);
-      var index2 = sinfo.indexOf("mod:");
-      var sinfo2 = sinfo.substring(index2 + 98);
-      var r = sinfo2.split('"');
-      var region = r[0] ? r[0] : "NOT FOUND";
-      if (region == "ntw") {
-        region = "TW";
-      } else if (region == "intl") {
-        region = "国际";
-      } else {
-        region = region.toUpperCase();
-      }
-      return {
-        text: `${T_UNL}(${region})`,
-        background: C_UNL,
-      };
-    } else {
-      return {
-        text: T_UNK,
-        background: C_UNK,
-      };
-    }
-  } else {
+  }
+
+  const clientIp = response.headers["x-custom-client-ip"] || "";
+  const parts = clientIp.split(":");
+  let region = parts.length >= 2 ? parts[parts.length - 1] : "";
+
+  if (!region) {
     return {
-      text: T_UNK,
-      background: C_UNK,
+      text: T_FAIL,
+      background: C_FAIL,
     };
   }
+
+  if (region === "ntw") {
+    region = "tw";
+  }
+
+  return {
+    text: `${T_UNL}(${region.toUpperCase()})`,
+    background: C_UNL,
+  };
 }
 
 export default handler;

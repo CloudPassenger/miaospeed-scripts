@@ -52,7 +52,7 @@ function handler(): HandlerResult {
   const country = data.data.country;
   const isAllowed = data.data.is_allowed;
 
-  if (isAllowed) {
+  if (country === "TW" && isAllowed) {
     return {
       text: `${T_UNL}(${country})`,
       background: C_UNL,

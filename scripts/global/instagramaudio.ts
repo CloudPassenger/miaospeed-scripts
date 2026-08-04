@@ -1,5 +1,5 @@
 import { C_FAIL, C_UNL } from "@/consts/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
+import { M_NETWORK, M_RATE_LIMIT, T_FAIL, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
 // @name: Instagram Audio
@@ -47,7 +47,21 @@ function handler(): HandlerResult {
     retry: 3,
   });
 
-  if (!response || response.statusCode !== 200) {
+  if (!response) {
+    return {
+      text: `${T_FAIL}(${M_NETWORK})`,
+      background: C_FAIL,
+    };
+  }
+
+  if (response.statusCode === 429) {
+    return {
+      text: `${T_FAIL}(${M_RATE_LIMIT})`,
+      background: C_FAIL,
+    };
+  }
+
+  if (response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,

@@ -1,5 +1,6 @@
 import { C_FAIL, C_UNL, C_NA, C_WARN } from "@/consts/colors";
 import {
+  M_IP_BLOCK,
   M_NETWORK,
   M_RESPONSE,
   T_FAIL,
@@ -31,7 +32,19 @@ function handler(): HandlerResult {
     timeout: 5000,
   });
 
-  if (!response || response.statusCode !== 200) {
+  if (!response) {
+    return {
+      text: `${T_FAIL}(${M_NETWORK})`,
+      background: C_FAIL,
+    };
+  }
+  if (response.statusCode === 403) {
+    return {
+      text: `${T_FAIL}(${M_IP_BLOCK})`,
+      background: C_FAIL,
+    };
+  }
+  if (response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
@@ -44,6 +57,17 @@ function handler(): HandlerResult {
   if (!data) {
     return {
       text: `${T_FAIL}(${M_RESPONSE})`,
+      background: C_FAIL,
+    };
+  }
+
+  if (
+    !data.isoCountryCode &&
+    (content.indexOf("blocked_location") > -1 ||
+      content.indexOf("anonymous_ip") > -1)
+  ) {
+    return {
+      text: T_FAIL,
       background: C_FAIL,
     };
   }

@@ -190,15 +190,15 @@ function handler(): HandlerResult {
       text: `${T_FAIL}(${M_TOKEN})`,
       background: C_FAIL,
     };
-  } else if (data.result.play.playable === "PLAYABLE") {
-    return {
-      text: T_UNL,
-      background: C_UNL,
-    };
-  } else {
+  } else if (data.result.play.playable === "NOT_COUNTRY_AVAILABLE") {
     return {
       text: T_FAIL,
       background: C_FAIL,
+    };
+  } else {
+    return {
+      text: T_UNL,
+      background: C_UNL,
     };
   }
 }

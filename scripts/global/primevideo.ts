@@ -1,5 +1,5 @@
-import { C_FAIL, C_NA, C_UNL, C_UNK } from "@/consts/colors";
-import { M_NETWORK, M_STATUS, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
+import { C_FAIL, C_UNL } from "@/consts/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
 // @name: Amazon Prime Video
@@ -24,46 +24,55 @@ function handler(): HandlerResult {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
     };
-  } else if (response.statusCode !== 200) {
+  }
+
+  let body = response.body || "";
+
+  // 若当前页面没有地区信息，尝试从页面中提取 storefront 跳转链接二次请求
+  if (body.indexOf('"currentTerritory":') === -1) {
+    const linkMatches = body.match(/https:\/\/www\.amazon\.[a-z.]+\/[^"'\s>]+/g) || [];
+    for (var i = 0; i < linkMatches.length; i++) {
+      if (linkMatches[i].indexOf("storefront") > -1) {
+        const storefrontUrl = linkMatches[i].replace(/&amp;/g, "&");
+        const storefrontResponse = fetch(storefrontUrl, {
+          method: "GET",
+          headers: {
+            "User-Agent": UA_WINDOWS,
+          },
+          noRedir: false,
+          retry: 2,
+          timeout: 5000,
+        });
+        if (storefrontResponse) {
+          body = storefrontResponse.body || "";
+        }
+        break;
+      }
+    }
+  }
+
+  // WAF 拦截 / 验证码检测
+  if (body.indexOf("api-services-support@amazon.com") > -1) {
     return {
-      text: `${T_FAIL}(${M_STATUS})`,
+      text: T_FAIL,
       background: C_FAIL,
     };
-  } else if (response.statusCode === 200) {
-    const body = response.body;
+  }
 
-    // Check if service is restricted
-    const isBlocked = body.includes("isServiceRestricted");
-    // Extract current region
-    const regionMatch = body.match(/"currentTerritory":"([^"]+)/);
-    const region = regionMatch ? regionMatch[1] : null;
+  const regionMatch = body.match(/"currentTerritory":"([A-Z]{2})"/);
+  const region = regionMatch ? regionMatch[1] : "";
 
-    // If service is blocked
-    if (isBlocked) {
-      return {
-        text: T_FAIL,
-        background: C_FAIL,
-      };
-    }
-
-    // If region is found
-    if (region) {
-      return {
-        text: `${T_UNL}(${region})`,
-        background: C_UNL,
-      };
-    }
-
+  if (region) {
     return {
-      text: T_UNK,
-      background: C_UNK,
-    };
-  } else {
-    return {
-      text: C_UNK,
-      background: C_UNK,
+      text: `${T_UNL}(${region})`,
+      background: C_UNL,
     };
   }
+
+  return {
+    text: T_FAIL,
+    background: C_FAIL,
+  };
 }
 
 export default handler;

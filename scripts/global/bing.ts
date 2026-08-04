@@ -1,5 +1,5 @@
 import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
-import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
+import { M_IP_BLOCK, M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
 // @name: Bing
@@ -29,39 +29,50 @@ function handler(): HandlerResult {
     timeout: 15000,
   });
 
-  if (!response || response.statusCode !== 200) {
+  if (!response) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
     };
   }
 
-  const body = response.body;
+  const body = response.body || "";
 
   const match = body.match(/Region:"([^"]*)"/);
   const region = match && match[1] ? match[1] : "";
 
-  if (region === "CN") {
+  if (response.statusCode === 200) {
+    if (region === "CN") {
+      return {
+        text: `${T_FAIL}(CN)`,
+        background: C_FAIL,
+      };
+    } else if (region) {
+      return {
+        text: `${T_UNL}(${region})`,
+        background: C_UNL,
+      };
+    }
+  }
+
+  if (body.indexOf("cn.bing.com") > -1) {
     return {
       text: `${T_FAIL}(CN)`,
       background: C_FAIL,
-    };
-  } else if (body.indexOf("cn.bing.com") > -1) {
-    return {
-      text: `${T_FAIL}(CN)`,
-      background: C_FAIL,
-    };
-  } else if (region) {
-    return {
-      text: `${T_UNL}(${region})`,
-      background: C_UNL,
-    };
-  } else {
-    return {
-      text: T_UNK,
-      background: C_UNK,
     };
   }
+
+  if (response.statusCode === 403 || response.statusCode === 451) {
+    return {
+      text: `${T_FAIL}(${M_IP_BLOCK})`,
+      background: C_FAIL,
+    };
+  }
+
+  return {
+    text: T_UNK,
+    background: C_UNK,
+  };
 }
 
 export default handler;

@@ -1,5 +1,5 @@
-import { C_FAIL, C_UNL } from "@/consts/colors";
-import { M_NETWORK, M_STATUS, T_FAIL, T_UNL } from "@/consts/text";
+import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
+import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
 // @name: KBS
@@ -36,10 +36,15 @@ function handler(): HandlerResult {
       text: T_UNL,
       background: C_UNL,
     };
-  } else {
+  } else if (body.includes(">새로고침<")) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+    };
+  } else {
+    return {
+      text: T_UNK,
+      background: C_UNK,
     };
   }
 }

@@ -1,5 +1,5 @@
 import { C_NA, C_FAIL, C_UNL } from "@/consts/colors";
-import { M_IP_BLOCK, T_FAIL, T_NA, T_UNL } from "@/consts/text";
+import { M_IP_BLOCK, M_RATE_LIMIT, T_FAIL, T_NA, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
 // @name: Disney+
@@ -53,6 +53,12 @@ function handler(): HandlerResult {
         background: C_FAIL,
       };
     }
+    if (deviceResponse.statusCode === 429) {
+      return {
+        text: `${T_FAIL}(${M_RATE_LIMIT})`,
+        background: C_FAIL,
+      };
+    }
 
     const deviceData = safeParse(deviceResponse.body);
     const assertion = deviceData.assertion || "";
@@ -69,7 +75,7 @@ function handler(): HandlerResult {
       method: "POST",
       headers: {
         authorization:
-          "Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+          "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
         "user-agent": UA_WINDOWS,
         "content-type": "application/x-www-form-urlencoded",
       },
@@ -86,6 +92,12 @@ function handler(): HandlerResult {
     ) {
       return {
         text: `${T_FAIL}(${M_IP_BLOCK})`,
+        background: C_FAIL,
+      };
+    }
+    if (tokenResponse.statusCode === 429) {
+      return {
+        text: `${T_FAIL}(${M_RATE_LIMIT})`,
         background: C_FAIL,
       };
     }

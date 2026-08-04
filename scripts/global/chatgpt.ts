@@ -1,6 +1,6 @@
 import { C_NA, C_FAIL, C_UNL, C_UNK } from "@/consts/colors";
-import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNK, T_UNL } from "@/consts/text";
-import { SEC_CH_UA, UA_ANDROID, UA_WINDOWS } from "@/consts/ua";
+import { M_NETWORK, M_PARSE, M_RATE_LIMIT, T_FAIL, T_NA, T_UNK, T_UNL } from "@/consts/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/consts/ua";
 
 // @name: ChatGPT
 // @description: 检测 ChatGPT 在当前地区是否可用
@@ -170,6 +170,7 @@ const GPT_SUPPORT_COUNTRY = [
   "TZ",
   "TL",
   "GB",
+  "AQ",
 ];
 
 const T_APP_ONLY = "仅App";
@@ -237,22 +238,22 @@ function handler() {
       timeout: 5000,
     }
   );
-  const appResponse = fetch("https://android.chat.openai.com/", {
+  const appResponse = fetch("https://ios.chat.openai.com/", {
     headers: {
-      authority: "android.chat.openai.com",
+      authority: "ios.chat.openai.com",
       accept:
         "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/" +
         "signed-exchange;v=b3;q=0.7",
       "accept-language": "zh-CN,zh;q=0.9",
       "sec-ch-ua": SEC_CH_UA,
       "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": '"Android"',
+      "sec-ch-ua-platform": '"Windows"',
       "sec-fetch-dest": "document",
       "sec-fetch-mode": "navigate",
       "sec-fetch-site": "none",
       "sec-fetch-user": "?1",
       "upgrade-insecure-requests": "1",
-      "user-agent": UA_ANDROID,
+      "user-agent": UA_WINDOWS,
     },
     noRedir: false,
     retry: 3,
@@ -263,6 +264,13 @@ function handler() {
     return {
       text: T_NA,
       background: C_NA,
+    };
+  }
+
+  if (mainResponse.statusCode === 429 || appResponse.statusCode === 429) {
+    return {
+      text: `${T_FAIL}(${M_RATE_LIMIT})`,
+      background: C_FAIL,
     };
   }
   const mainBody = mainResponse.body;

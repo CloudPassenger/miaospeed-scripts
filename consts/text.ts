@@ -19,6 +19,7 @@ const M_RESPONSE = '响应'
 const M_DEVICE = '设备'
 const M_TOKEN = '令牌'
 const M_IP_BLOCK = 'IP阻止'
+const M_RATE_LIMIT = '限流'
 
 export {
   T_NA,
@@ -38,5 +39,6 @@ export {
   M_RESPONSE,
   M_DEVICE,
   M_TOKEN,
-  M_IP_BLOCK
+  M_IP_BLOCK,
+  M_RATE_LIMIT
 }

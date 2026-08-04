@@ -26,6 +26,21 @@ function handler(): HandlerResult {
     };
   }
 
+  const finalUrl = response.url || "";
+
+  if (finalUrl.indexOf("serviceAreaBlock") > -1) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
+    };
+  }
+  if (finalUrl.indexOf("goLoginPage") > -1) {
+    return {
+      text: T_UNL,
+      background: C_UNL,
+    };
+  }
+
   const body = response.body;
 
   if (body.indexOf("serviceAreaBlock") > -1) {

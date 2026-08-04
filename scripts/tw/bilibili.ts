@@ -8,37 +8,60 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @tags: stream, video, anime
 // @priority: 30
 
-enum REGIONS {
-  HKMO = "HKMO",
-  TW = "TW",
-  // SEA = "SEA",
-  // Thailand = "Thailand",
-  // Indonesia = "Indonesia",
-}
+// 国际电话区号 -> ISO alpha-2 地区码（仅覆盖 bilibili 分区测试用到的地区）
+const CALLING_CODE_TO_ALPHA2: Record<string, string> = {
+  "852": "HK",
+  "853": "MO",
+  "886": "TW",
+  "66": "TH",
+  "62": "ID",
+  "84": "VN",
+  "60": "MY",
+  "65": "SG",
+  "63": "PH",
+  "673": "BN",
+  "855": "KH",
+  "856": "LA",
+  "95": "MM",
+  "670": "TL",
+};
 
-const REGION_URLs = {
-  HKMO: "https://api.bilibili.com/pgc/player/web/playurl?avid=473502608&cid=845838026&qn=0&type=&otype=json&ep_id=678506&fourk=1&fnver=0&fnval=16&module=bangumi",
+// 各地区对应的分区限定内容播放地址
+const REGION_TEST_URL: Record<string, string> = {
+  HK: "https://api.bilibili.com/pgc/player/web/playurl?avid=473502608&cid=845838026&qn=0&type=&otype=json&ep_id=678506&fourk=1&fnver=0&fnval=16&module=bangumi",
+  MO: "https://api.bilibili.com/pgc/player/web/playurl?avid=473502608&cid=845838026&qn=0&type=&otype=json&ep_id=678506&fourk=1&fnver=0&fnval=16&module=bangumi",
   TW: "https://api.bilibili.com/pgc/player/web/playurl?avid=50762638&cid=100279344&qn=0&type=&otype=json&ep_id=268176&fourk=1&fnver=0&fnval=16&module=bangumi",
-  // "SEA": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
-  // "Thailand": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=10077726",
-  // "Indonesia": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11130043",
-  // "Vietnam": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11405745"
-} as Record<REGIONS, string>;
+  TH: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=10077726",
+  ID: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11130043",
+  VN: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11405745",
+  MY: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  SG: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  PH: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  BN: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  KH: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  LA: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  MM: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+  TL: "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+};
 
-type RegionCheckResults = Record<REGIONS, boolean | null>;
+type ZoneResponse = {
+  code?: number;
+  data?: {
+    country_code?: number;
+  };
+};
 
-type ResponseBody = {
+type PlayUrlResponse = {
   code?: number;
   message?: string;
 };
 
 /**
- * Bilibili Test By URL
+ * 请求分区限定内容播放地址，判断是否可播放
  *
- * @param {string} url JSON API URL
- * @return {*}  {(null | boolean)} {null: Network Error, false: Not Available, true: Available}
+ * @return {*} true: 可播放, false: 不可播放, null: 网络错误
  */
-function bilibiliTest(url: string): null | boolean {
+function testPlayUrl(url: string): null | boolean {
   const response = fetch(url, {
     method: "GET",
     headers: {
@@ -49,43 +72,64 @@ function bilibiliTest(url: string): null | boolean {
   });
 
   if (!response) {
-    return null; // Network Error
+    return null;
+  }
+  if (response.statusCode === 412) {
+    return false;
   }
 
-  if (response.statusCode === 412) return false;
-
-  println(response.body); // Ensure 200 OK
-  const code = safeParse<ResponseBody>(response.body)?.code;
+  const code = safeParse<PlayUrlResponse>(response.body)?.code;
   if (code === 0) return true;
+  if (code === -10403 || code === 10004001 || code === 10003003) return false;
   return false;
 }
 
 function handler(): HandlerResult {
-  const results: RegionCheckResults = {
-    HKMO: null,
-    TW: null,
-  };
-  for (const regionCode in REGION_URLs) {
-    results[regionCode] = bilibiliTest(REGION_URLs[regionCode]);
+  const zoneResponse = fetch("https://api.bilibili.com/x/web-interface/zone", {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    retry: 3,
+    timeout: 15000,
+  });
+
+  if (!zoneResponse) {
+    return {
+      text: T_NA,
+      background: C_NA,
+    };
   }
-  if (results.HKMO === true && results.TW === true) {
-    return {
-      text: `${T_UNL}(台港澳)`,
-      background: C_UNL,
-    };
-  } else if (results.HKMO === true) {
-    return {
-      text: `${T_UNL}(港澳)`,
-      background: C_UNL,
-    };
-  } else if (results.TW === true) {
-    return {
-      text: `${T_UNL}(台湾)`,
-      background: C_UNL,
-    };
-  } else if (results.HKMO === false && results.TW === false) {
+
+  const zoneData = safeParse<ZoneResponse>(zoneResponse.body);
+  if (zoneData?.code !== 0) {
     return {
       text: T_FAIL,
+      background: C_FAIL,
+    };
+  }
+
+  const countryCode = String(get<number>(zoneData, "data.country_code", 0));
+  const region = CALLING_CODE_TO_ALPHA2[countryCode] || countryCode;
+
+  const testUrl = REGION_TEST_URL[region];
+  if (!testUrl) {
+    // 不在分区限定内容覆盖的地区列表内，说明该地区没有额外限制
+    return {
+      text: `${T_UNL}(${region})`,
+      background: C_UNL,
+    };
+  }
+
+  const playable = testPlayUrl(testUrl);
+  if (playable === true) {
+    return {
+      text: `${T_UNL}(${region})`,
+      background: C_UNL,
+    };
+  } else if (playable === false) {
+    return {
+      text: `${T_FAIL}(${region})`,
       background: C_FAIL,
     };
   } else {

@@ -1,5 +1,5 @@
-import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
-import { M_NETWORK, M_STATUS, T_FAIL, T_NA, T_UNL } from "@/consts/text";
+import { C_FAIL, C_UNL } from "@/consts/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
 // @name: Tving
@@ -69,23 +69,16 @@ function handler(): HandlerResult {
   const body = response.body;
   const data = safeParse<ResponseBody>(body);
 
-  if (data && data.body && data.body.result && data.body.result.code) {
-    const code = data.body.result.code;
-    if (code === "000") {
-      return {
-        text: T_UNL,
-        background: C_UNL,
-      };
-    } else {
-      return {
-        text: T_FAIL,
-        background: C_FAIL,
-      };
-    }
+  const code = get<string>(data, "body.result.code");
+  if (code === "000") {
+    return {
+      text: T_UNL,
+      background: C_UNL,
+    };
   } else {
     return {
-      text: T_NA,
-      background: C_NA,
+      text: T_FAIL,
+      background: C_FAIL,
     };
   }
 }

@@ -1,6 +1,7 @@
 import { C_FAIL, C_UNL, C_NA, C_UNK } from "@/consts/colors";
 import {
   M_NETWORK,
+  M_RATE_LIMIT,
   T_ALLOW,
   T_DENY,
   T_FAIL,
@@ -56,6 +57,13 @@ function handler() {
   if (statusCode === 403 && body.includes("blocked")) {
     return {
       text: T_FAIL,
+      background: C_FAIL,
+    };
+  }
+
+  if (statusCode === 429) {
+    return {
+      text: `${T_FAIL}(${M_RATE_LIMIT})`,
       background: C_FAIL,
     };
   }

@@ -1,4 +1,4 @@
-import { C_FAIL, C_UNK, C_UNL } from "@/consts/colors";
+import { C_FAIL, C_UNL } from "@/consts/colors";
 import { M_STATUS, M_NETWORK, M_PARSE, T_FAIL, T_UNL } from "@/consts/text";
 import { UA_WINDOWS } from "@/consts/ua";
 
@@ -40,30 +40,25 @@ function handler(): HandlerResult {
     }
 
     const resultCode = data.code;
-    if (!resultCode) {
+    if (resultCode === "100016") {
       return {
-        text: `${T_FAIL}(${M_STATUS})`,
-        background: C_UNK,
+        text: T_FAIL,
+        background: C_FAIL,
       };
     }
 
-    switch (resultCode) {
-      case "0":
-        return {
-          text: T_UNL,
-          background: C_UNL,
-        };
-      case "100016":
-        return {
-          text: T_FAIL,
-          background: C_FAIL,
-        };
-      default:
-        return {
-          text: `${T_FAIL}(${resultCode})`,
-          background: C_FAIL,
-        };
+    const isoCode = get<string>(data, "data.isoCode");
+    if (isoCode) {
+      return {
+        text: `${T_UNL}(${isoCode})`,
+        background: C_UNL,
+      };
     }
+
+    return {
+      text: `${T_FAIL}(${resultCode || M_STATUS})`,
+      background: C_FAIL,
+    };
   } else {
     return {
       text: `${T_FAIL}(${response.statusCode})`,

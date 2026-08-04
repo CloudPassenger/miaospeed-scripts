@@ -8,27 +8,74 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @tags: stream, video, live
 // @priority: 36
 
+interface DeviceIdResponse {
+  deviceId?: string;
+}
+
+interface RpcResponse {
+  result?: {
+    data?: {
+      content_id?: string;
+    };
+  };
+  error?: {
+    code?: number;
+    message?: string;
+  };
+}
+
 function handler(): HandlerResult {
-  const response = fetch("https://www.litv.tv/api/get-urls-no-auth", {
+  const deviceResponse = fetch("https://www.litv.tv/api/generate-device-id", {
     method: "POST",
-    body: JSON.stringify({
-      AssetId: "vod71211-000001M001_1500K",
-      MediaType: "vod",
-      puid: "d66267c2-9c52-4b32-91b4-3e482943fe7e",
-    }),
     headers: {
       "Content-Type": "application/json",
       Origin: "https://www.litv.tv",
-      Referer: "https://www.litv.tv/drama/watch/VOD00331042",
-      Priority: "u=1, i",
+      Referer: "https://www.litv.tv/",
       "User-Agent": UA_WINDOWS,
     },
-    cookies: {
-      PUID: "34eb9a17-8834-4f83-855c-69382fd656fa",
-      L_PUID: "34eb9a17-8834-4f83-855c-69382fd656fa",
-      "device-id": "f4d7faefc54f476bb2e7e27b7482469a",
+    retry: 3,
+    timeout: 15000,
+  });
+
+  if (!deviceResponse || deviceResponse.statusCode !== 200) {
+    return {
+      text: `${T_FAIL}(${M_NETWORK})`,
+      background: C_FAIL,
+    };
+  }
+
+  const deviceData = safeParse<DeviceIdResponse>(deviceResponse.body);
+  const deviceId = deviceData.deviceId || "";
+  if (!deviceId) {
+    return {
+      text: `${T_FAIL}(${M_NETWORK})`,
+      background: C_FAIL,
+    };
+  }
+
+  const payload = JSON.stringify({
+    jsonrpc: "2.0",
+    id: 0,
+    method: "CCCService.GetProgramInformation",
+    params: {
+      version: "2.0",
+      project_num: "LTWEB02",
+      device_id: deviceId,
+      swver: "LTWEB0210000WEB20190612185813",
+      content_id: "VOD00328856",
+      content_type: "drama",
     },
-    noRedir: false,
+  });
+
+  const response = fetch("https://proxy.svc.litv.tv/cdi/v2/rpc", {
+    method: "POST",
+    body: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "https://www.litv.tv",
+      Referer: "https://www.litv.tv/drama/watch/VOD00328856",
+      "User-Agent": UA_WINDOWS,
+    },
     retry: 3,
     timeout: 15000,
   });
@@ -40,19 +87,27 @@ function handler(): HandlerResult {
     };
   }
 
-  const body = response.body;
+  const data = safeParse<RpcResponse>(response.body);
 
-  if (body.indexOf("OutsideRegionError") > -1) {
+  if (data.error) {
     return {
       text: T_FAIL,
       background: C_FAIL,
     };
-  } else {
+  }
+
+  const contentId = get<string>(data, "result.data.content_id");
+  if (contentId) {
     return {
       text: T_UNL,
       background: C_UNL,
     };
   }
+
+  return {
+    text: T_FAIL,
+    background: C_FAIL,
+  };
 }
 
 export default handler;
