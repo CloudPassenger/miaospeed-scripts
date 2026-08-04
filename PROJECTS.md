@@ -73,7 +73,7 @@
 - [x] Project Sekai: Colorful Stage
 - [x] Rakuten TV
 - [x] Wowow
-- [ ] Watcha
+- [x] Watcha（实际为韩国服务，已归类至韩国分类中适配）
 - [x] TVer
 - [x] Lemino
 - [x] D Anime Store
