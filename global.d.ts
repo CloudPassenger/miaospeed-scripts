@@ -98,6 +98,13 @@ interface FetchParams {
    */
   timeout?: number;
   /**
+   * 自定义 TLS SNI，默认为空（使用请求 URL 的 host）
+   *
+   * @type {string}
+   * @memberof FetchParams
+   */
+  sni?: string;
+  /**
    * 附带的 HTTP 请求头，以键值对形式输入
    *
    * @type {Record<string, string>}
