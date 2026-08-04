@@ -5,7 +5,8 @@
       "es6"
     ],
     "target": "es6",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": [
         "./*"

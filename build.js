@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const rollup = require('rollup');
-const typescript = require('@rollup/plugin-typescript');
+const swc = require('@rollup/plugin-swc');
 const commonjs = require('@rollup/plugin-commonjs');
 const cleanup = require('rollup-plugin-cleanup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
@@ -19,6 +19,26 @@ function ensureDirExistence(dir) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
+}
+
+function resolvePathAliases() {
+  function resolveFile(filePath) {
+    const candidates = [filePath, `${filePath}.ts`, `${filePath}.js`, path.join(filePath, 'index.ts'), path.join(filePath, 'index.js')];
+    return candidates.find(candidate => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) || filePath;
+  }
+
+  return {
+    name: 'resolve-path-aliases',
+    resolveId(source) {
+      if (source === '@') {
+        return __dirname;
+      }
+      if (source.startsWith('@/')) {
+        return resolveFile(path.resolve(__dirname, source.slice(2)));
+      }
+      return null;
+    }
+  };
 }
 
 /**
@@ -86,9 +106,25 @@ async function processFiles() {
     const bundle = await rollup.rollup({
       input: inputPath,
       plugins: [
+        resolvePathAliases(),
         commonjs(),
-        typescript(),
-        nodeResolve(),
+        swc({
+          swc: {
+            jsc: {
+              target: 'es2015',
+              parser: {
+                syntax: 'typescript',
+                decorators: true
+              },
+              transform: {
+                decoratorMetadata: true,
+                legacyDecorator: true
+              },
+              loose: true
+            }
+          }
+        }),
+        nodeResolve({ extensions: ['.js', '.json', '.ts'] }),
         cleanup({
           comments: 'none',
           extensions: ['js', 'jsx', 'ts', 'tsx'],
