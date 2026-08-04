@@ -52,36 +52,36 @@
 
 ## 日本
 - [x] Abema
-- [ ] Niconico
-- [ ] music.jp
-- [ ] DMM
-- [ ] DMM TV
-- [ ] Telasa
-- [ ] Paravi
-- [ ] U-NEXT
-- [ ] Hulu JP
-- [ ] GYAO!
-- [ ] VideoMarket
-- [ ] FOD(Fuji TV)
-- [ ] Radiko
-- [ ] Karaoke@DAM
-- [ ] J:COM On Demand
-- [ ] Kancolle
-- [ ] Pretty Derby Japan
-- [ ] Konosuba Fantasic Days
-- [ ] Pricess Connnect! Re:Dive JP
-- [ ] Project Sekai: Colorful Stage
-- [ ] Rakuten TV
-- [ ] Wowow
+- [x] Niconico
+- [x] music.jp
+- [x] DMM
+- [x] DMM TV
+- [x] Telasa
+- [x] Paravi
+- [x] U-NEXT
+- [x] Hulu JP
+- [ ] GYAO!（服务已于 2023 年停运，无法适配）
+- [ ] VideoMarket（上游实现依赖硬编码且已过期的 Bearer Token/Cookie，暂不适配）
+- [x] FOD(Fuji TV)
+- [x] Radiko
+- [x] Karaoke@DAM
+- [x] J:COM On Demand
+- [x] Kancolle
+- [x] Pretty Derby Japan
+- [x] Konosuba Fantasic Days
+- [x] Pricess Connnect! Re:Dive JP
+- [x] Project Sekai: Colorful Stage
+- [x] Rakuten TV
+- [x] Wowow
 - [ ] Watcha
-- [ ] TVer
-- [ ] Lemino
-- [ ] D Anime Store
-- [ ] Mora
-- [ ] AnimeFesta
-- [ ] EroGameSpace
-- [ ] NHK+
-- [ ] Rakuten Magazine
+- [x] TVer
+- [x] Lemino
+- [x] D Anime Store
+- [ ] Mora（上游实现依赖多步 Cookie 会话流程，暂不适配）
+- [x] AnimeFesta
+- [x] EroGameSpace
+- [x] NHK+
+- [x] Rakuten Magazine
 
 ## 韩国
 - [x] Wavve
