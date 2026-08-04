@@ -132,8 +132,8 @@
 - [ ] MathsSpot Roblox
 
 ## 加拿大
-- [ ] Crave
-- [ ] CBC Gem
+- [x] Crave
+- [x] CBC Gem
 
 ## 南美
 - [ ] Claro Video
@@ -141,53 +141,58 @@
 - [ ] HBO Max Latino
 
 ## 欧洲
-- [ ] Rakuten TV EU
-- [ ] Setanta Sports
-- [ ] Sky Show Time
+- [x] Rakuten TV EU
+- [x] Setanta Sports
+- [x] Sky Show Time
 - [ ] HBO Max
 - [x] SonyLiv
-- [ ] KOCOWA+
+- [x] KOCOWA+
+- [x] TNT Sports
+- [x] Eurosport RO
+- [x] Viaplay
 
 ## 英国
 - [x] BBC iPlayer
-- [ ] Channel 4
-- [ ] Channel 5
-- [ ] Sky Go
-- [ ] ITVS
+- [x] Channel 4
+- [x] Channel 5
+- [x] Sky Go
+- [x] ITVX
 - [ ] Hotstar
 - [ ] MathsSpot Roblox
+- [x] Discovery+ UK
+- [x] BritBox UK
 
 ## 意大利
-- [ ] RaiPlay
+- [x] RaiPlay
 
 ## 法国&德国
-- [ ] Canal+
-- [ ] ZDF
-- [ ] Joyn
-- [ ] Molotov
-- [ ] Sky DE
-- [ ] France TV
+- [x] Canal+
+- [x] ZDF
+- [x] Joyn
+- [x] Molotov
+- [x] Sky DE
+- [x] France TV
 
 ## 荷兰
-- [ ] NPO Start Plus
-- [ ] Video Land
-- [ ] NLZIET
+- [x] NPO Start Plus
+- [x] Video Land
+- [x] NLZIET
 
 ## 西班牙
-- [ ] Movistar Plus+
+- [x] Movistar Plus+
 
 ## 罗马尼亚
-- [ ] Eurosport RO
+- [x] Eurosport RO
 
-## 捷克
-- [ ] Sky CH
+## 瑞士（原「捷克」标注有误，Sky CH 实际为瑞士站）
+- [x] Sky CH
 
 ## 俄罗斯
-- [ ] Amediateka
+- [x] Amediateka
 
 ## 非洲
-- [ ] Showmax
-- [ ] DSTV Now
+- [x] Showmax
+- [x] DSTV Now
 
 ## 东南亚
 - [ ] Bilibili 东南亚
