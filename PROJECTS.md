@@ -86,12 +86,13 @@
 ## 韩国
 - [x] Wavve
 - [x] Tving
-- [ ] Watcha
-- [ ] Coupang Play
-- [ ] SpotvNow
+- [x] Watcha
+- [x] Coupang Play
+- [x] SpotvNow
 - [x] NaverTV
-- [ ] Afreeca
+- [x] Afreeca / SOOP
 - [x] KBS
+- [x] PandaTV
 
 ## 美国
 
