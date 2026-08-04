@@ -208,26 +208,28 @@
 - [ ] TrueID
 
 ## 大洋洲
-- [ ] NBA TV
-- [ ] Acorn TV
-- [ ] BritBox
+- [x] NBA TV（美区脚本同源，跨区适用）
+- [x] Acorn TV（美区脚本同源，跨区适用）
+- [x] BritBox（美区脚本同源，跨区适用）
 - [ ] Paramount+
 - [x] SonyLiv
-- [ ] KOCOWA+
-- [ ] AMC+
+- [x] KOCOWA+（美区脚本同源，跨区适用）
+- [x] AMC+（美区脚本同源，跨区适用）
 
 ## 澳大利亚
-- [ ] Stan
-- [ ] Binge
+- [x] Stan
+- [x] Binge
 - [ ] Doc Play
-- [ ] 7Plus
-- [ ] Channel 9
-- [ ] 10 Play
-- [ ] ABC iView
+- [x] 7Plus
+- [x] Channel 9
+- [x] 10 Play
+- [x] ABC iView
 - [ ] Optus Sports
+- [x] Kayo Sports
+- [x] SBS on Demand
 
 ## 新西兰
-- [ ] Neon
-- [ ] 3Now
-- [ ] Maori TV
-- [ ] Sky Go NZ
+- [ ] Neon（上游实现依赖硬编码且已过期的 JWT，暂不适配）
+- [x] 3Now
+- [x] Maori TV
+- [x] Sky Go NZ
