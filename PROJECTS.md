@@ -195,17 +195,28 @@
 - [x] DSTV Now
 
 ## 东南亚
-- [ ] Bilibili 东南亚
+- [x] Bilibili 东南亚
 - [x] SonyLiv
-- [ ] HotStar
-- [ ] CatchPlay+
+- [x] HotStar
+- [x] CatchPlay+
 
 ## 新加坡
-- [ ] MeWatch
+- [x] MeWatch
 
 ## 泰国
-- [ ] AIS Play
-- [ ] TrueID
+- [x] AIS Play
+- [x] TrueID
+
+## 越南
+- [x] Galaxy Play
+- [ ] K+（上游实现依赖硬编码且已过期的 ssoToken，暂不适配）
+- [ ] TV360（上游实现依赖硬编码且已过期的登录 Token，暂不适配）
+
+## 印度
+- [x] Zee5
+- [x] JioCinema
+- [x] MX Player
+- [x] Tata Play
 
 ## 大洋洲
 - [x] NBA TV（美区脚本同源，跨区适用）
