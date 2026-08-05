@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      jshashes:
-        specifier: github:h2non/jshashes
-        version: https://codeload.github.com/h2non/jshashes/tar.gz/e5862909d615b9767d8a85c609a0585aba4bf476
     devDependencies:
       '@inquirer/prompts':
         specifier: ^8.5.2
@@ -680,11 +676,6 @@ packages:
     resolution: {integrity: sha512-JeDD0yiiSt80fXzAVa/crrS0JDPQljyBG/RpOtaSbyDq03VHa9szJWMaWOYU/bcTn412uMN2MxApXq8v79cUiQ==}
     engines: {node: ^10.14.2 || >=12.0.0}
 
-  jshashes@https://codeload.github.com/h2non/jshashes/tar.gz/e5862909d615b9767d8a85c609a0585aba4bf476:
-    resolution: {tarball: https://codeload.github.com/h2non/jshashes/tar.gz/e5862909d615b9767d8a85c609a0585aba4bf476}
-    version: 1.0.8
-    hasBin: true
-
   lru-cache@11.0.1:
     resolution: {integrity: sha512-CgeuL5uom6j/ZVrg7G/+1IXqRY8JXX4Hghfy5YE0EhoYQWvndP1kufu58cmZLNIDKnRhZrXfdS9urVWx98AipQ==}
     engines: {node: 20 || >=22}
@@ -1233,8 +1224,6 @@ snapshots:
       magic-string: 0.25.9
       perf-regexes: 1.0.1
       skip-regex: 1.0.2
-
-  jshashes@https://codeload.github.com/h2non/jshashes/tar.gz/e5862909d615b9767d8a85c609a0585aba4bf476: {}
 
   lru-cache@11.0.1: {}
 

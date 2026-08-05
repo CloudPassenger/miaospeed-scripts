@@ -1,8 +1,7 @@
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_TOKEN, T_FAIL, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
-
-import { SHA1 } from "jshashes";
+import { hmacSha1Base64 } from "@/lib/hmacSha1";
 
 // @id: navertv
 // @name: Naver TV
@@ -146,7 +145,7 @@ export interface QoeParams {
 
 function handler(): HandlerResult {
   const timestamp = Date.now();
-  const signature = new SHA1().b64_hmac(
+  const signature = hmacSha1Base64(
     "nbxvs5nwNG9QKEWK0ADjYA4JZoujF4gHcIwvoCxFTPAeamq5eemvt5IWAYXxrbYM",
     `https://apis.naver.com/now_web2/now_web_api/v1/clips/31030608/play-info${timestamp}`
   );
