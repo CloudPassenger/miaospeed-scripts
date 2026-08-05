@@ -1,0 +1,51 @@
+import { C_FAIL, C_NA, C_UNL } from "@/consts/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/consts/text";
+import { UA_WINDOWS } from "@/consts/ua";
+
+// @id: iqiyi
+// @name: 爱奇艺国际版
+// @description: 检测 iQiyi Global 在当前地区是否可用
+// @category: media
+// @regions: global
+// @tags: stream, video
+// @priority: 10
+
+function handler(): HandlerResult {
+  const response = fetch("https://www.iq.com", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 5000,
+  });
+
+  if (!response) {
+    return {
+      text: T_NA,
+      background: C_NA,
+    };
+  }
+
+  const clientIp = response.headers["x-custom-client-ip"] || "";
+  const parts = clientIp.split(":");
+  let region = parts.length >= 2 ? parts[parts.length - 1] : "";
+
+  if (!region) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
+    };
+  }
+
+  if (region === "ntw") {
+    region = "tw";
+  }
+
+  return {
+    text: `${T_UNL}(${region.toUpperCase()})`,
+    background: C_UNL,
+  };
+}
+
+export default handler;

@@ -1,28 +1,13 @@
 # 适配计划
 
-## 中国大陆
-- [x] 哔哩哔哩大陆限定内容（对比 clash-verge-rev media-unlock 与 oneclickvirt/UnlockTests 的
-  BilibiliMainland 后新增，用于回国/中转节点场景）
+## AI
 
-## 全球
+### 全球
 
-- [x] Netflix
-- [x] Disney+
-- [x] Youtube Premium
-- [x] Amazon Prime
-- [x] Dazn
-- [x] Spotify
-- [x] Tiktok
-- [x] Instagram Audio
-- [x] TVBAnywhere+
-- [x] Viu.com
-- [x] iQiYi Global
-- [x] Steam
 - [x] ChatGPT
+- [x] Claude
 - [x] Google Gemini
 - [x] Meta.AI
-- [x] Reddit
-- [x] Wikipedia
 - [x] Grok
 - [x] Perplexity AI
 - [x] Mistral AI
@@ -32,7 +17,54 @@
 - [x] DeepSeek
 - [x] Kimi
 
-## 香港
+### 美国
+
+- [x] Meta AI
+
+## Games
+
+### 全球
+
+- [x] Steam
+
+### 日本
+
+- [x] Kancolle
+- [x] Pretty Derby Japan
+- [x] Konosuba Fantasic Days
+- [x] Pricess Connnect! Re:Dive JP
+- [x] Project Sekai: Colorful Stage
+
+### 美国
+
+- [x] MathsSpot Roblox（欧洲区脚本同源，跨区适用）
+
+### 英国
+
+- [x] MathsSpot Roblox
+
+## Media
+
+### 中国大陆
+
+- [x] 哔哩哔哩大陆限定内容（对比 clash-verge-rev media-unlock 与 oneclickvirt/UnlockTests 的
+  BilibiliMainland 后新增，用于回国/中转节点场景）
+
+### 全球
+
+- [x] Netflix
+- [x] Disney+
+- [x] Youtube Premium
+- [x] Amazon Prime
+- [x] Dazn
+- [x] Spotify
+- [x] Instagram Audio
+- [x] TVBAnywhere+
+- [x] Viu.com
+- [x] iQiYi Global
+
+### 香港
+
 - [x] Now E
 - [x] ViuTV
 - [x] MyTVSuper
@@ -40,7 +72,8 @@
 - [x] SonyLiv
 - [x] Hoy TV / 香港開電視
 
-## 台湾
+### 台湾
+
 - [x] KKTV
 - [x] LiTV
 - [x] 4GTV
@@ -54,7 +87,8 @@
 - [x] friDay 影音
 - [x] Ofiii
 
-## 日本
+### 日本
+
 - [x] Abema
 - [x] Niconico
 - [x] music.jp
@@ -70,11 +104,6 @@
 - [x] Radiko
 - [x] Karaoke@DAM
 - [x] J:COM On Demand
-- [x] Kancolle
-- [x] Pretty Derby Japan
-- [x] Konosuba Fantasic Days
-- [x] Pricess Connnect! Re:Dive JP
-- [x] Project Sekai: Colorful Stage
 - [x] Rakuten TV
 - [x] Wowow
 - [x] Watcha（实际为韩国服务，已归类至韩国分类中适配）
@@ -87,7 +116,8 @@
 - [x] NHK+
 - [x] Rakuten Magazine
 
-## 韩国
+### 韩国
+
 - [x] Wavve
 - [x] Tving
 - [x] Watcha
@@ -98,7 +128,7 @@
 - [x] KBS
 - [x] PandaTV
 
-## 美国
+### 美国
 
 - [x] Shudder
 - [x] BritBox
@@ -107,7 +137,6 @@
 - [x] NBA TV
 - [x] Fubo TV
 - [x] Tubi TV
-- [x] Meta AI
 - [x] AMC+
 - [x] Viaplay
 - [x] FOX
@@ -133,18 +162,20 @@
 - [x] DirecTV Stream
 - [x] KOCOWA+
 - [x] Crackle
-- [x] MathsSpot Roblox（欧洲区脚本同源，跨区适用）
 
-## 加拿大
+### 加拿大
+
 - [x] Crave
 - [x] CBC Gem
 
-## 南美
+### 南美
+
 - [ ] Claro Video（上游无对应实现，暂不适配）
 - [x] DirecTV GO
 - [ ] HBO Max Latino（上游无对应实现，暂不适配）
 
-## 欧洲
+### 欧洲
+
 - [x] Rakuten TV EU
 - [x] Setanta Sports
 - [x] Sky Show Time
@@ -155,21 +186,23 @@
 - [x] Eurosport RO
 - [x] Viaplay
 
-## 英国
+### 英国
+
 - [x] BBC iPlayer
 - [x] Channel 4
 - [x] Channel 5
 - [x] Sky Go
 - [x] ITVX
 - [x] Hotstar（全球脚本同源，跨区适用）
-- [x] MathsSpot Roblox
 - [x] Discovery+ UK
 - [x] BritBox UK
 
-## 意大利
+### 意大利
+
 - [x] RaiPlay
 
-## 法国&德国
+### 法国&德国
+
 - [x] Canal+
 - [x] ZDF
 - [x] Joyn
@@ -177,52 +210,64 @@
 - [x] Sky DE
 - [x] France TV
 
-## 荷兰
+### 荷兰
+
 - [x] NPO Start Plus
 - [x] Video Land
 - [x] NLZIET
 
-## 西班牙
+### 西班牙
+
 - [x] Movistar Plus+
 
-## 罗马尼亚
+### 罗马尼亚
+
 - [x] Eurosport RO
 
-## 瑞士（原「捷克」标注有误，Sky CH 实际为瑞士站）
+### 瑞士（原「捷克」标注有误，Sky CH 实际为瑞士站）
+
 - [x] Sky CH
 
-## 俄罗斯
+### 俄罗斯
+
 - [x] Amediateka
 
-## 非洲
+### 非洲
+
 - [x] Showmax
 - [x] DSTV Now
 
-## 东南亚
+### 东南亚
+
 - [x] Bilibili 东南亚
 - [x] SonyLiv
 - [x] HotStar
 - [x] CatchPlay+
 
-## 新加坡
+### 新加坡
+
 - [x] MeWatch
 
-## 泰国
+### 泰国
+
 - [x] AIS Play
 - [x] TrueID
 
-## 越南
+### 越南
+
 - [x] Galaxy Play
 - [ ] K+（上游实现依赖硬编码且已过期的 ssoToken，暂不适配）
 - [ ] TV360（上游实现依赖硬编码且已过期的登录 Token，暂不适配）
 
-## 印度
+### 印度
+
 - [x] Zee5
 - [x] JioCinema
 - [x] MX Player
 - [x] Tata Play
 
-## 大洋洲
+### 大洋洲
+
 - [x] NBA TV（美区脚本同源，跨区适用）
 - [x] Acorn TV（美区脚本同源，跨区适用）
 - [x] BritBox（美区脚本同源，跨区适用）
@@ -231,7 +276,8 @@
 - [x] KOCOWA+（美区脚本同源，跨区适用）
 - [x] AMC+（美区脚本同源，跨区适用）
 
-## 澳大利亚
+### 澳大利亚
+
 - [x] Stan
 - [x] Binge
 - [x] Doc Play
@@ -243,8 +289,29 @@
 - [x] Kayo Sports
 - [x] SBS on Demand
 
-## 新西兰
+### 新西兰
+
 - [ ] Neon（上游实现依赖硬编码且已过期的 JWT，暂不适配）
 - [x] 3Now
 - [x] Maori TV
 - [x] Sky Go NZ
+
+## Network
+
+- [x] 回墙出口
+- [x] IP质量(v4)
+- [x] IP质量(v6)
+
+## Search
+
+### 全球
+
+- [x] Bing
+- [x] Wikipedia
+
+## Social
+
+### 全球
+
+- [x] Tiktok
+- [x] Reddit

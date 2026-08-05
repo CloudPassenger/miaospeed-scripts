@@ -2,28 +2,82 @@
 
 [![Build and Release](https://github.com/CloudPassenger/miaospeed-scripts/actions/workflows/build.yml/badge.svg)](https://github.com/CloudPassenger/miaospeed-scripts/actions/workflows/build.yml)
 
-一些用于 [miaospeed](https://github.com/AirportR/miaospeed) 的网络测试脚本
+一些用于 [MiaoSpeed](https://github.com/AirportR/miaospeed) 的网络与区域可用性检测脚本。
 
-主要用于检测区域限制内容/特定地区流媒体的可用性
-
-在 [Koipy 测试机器人](https://koipy.gitbook.io/koipy) 中测试通过
+项目覆盖媒体、AI、游戏、网络诊断、搜索和社交平台，并在 [Koipy 测试机器人](https://koipy.gitbook.io/koipy) 中测试通过。
 
 ## 使用方法
 
 1. 参考 [Koipy 文档](https://koipy.gitbook.io/koipy/kuai-su-kai-shi) 部署可用的测试机器人及 Miaospeed 后端
-2. 下载本项目最新 release 中的 scripts.zip，将压缩包解压至 Koipy 服务端的 `resources/scripts` 文件夹中
-3. 修改 [Koipy 配置](https://koipy.gitbook.io/koipy/pei-zhi-mu-ban)，启用你想要使用的检测脚本，或参考 release 中的 `koipy-config.yaml` 快速配置
+2. 下载最新 Release 中的 `scripts.zip`，将压缩包解压至 Koipy 服务端的 `resources/scripts` 文件夹
+3. 修改 [Koipy 配置](https://koipy.gitbook.io/koipy/pei-zhi-mu-ban)，启用需要的检测脚本；Release 中的 `koipy-config.yaml` 是 `scriptConfig` 与 `rules` 配置片段，需要合并到完整配置中
 4. 重启 Koipy 服务端，进行检测
+
+`scripts.zip`、`index.json` 和 `koipy-config.yaml` 应使用同一版本。从旧架构升级时，请先备份自定义脚本，并使用空的 `resources/scripts` 目录，或清理旧版地区目录与 `tools/`，避免旧脚本继续被自定义配置引用。新架构不保留旧版 `resources/scripts/<region>/...` 路径；自定义配置需要改用新的业务分类路径，例如：
+
+```text
+resources/scripts/ai/chatgpt.js
+resources/scripts/media/global/netflix.js
+resources/scripts/network/ipquality.js
+```
 
 ## 开发文档
 
-想要开发/适配新的脚本？本项目使用 TypeScript 进行开发，你可以 Fork 并克隆本项目
+本项目使用 TypeScript 开发，每个检测脚本都是独立入口。`scripts/` 按业务分类组织，只有媒体脚本保留地区子目录：
 
-运行 `pnpm install` 安装依赖，再执行 `pnpm run new` 根据交互式界面创建新的脚本
+```text
+scripts/
+├── ai/
+├── games/
+├── media/
+│   └── <region>/
+├── network/
+├── search/
+└── social/
+```
 
-本项目预先定义了一些共享常量，你可以在 `const` 文件夹下找到它们
+- `ai`、`games`、`network`、`search`、`social` 下的脚本保持扁平，路径为 `scripts/<category>/<service>.ts`
+- 媒体脚本使用 `scripts/media/<region>/<service>.ts`
+- `media/<region>` 表示主要目标市场；脚本完整适用范围仍以 `@regions` 为准，且目录地区必须包含在 `@regions` 中
+- 原 `tools/` 下的 IP 与网络诊断脚本统一归入 `network/`
+- `stream` 继续作为 tag 使用，不作为目录或 category
+- 目录名、文件名和 `@id` 使用 lowercase kebab-case；已有品牌连写名称无需强行拆词，但不得使用下划线或空格
 
-脚本开发完成后，运行 `pnpm run build` 将脚本编译为 JavaScript 文件，在项目根目录下的 `dist` 文件夹中即可找到编译完成的脚本
+每个脚本必须在文件顶部声明 `@id`、`@name`、`@category`、`@regions` 和 `@tags`：
+
+```ts
+// @id: netflix
+// @name: Netflix
+// @description: 检测 Netflix 的解锁状态
+// @category: media
+// @regions: global
+// @tags: stream, video
+// @priority: 10
+```
+
+`@category` 只能是 `ai`、`games`、`media`、`network`、`search`、`social`。`@id` 必须全仓库唯一且不依赖文件路径；`@name` 作为 Koipy 脚本注册与规则引用名称，也必须全仓库唯一。移动或重命名脚本时，不应随意修改稳定 ID。同一服务存在多个独立实现时可使用主要市场后缀，例如 `britbox-us` 和 `britbox-uk`。
+
+首次引入稳定 ID 时，`netflix_cdn`、`ipquality_v6` 分别规范化为 `netflix-cdn`、`ipquality-v6`；`rakutentv`、`britbox`、`discoveryplus` 的多地区实现增加了 `-eu`、`-jp`、`-uk` 或 `-us` 后缀。依赖旧 `index.json` ID 的外部工具需要同步更新。
+
+Fork 并克隆项目后，运行 `pnpm install` 安装依赖，再执行 `pnpm run new`，按交互提示选择 category、regions，以及媒体脚本的主要市场，并填写脚本 ID 和文件名。
+
+共享常量位于 `consts/`，通用工具函数位于 `utils/`。
+
+脚本开发完成后，运行 `pnpm run build`。构建会先校验全部元数据、ID 唯一性、category 与目录的一致性，再将每个脚本编译为单个 JavaScript 文件：
+
+```text
+dist/
+├── ai/
+├── games/
+├── media/<region>/
+├── network/
+├── search/
+├── social/
+├── index.json
+└── koipy-config.yaml
+```
+
+源码相对路径会映射到 `dist/`，例如 `scripts/media/jp/radiko.ts` 构建为 `dist/media/jp/radiko.js`。Release 中的 `scripts.zip` 包含六个业务分类目录，不包含 `index.json` 和 `koipy-config.yaml`；后两者作为独立 Release 资产发布。
 
 ## 适配进度
 

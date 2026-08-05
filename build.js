@@ -12,6 +12,8 @@ const distDir = path.resolve(__dirname, 'dist');
 
 const YAML = require('yaml');
 
+const KNOWN_CATEGORIES = ['ai', 'games', 'media', 'network', 'search', 'social'];
+
 /**
  * 已知的 @tags 白名单
  * 新增标签前请先在此登记，避免拼写不一致（如 tool/tools）导致下方分组规则静默失效
@@ -53,10 +55,29 @@ RULE_GROUPS.forEach(({ type, key }) => {
 });
 
 /**
- * 校验脚本元数据，防止 @tags / @regions 拼写错误导致分组规则静默失效
+ * 校验脚本元数据和目录结构
  */
-function validateMetadata(metadata, filePath) {
+function validateMetadata(metadata, relativePath) {
   const errors = [];
+  if (!metadata.id) {
+    errors.push('缺少必填的 @id');
+  } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.id)) {
+    errors.push(`id "${metadata.id}" 必须使用 lowercase kebab-case`);
+  }
+  if (!metadata.category) {
+    errors.push('缺少必填的 @category');
+  } else if (!KNOWN_CATEGORIES.includes(metadata.category)) {
+    errors.push(`未知的 category "${metadata.category}"，必须是 ${KNOWN_CATEGORIES.join(', ')} 之一`);
+  }
+  if (!metadata.name) {
+    errors.push('缺少必填的 @name');
+  }
+  if (!metadata.regions || metadata.regions.length === 0) {
+    errors.push('缺少必填的 @regions');
+  }
+  if (!metadata.tags || metadata.tags.length === 0) {
+    errors.push('缺少必填的 @tags');
+  }
   (metadata.tags || []).forEach((tag) => {
     if (!KNOWN_TAGS.includes(tag)) {
       errors.push(`未知的 tag "${tag}"，请检查拼写或将其加入 KNOWN_TAGS`);
@@ -67,9 +88,25 @@ function validateMetadata(metadata, filePath) {
       errors.push(`未知的 region "${region}"，请检查拼写或将其加入 KNOWN_REGIONS`);
     }
   });
-  if (errors.length > 0) {
-    throw new Error(`${filePath}:\n  ${errors.join('\n  ')}`);
+
+  const pathParts = relativePath.split('/');
+  const fileName = pathParts[pathParts.length - 1].replace(/\.ts$/, '');
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fileName)) {
+    errors.push(`文件名 "${fileName}" 必须使用 lowercase kebab-case`);
   }
+  if (metadata.category === 'media') {
+    if (pathParts.length !== 3 || pathParts[0] !== 'media') {
+      errors.push('media 分类脚本必须位于 scripts/media/<region>/<file>.ts');
+    } else if (!(metadata.regions || []).includes(pathParts[1])) {
+      errors.push(`目录地区 "${pathParts[1]}" 必须存在于 @regions`);
+    }
+  } else if (KNOWN_CATEGORIES.includes(metadata.category)) {
+    if (pathParts.length !== 2 || pathParts[0] !== metadata.category) {
+      errors.push(`${metadata.category} 分类脚本必须位于 scripts/${metadata.category}/<file>.ts`);
+    }
+  }
+
+  return errors;
 }
 
 /**
@@ -125,7 +162,7 @@ function getAllFiles(dir, ext, fileList = []) {
  * 解析元数据
  *
  * @param {*} content 文件内容
- * @return {*} { name: string, description: string, regions: string[], tags: string[], priority: number }
+ * @return {*} { id: string, category: string, name: string, description: string, regions: string[], tags: string[], priority: number }
  */
 function parseMetadata(content) {
   const lines = content.split('\n');
@@ -148,18 +185,58 @@ function parseMetadata(content) {
   return metadata;
 }
 
+function preflightFiles(files) {
+  const scripts = [];
+  const ids = new Map();
+  const names = new Map();
+  const errors = [];
+
+  files.forEach((inputPath) => {
+    const content = fs.readFileSync(inputPath, 'utf-8');
+    const metadata = parseMetadata(content);
+    const relativePath = path.posix.join(...path.relative(srcDir, inputPath).split(path.sep));
+
+    validateMetadata(metadata, relativePath).forEach((error) => {
+      errors.push(`${relativePath}: ${error}`);
+    });
+
+    if (metadata.id) {
+      const existingPath = ids.get(metadata.id);
+      if (existingPath) {
+        errors.push(`${relativePath}: id "${metadata.id}" 与 ${existingPath} 重复`);
+      } else {
+        ids.set(metadata.id, relativePath);
+      }
+    }
+
+    if (metadata.name) {
+      const existingPath = names.get(metadata.name);
+      if (existingPath) {
+        errors.push(`${relativePath}: name "${metadata.name}" 与 ${existingPath} 重复`);
+      } else {
+        names.set(metadata.name, relativePath);
+      }
+    }
+
+    scripts.push({ inputPath, metadata, relativePath });
+  });
+
+  if (errors.length > 0) {
+    throw new Error(`脚本预检失败：\n  ${errors.join('\n  ')}`);
+  }
+
+  return scripts;
+}
+
 async function processFiles() {
   const files = getAllFiles(srcDir, '.ts');
+  const scripts = preflightFiles(files);
 
-  console.log(`👷‍♂️ Building ${files.length} scripts...`);
+  console.log(`👷‍♂️ 正在构建 ${scripts.length} 个脚本...`);
 
   const metadataArray = [];
 
-  for (const inputPath of files) {
-    const content = fs.readFileSync(inputPath, 'utf-8');
-    const metadata = parseMetadata(content);
-    validateMetadata(metadata, path.relative(srcDir, inputPath));
-    const relativePath = path.relative(srcDir, inputPath);
+  for (const { inputPath, metadata, relativePath } of scripts) {
     const outputPath = path.join(distDir, relativePath.replace('.ts', '.js'));
 
     ensureDirExistence(path.dirname(outputPath));
@@ -206,9 +283,11 @@ async function processFiles() {
 
     const code = output[0].code;
 
-    if (metadata.name || metadata.author || metadata.description || metadata.regions || metadata.tags) {
-      // console.log(`📝 Adding metadata to ${outputPath}`);
+    if (metadata.id || metadata.category || metadata.name || metadata.author || metadata.description || metadata.regions || metadata.tags) {
+      // console.log(`📝 正在向 ${outputPath} 添加元数据`);
       const metadataCode = [
+        metadata.id ? `// @id: ${metadata.id}` : null,
+        metadata.category ? `// @category: ${metadata.category}` : null,
         metadata.name ? `// @name: ${metadata.name}` : null,
         metadata.author ? `// @author: ${metadata.author}` : null,
         metadata.description ? `// @description: ${metadata.description}` : null,
@@ -223,12 +302,12 @@ async function processFiles() {
     }
 
     metadataArray.push({
-      id: path.basename(inputPath, '.ts'),
-      path: path.posix.join(...relativePath.split(path.sep)).replace('.ts', '.js'),
-      ...metadata
+      ...metadata,
+      id: metadata.id,
+      path: relativePath.replace('.ts', '.js')
     });
 
-    console.log(`✨ Built ${outputPath}`);
+    console.log(`✨ 已构建 ${outputPath}`);
   }
 
   // 按照 priority 排序，值越小排名越前
@@ -245,11 +324,11 @@ async function processFiles() {
   });
 
 
-  console.log('📝 Writing index.json...');
+  console.log('📝 正在写入 index.json...');
   const indexJsonContent = JSON.stringify(metadataArray, null, 2);
   fs.writeFileSync(path.join(distDir, 'index.json'), indexJsonContent);
 
-  // Metadata Array to yaml
+  // 将元数据数组转换为 YAML
   const koipyConfig = {
     scriptConfig: {
       scripts: metadataArray.map((item, index) => {
@@ -280,10 +359,10 @@ async function processFiles() {
   const koipyYamlContent = YAML.stringify(koipyConfig);
 
   // 写入 koipy.yaml
-  console.log('📝 Writing config.yaml for Koipy...');
+  console.log('📝 正在写入 Koipy 配置文件...');
   fs.writeFileSync(path.join(distDir, 'koipy-config.yaml'), koipyYamlContent);
 
-  console.log('📦 All scripts built successfully.');
+  console.log('📦 所有脚本构建成功。');
 }
 
 processFiles();

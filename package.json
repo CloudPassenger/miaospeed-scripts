@@ -1,7 +1,7 @@
 {
   "name": "miaospeed-scripts",
   "version": "1.0.0",
-  "description": "Media Unlock Checking Scripts for MiaoSpeed",
+  "description": "Regional Availability and Network Checking Scripts for MiaoSpeed",
   "scripts": {
     "new": "node template.js",
     "build": "rimraf dist && tsc --noEmit && node build.js"
