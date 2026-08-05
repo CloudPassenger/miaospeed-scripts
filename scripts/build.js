@@ -3,8 +3,8 @@ const path = require('path');
 
 const rollup = require('rollup');
 const swc = require('@rollup/plugin-swc');
+const { minify } = require('@swc/core');
 const commonjs = require('@rollup/plugin-commonjs');
-const cleanup = require('rollup-plugin-cleanup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 const rootDir = path.resolve(__dirname, '..');
@@ -15,6 +15,12 @@ const distDir = path.join(rootDir, 'dist');
 const YAML = require('yaml');
 
 const KNOWN_CATEGORIES = ['ai', 'games', 'media', 'network', 'search', 'social'];
+const LICENSE_HEADER = [
+  '/*!',
+  ' * Copyright (C) 2026 CloudPassenger',
+  ' * SPDX-License-Identifier: AGPL-3.0-only',
+  ' */',
+].join('\n');
 
 /**
  * 已知的 @tags 白名单
@@ -187,6 +193,21 @@ function parseMetadata(content) {
   return metadata;
 }
 
+function createFileHeader(metadata) {
+  const metadataHeader = [
+    metadata.id ? `// @id: ${metadata.id}` : null,
+    metadata.category ? `// @category: ${metadata.category}` : null,
+    metadata.name ? `// @name: ${metadata.name}` : null,
+    metadata.author ? `// @author: ${metadata.author}` : null,
+    metadata.description ? `// @description: ${metadata.description}` : null,
+    metadata.regions && metadata.regions.length > 0 ? `// @regions: ${metadata.regions.join(', ')}` : null,
+    metadata.tags && metadata.tags.length > 0 ? `// @tags: ${metadata.tags.join(', ')}` : null,
+    metadata.priority !== undefined ? `// @priority: ${metadata.priority}` : null,
+  ].filter((line) => line !== null);
+
+  return [...metadataHeader, LICENSE_HEADER].join('\n');
+}
+
 function preflightFiles(files) {
   const scripts = [];
   const ids = new Map();
@@ -264,43 +285,43 @@ async function processFiles() {
             }
           }
         }),
-        nodeResolve({ extensions: ['.js', '.json', '.ts'] }),
-        cleanup({
-          comments: 'none',
-          extensions: ['js', 'jsx', 'ts', 'tsx'],
-          maxEmptyLines: 0,
-          sourceMap: false,
-          lineEndings: 'unix'
-        })
-      ],
-      output: {
-        compact: true,
+        nodeResolve({ extensions: ['.js', '.json', '.ts'] })
+      ]
+    });
+
+    try {
+      const { output } = await bundle.generate({
+        strict: false,
+        format: 'cjs'
+      });
+
+      const { code } = await minify(output[0].code, {
+        compress: {
+          top_retain: ['handler'],
+        },
+        mangle: {
+          topLevel: true,
+          reserved: ['handler'],
+        },
+        ecma: 2015,
+        module: false,
+        toplevel: true,
+        format: {
+          comments: false,
+        },
+      });
+      const fileHeader = createFileHeader(metadata);
+
+      if (!/\bfunction handler\s*\(/.test(code)) {
+        throw new Error(`${relativePath}: 压缩后未保留全局 handler 函数`);
       }
-    });
+      if (!/\bmodule\.exports\s*=\s*handler\b/.test(code)) {
+        throw new Error(`${relativePath}: 压缩后未保留 handler 导出`);
+      }
 
-    const { output } = await bundle.generate({
-      strict: false,
-      format: 'cjs'
-    });
-
-    const code = output[0].code;
-
-    if (metadata.id || metadata.category || metadata.name || metadata.author || metadata.description || metadata.regions || metadata.tags) {
-      // console.log(`📝 正在向 ${outputPath} 添加元数据`);
-      const metadataCode = [
-        metadata.id ? `// @id: ${metadata.id}` : null,
-        metadata.category ? `// @category: ${metadata.category}` : null,
-        metadata.name ? `// @name: ${metadata.name}` : null,
-        metadata.author ? `// @author: ${metadata.author}` : null,
-        metadata.description ? `// @description: ${metadata.description}` : null,
-        metadata.regions && metadata.regions.length > 0 ? `// @regions: ${metadata.regions.join(', ')}` : null,
-        metadata.tags && metadata.tags.length > 0 ? `// @tags: ${metadata.tags.join(', ')}` : null
-      ].filter((x) => x !== null).join('\n');
-
-      const modifiedCode = `${metadataCode}\n\n${code}`;
-      fs.writeFileSync(outputPath, modifiedCode);
-    } else {
-      fs.writeFileSync(outputPath, code);
+      fs.writeFileSync(outputPath, `${fileHeader}\n${code}\n`);
+    } finally {
+      await bundle.close();
     }
 
     metadataArray.push({

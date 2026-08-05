@@ -71,7 +71,7 @@ Fork 并克隆项目后，运行 `pnpm install` 安装依赖，再执行 `pnpm r
 
 共享常量位于 `src/lib/constants/`，通用模块位于 `src/lib/`，goja 全局类型声明位于 `src/types/`。
 
-脚本开发完成后，运行 `pnpm run build`。构建会先校验全部元数据、ID 唯一性、category 与目录的一致性，再将每个脚本编译为单个 JavaScript 文件：
+脚本开发完成后，运行 `pnpm run build`。构建会先校验全部元数据、ID 唯一性、category 与目录的一致性，再将每个脚本编译并压缩为单个 JavaScript 文件。产物会保留元数据文件头，并附带 AGPL-3.0-only 版权与 SPDX 声明：
 
 ```text
 dist/
