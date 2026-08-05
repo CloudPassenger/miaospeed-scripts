@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: hotstar
 // @name: Hotstar
 // @description: 检测 Disney+ Hotstar 在当前地区是否可用
@@ -10,18 +6,19 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video
 // @priority: 40
 
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/HotStar.go
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://api.hotstar.com/o/v1/page/1557?offset=0&size=20&tao=0&tas=20",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://api.hotstar.com/o/v1/page/1557?offset=0&size=20&tao=0&tas=20", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

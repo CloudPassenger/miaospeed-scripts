@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: iqiyi
 // @name: 爱奇艺国际版
 // @description: 检测 iQiyi Global 在当前地区是否可用
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 10
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.iq.com", {

@@ -1,12 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import {
-  M_NETWORK,
-  M_RESPONSE,
-  T_FAIL,
-  T_UNK,
-} from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: ipforwall
 // @name: 回墙出口
 // @description: 检测访问中国大陆服务时使用的出口 IP
@@ -14,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: ip, tool
 // @priority: 5
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, M_RESPONSE, T_FAIL, T_UNK } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 interface ResponseBody {
   code?: number;

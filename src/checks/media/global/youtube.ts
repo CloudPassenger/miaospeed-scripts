@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: youtube
 // @name: YouTube
 // @description: 检测 YouTube Premium 在当前地区是否可用
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 4
+
+import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // 参考 clash-verge-rev 的 media-unlock crate 实现：
 // https://github.com/clash-verge-rev/clash-verge-rev/blob/main/crates/clash-verge-media-unlock/src/youtube.rs
@@ -21,7 +21,7 @@ const REGION_PATTERNS = [
 ];
 
 function extractRegion(body: string): string {
-  for (var i = 0; i < REGION_PATTERNS.length; i++) {
+  for (let i = 0; i < REGION_PATTERNS.length; i++) {
     const match = body.match(REGION_PATTERNS[i]);
     if (match && match[1]) {
       return match[1].toUpperCase();

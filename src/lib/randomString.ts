@@ -9,7 +9,7 @@ const randomString = (length?: number) => {
   var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
     a = t.length,
     n = "";
-  for (var i = 0; i < length; i++) n += t.charAt(Math.floor(Math.random() * a));
+  for (let i = 0; i < length; i++) n += t.charAt(Math.floor(Math.random() * a));
   return n;
 };
 

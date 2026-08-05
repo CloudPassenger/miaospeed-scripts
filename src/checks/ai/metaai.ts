@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: metaai
 // @name: Meta.AI
 // @description: 检测 Meta AI 在当前地区是否可用
@@ -9,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: ai
 // @priority: 9
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 const headers = {
   Accept: "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",

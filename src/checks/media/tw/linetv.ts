@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: linetv
 // @name: Line TV
 // @description: 检测 Line TV 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: tw
 // @tags: stream, video, live
 // @priority: 35
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.linetv.tw/drama/11829/eps/1", {

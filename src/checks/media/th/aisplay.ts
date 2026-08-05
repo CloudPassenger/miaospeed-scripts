@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: aisplay
 // @name: AIS Play
 // @description: 检测 AIS Play 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: th
 // @tags: stream, video, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/th/AISPlay.go
 function handler(): HandlerResult {
@@ -20,7 +20,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!response) {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: itvx
 // @name: ITVX
 // @description: 检测 ITVX(ITV Hub) 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: uk
 // @tags: stream, video, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/uk/ITVX.go
 function handler(): HandlerResult {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: channel10
 // @name: 10 Play
 // @description: 检测 10 Play (Channel 10) 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: au
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/au/Channel10.go
 type Channel10GeoResponse = {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: tntsports
 // @name: TNT Sports
 // @description: 检测 TNT Sports 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: eu
 // @tags: stream, live
 // @priority: 45
+
+import { C_FAIL, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/TNTSports.go
 function handler(): HandlerResult {
@@ -35,10 +35,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    response.statusCode === 307 &&
-    response.headers["location"] === "https://www.tntsports.co.uk/geoblocking.shtml"
-  ) {
+  if (response.statusCode === 307 && response.headers["location"] === "https://www.tntsports.co.uk/geoblocking.shtml") {
     return {
       text: T_FAIL,
       background: C_FAIL,

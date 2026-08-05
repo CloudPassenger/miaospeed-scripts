@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: telasa
 // @name: Telasa
 // @description: 检测 Telasa (KDDI) 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: jp
 // @tags: stream, video
 // @priority: 41
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Telasa.go
 type TelasaResponse = {
@@ -19,17 +19,14 @@ type TelasaResponse = {
 };
 
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://api-videopass-anon.kddi-video.com/v1/playback/system_status",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-        "X-Device-ID": "d36f8e6b-e344-4f5e-9a55-90aeb3403799",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://api-videopass-anon.kddi-video.com/v1/playback/system_status", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+      "X-Device-ID": "d36f8e6b-e344-4f5e-9a55-90aeb3403799",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

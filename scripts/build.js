@@ -6,6 +6,14 @@ const swc = require('@rollup/plugin-swc');
 const { minify } = require('@swc/core');
 const commonjs = require('@rollup/plugin-commonjs');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const {
+  KNOWN_CATEGORIES,
+  KNOWN_REGIONS,
+  KNOWN_TAGS,
+  formatMetadataHeader,
+  parseMetadataHeader,
+  validateMetadata,
+} = require('./metadata');
 
 const rootDir = path.resolve(__dirname, '..');
 const sourceDir = path.join(rootDir, 'src');
@@ -14,32 +22,12 @@ const distDir = path.join(rootDir, 'dist');
 
 const YAML = require('yaml');
 
-const KNOWN_CATEGORIES = ['ai', 'games', 'media', 'network', 'search', 'social'];
 const LICENSE_HEADER = [
   '/*!',
   ' * Copyright (C) 2026 CloudPassenger',
   ' * SPDX-License-Identifier: AGPL-3.0-only',
   ' */',
 ].join('\n');
-
-/**
- * 已知的 @tags 白名单
- * 新增标签前请先在此登记，避免拼写不一致（如 tool/tools）导致下方分组规则静默失效
- */
-const KNOWN_TAGS = [
-  'stream', 'video', 'live', 'movie', 'anime', 'ott', 'music', 'radio',
-  'game', 'ai', 'social', 'search-engine', 'scholar',
-  'tool', 'ip', 'quality',
-];
-
-/**
- * 已知的 @regions 白名单
- */
-const KNOWN_REGIONS = [
-  'global', 'africa', 'au', 'ca', 'ch', 'cn', 'de', 'es', 'eu', 'fr',
-  'hk', 'in', 'it', 'jp', 'kr', 'latam', 'nl', 'nz', 'ru', 'sg', 'th',
-  'tw', 'uk', 'us', 'vn',
-];
 
 /**
  * 规则分组配置：同一脚本可以同时出现在多个分组中（例如某脚本既属于 stream 也属于 tool）
@@ -61,61 +49,6 @@ RULE_GROUPS.forEach(({ type, key }) => {
     throw new Error(`RULE_GROUPS 中的 "${key}" 不在 KNOWN_${type === 'tag' ? 'TAGS' : 'REGIONS'} 白名单内`);
   }
 });
-
-/**
- * 校验脚本元数据和目录结构
- */
-function validateMetadata(metadata, relativePath) {
-  const errors = [];
-  if (!metadata.id) {
-    errors.push('缺少必填的 @id');
-  } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.id)) {
-    errors.push(`id "${metadata.id}" 必须使用 lowercase kebab-case`);
-  }
-  if (!metadata.category) {
-    errors.push('缺少必填的 @category');
-  } else if (!KNOWN_CATEGORIES.includes(metadata.category)) {
-    errors.push(`未知的 category "${metadata.category}"，必须是 ${KNOWN_CATEGORIES.join(', ')} 之一`);
-  }
-  if (!metadata.name) {
-    errors.push('缺少必填的 @name');
-  }
-  if (!metadata.regions || metadata.regions.length === 0) {
-    errors.push('缺少必填的 @regions');
-  }
-  if (!metadata.tags || metadata.tags.length === 0) {
-    errors.push('缺少必填的 @tags');
-  }
-  (metadata.tags || []).forEach((tag) => {
-    if (!KNOWN_TAGS.includes(tag)) {
-      errors.push(`未知的 tag "${tag}"，请检查拼写或将其加入 KNOWN_TAGS`);
-    }
-  });
-  (metadata.regions || []).forEach((region) => {
-    if (!KNOWN_REGIONS.includes(region)) {
-      errors.push(`未知的 region "${region}"，请检查拼写或将其加入 KNOWN_REGIONS`);
-    }
-  });
-
-  const pathParts = relativePath.split('/');
-  const fileName = pathParts[pathParts.length - 1].replace(/\.ts$/, '');
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fileName)) {
-    errors.push(`文件名 "${fileName}" 必须使用 lowercase kebab-case`);
-  }
-  if (metadata.category === 'media') {
-    if (pathParts.length !== 3 || pathParts[0] !== 'media') {
-      errors.push('media 分类脚本必须位于 src/checks/media/<region>/<file>.ts');
-    } else if (!(metadata.regions || []).includes(pathParts[1])) {
-      errors.push(`目录地区 "${pathParts[1]}" 必须存在于 @regions`);
-    }
-  } else if (KNOWN_CATEGORIES.includes(metadata.category)) {
-    if (pathParts.length !== 2 || pathParts[0] !== metadata.category) {
-      errors.push(`${metadata.category} 分类脚本必须位于 src/checks/${metadata.category}/<file>.ts`);
-    }
-  }
-
-  return errors;
-}
 
 /**
  * 确保文件夹存在
@@ -166,46 +99,8 @@ function getAllFiles(dir, ext, fileList = []) {
   return fileList;
 }
 
-/**
- * 解析元数据
- *
- * @param {*} content 文件内容
- * @return {*} { id: string, category: string, name: string, description: string, regions: string[], tags: string[], priority: number }
- */
-function parseMetadata(content) {
-  const lines = content.split('\n');
-  const metadata = {};
-  lines.forEach(line => {
-    const match = line.match(/\/\/\s*@(\w+):\s*(.+)/);
-    if (match) {
-      const key = match[1];
-      const value = match[2].trim();
-      if (key === 'regions' || key === 'tags') {
-        metadata[key] = value.split(',').map(item => item.trim());
-      } else if (key === 'priority') {
-        metadata[key] = parseInt(value);
-      }
-      else {
-        metadata[key] = value;
-      }
-    }
-  });
-  return metadata;
-}
-
 function createFileHeader(metadata) {
-  const metadataHeader = [
-    metadata.id ? `// @id: ${metadata.id}` : null,
-    metadata.category ? `// @category: ${metadata.category}` : null,
-    metadata.name ? `// @name: ${metadata.name}` : null,
-    metadata.author ? `// @author: ${metadata.author}` : null,
-    metadata.description ? `// @description: ${metadata.description}` : null,
-    metadata.regions && metadata.regions.length > 0 ? `// @regions: ${metadata.regions.join(', ')}` : null,
-    metadata.tags && metadata.tags.length > 0 ? `// @tags: ${metadata.tags.join(', ')}` : null,
-    metadata.priority !== undefined ? `// @priority: ${metadata.priority}` : null,
-  ].filter((line) => line !== null);
-
-  return [...metadataHeader, LICENSE_HEADER].join('\n');
+  return `${formatMetadataHeader(metadata)}\n${LICENSE_HEADER}`;
 }
 
 function preflightFiles(files) {
@@ -216,8 +111,12 @@ function preflightFiles(files) {
 
   files.forEach((inputPath) => {
     const content = fs.readFileSync(inputPath, 'utf-8');
-    const metadata = parseMetadata(content);
     const relativePath = path.posix.join(...path.relative(entryDir, inputPath).split(path.sep));
+    const { metadata, errors: metadataErrors } = parseMetadataHeader(content);
+
+    metadataErrors.forEach((error) => {
+      errors.push(`${relativePath}: ${error}`);
+    });
 
     validateMetadata(metadata, relativePath).forEach((error) => {
       errors.push(`${relativePath}: ${error}`);
@@ -335,11 +234,11 @@ async function processFiles() {
 
   // 按照 priority 排序，值越小排名越前
   metadataArray.sort((a, b) => {
-    if (a.priority && b.priority) {
+    if (a.priority !== undefined && b.priority !== undefined) {
       return a.priority - b.priority;
-    } else if (a.priority) {
+    } else if (a.priority !== undefined) {
       return -1;
-    } else if (b.priority) {
+    } else if (b.priority !== undefined) {
       return 1;
     } else {
       return 0;

@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: rakutenmagazine
 // @name: 楽天マガジン
 // @description: 检测 楽天マガジン(Rakuten Magazine) 解锁状态
@@ -10,18 +6,19 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/RakutenMagazine.go
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://data-cloudauthoring.magazine.rakuten.co.jp/rem_repository/////////.key",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://data-cloudauthoring.magazine.rakuten.co.jp/rem_repository/////////.key", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
-import { T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: netflix
 // @name: Netflix
 // @description: 检测 Netflix 可用性
@@ -9,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 1
+
+import { C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
+import { T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 const T_ORIGINAL_ONLY = "仅自制";
 
@@ -35,7 +35,7 @@ function extractRegionFromPage(body: string): string {
     /"geo"\s*:\s*\{[^}]*"country"\s*:\s*"([A-Z]{2})"/,
     /data-country\s*=\s*"([A-Z]{2})"/,
   ];
-  for (var i = 0; i < patterns.length; i++) {
+  for (let i = 0; i < patterns.length; i++) {
     const match = body.match(patterns[i]);
     if (match && match[1]) {
       return match[1];

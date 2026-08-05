@@ -3,9 +3,9 @@
  * @param {Record<string,string>[]} cookieArray Cookie output from golang engine
  * @returns Cookies
  */
-function parseCookies(cookieArray: Record<string, string | Date | Boolean>[]) {
+function parseCookies(cookieArray: Record<string, string | Date | boolean>[]) {
   var cookieMap = {};
-  cookieArray.forEach(function (cookieObj) {
+  cookieArray.forEach((cookieObj) => {
     var key = cookieObj.Name as string;
     var value = cookieObj.Value as string;
     cookieMap[key] = value;

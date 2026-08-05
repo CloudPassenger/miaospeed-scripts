@@ -1,6 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-
 // @id: pcrjp
 // @name: 公主连结Re:Dive
 // @description: 检测 プリンセスコネクト!Re:Dive 日服解锁状态
@@ -8,6 +5,9 @@ import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 // @regions: jp
 // @tags: game
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/PCRJP.go
 const UA_DALVIK = "Dalvik/2.1.0 (Linux; U; Android 14; M2006J10C Build/RP1A.200720.011)";

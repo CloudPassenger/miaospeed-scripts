@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: karaokedam
 // @name: Karaoke@DAM
 // @description: 检测 Karaoke@DAM 解锁状态
@@ -10,18 +6,19 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, music
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Karaoke.go
 function handler(): HandlerResult {
-  const response = fetch(
-    "http://cds1.clubdam.com/vhls-cds1/site/xbox/sample_1.mp4.m3u8",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("http://cds1.clubdam.com/vhls-cds1/site/xbox/sample_1.mp4.m3u8", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

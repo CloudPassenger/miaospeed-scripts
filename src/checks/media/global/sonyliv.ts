@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: sonyliv
 // @name: SonyLIV
 // @description: 检测 SonyLIV 在当前地区是否可用
@@ -10,11 +6,56 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video
 // @priority: 40
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/SonyLiv.go
 const SONYLIV_SUPPORT_COUNTRY = [
-  "AE", "AF", "AT", "AU", "BD", "BE", "BH", "BT", "CA", "CH", "CN", "DE", "DK", "ES", "FI",
-  "FR", "GB", "GR", "HK", "ID", "IE", "IN", "IT", "KW", "LK", "MO", "MV", "MY", "NL", "NO",
-  "NP", "NZ", "OM", "PH", "PK", "PL", "PT", "QA", "SA", "SE", "SG", "TH", "TW", "US",
+  "AE",
+  "AF",
+  "AT",
+  "AU",
+  "BD",
+  "BE",
+  "BH",
+  "BT",
+  "CA",
+  "CH",
+  "CN",
+  "DE",
+  "DK",
+  "ES",
+  "FI",
+  "FR",
+  "GB",
+  "GR",
+  "HK",
+  "ID",
+  "IE",
+  "IN",
+  "IT",
+  "KW",
+  "LK",
+  "MO",
+  "MV",
+  "MY",
+  "NL",
+  "NO",
+  "NP",
+  "NZ",
+  "OM",
+  "PH",
+  "PK",
+  "PL",
+  "PT",
+  "QA",
+  "SA",
+  "SE",
+  "SG",
+  "TH",
+  "TW",
+  "US",
 ];
 
 function handler(): HandlerResult {

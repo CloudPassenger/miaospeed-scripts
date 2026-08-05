@@ -25,12 +25,11 @@ declare function println(message?: any, ...optionalParams: any[]): void;
 
 /**
  * 内置函数，用于对象解析
- * @param data 
- * @param path 
- * @param defaults 
+ * @param data
+ * @param path
+ * @param defaults
  */
 declare function get<T = any>(data: any, path: string, defaults?: T): T;
-
 
 /**
  * 脚本运行的返回值
@@ -120,7 +119,7 @@ interface FetchParams {
   cookies?: Record<string, string>;
 }
 
-interface Cookie extends Record<string, string | Date | Boolean> {
+interface Cookie extends Record<string, string | Date | boolean> {
   name: string;
   value: string;
   path?: string;
@@ -150,10 +149,7 @@ declare function fetch(url: string, params?: FetchParams): FetchResponse;
  *
  * @interface HandlerFunction
  */
-interface HandlerFunction {
-  (): HandlerResult;
-}
-
+type HandlerFunction = () => HandlerResult;
 
 /**
  * 脚本元数据

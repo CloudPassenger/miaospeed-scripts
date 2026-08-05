@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: amcplus
 // @name: AMC+
 // @description: 检测 AMC+ 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: us
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/AMCPlus.go
 function handler(): HandlerResult {
@@ -52,9 +52,7 @@ function handler(): HandlerResult {
           background: C_FAIL,
         };
       }
-      const match = location1.match(
-        /^https:\/\/www\.amcplus\.com\/countries\/(\w{2})/
-      );
+      const match = location1.match(/^https:\/\/www\.amcplus\.com\/countries\/(\w{2})/);
       const region = match ? match[1] : "";
       return {
         text: `${T_UNL}${region ? `(${region})` : ""}`,

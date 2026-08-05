@@ -1,7 +1,3 @@
-import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/lib/constants/colors";
-import { T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
-import { UA_ANDROID } from "@/lib/constants/ua";
-
 // @id: tvbanywhere
 // @name: TVB Anywhere
 // @description: 检测 TVB Anywhere 解锁状态
@@ -9,6 +5,10 @@ import { UA_ANDROID } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 8
+
+import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/lib/constants/colors";
+import { T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
+import { UA_ANDROID } from "@/lib/constants/ua";
 
 type ResponseBody = {
   ip: string;
@@ -20,24 +20,21 @@ type ResponseBody = {
 };
 
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://uapisfm.tvbanywhere.com.sg/geoip/check/platform/android",
-    {
-      headers: {
-        "User-Agent": UA_ANDROID,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const response = fetch("https://uapisfm.tvbanywhere.com.sg/geoip/check/platform/android", {
+    headers: {
+      "User-Agent": UA_ANDROID,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
 
   if (!response) {
     return {
       text: "N/A",
       background: C_NA,
     };
-  } else if (response.statusCode == 200) {
+  } else if (response.statusCode === 200) {
     const body = response.body;
     const result = safeParse<ResponseBody>(body);
 

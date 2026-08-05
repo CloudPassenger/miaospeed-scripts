@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, M_RATE_LIMIT, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: instagramaudio
 // @name: Instagram Audio
 // @description: 检测 Instagram Licensed Audio 是否可用
@@ -9,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, music
 // @priority: 9
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, M_RATE_LIMIT, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const url = "https://www.instagram.com/api/graphql";

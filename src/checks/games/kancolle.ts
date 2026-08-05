@@ -1,6 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-
 // @id: kancolle
 // @name: 舰队Collection
 // @description: 检测 舰队Collection(艦これ) 解锁状态
@@ -8,6 +5,9 @@ import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 // @regions: jp
 // @tags: stream, game
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Kancolle.go
 const UA_DALVIK = "Dalvik/2.1.0 (Linux; U; Android 14; M2006J10C Build/RP1A.200720.011)";

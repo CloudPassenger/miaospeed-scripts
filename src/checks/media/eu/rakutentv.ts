@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: rakutentv-eu
 // @name: Rakuten TV 欧洲
 // @description: 检测 Rakuten TV 欧洲站解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: eu
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/RakutenTV.go
 function handler(): HandlerResult {
@@ -41,7 +41,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!response) {

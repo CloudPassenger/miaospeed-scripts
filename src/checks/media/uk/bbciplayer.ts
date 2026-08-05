@@ -1,6 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-
 // @id: bbciplayer
 // @name: BBC iPlayer
 // @description: 检测 BBC iPlayer 解锁状态
@@ -8,6 +5,9 @@ import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
 // @regions: uk
 // @tags: stream, video, live
 // @priority: 50
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
 
 function handler(): HandlerResult {
   const response = fetch(
@@ -21,7 +21,7 @@ function handler(): HandlerResult {
       noRedir: false,
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!response) {
@@ -52,6 +52,6 @@ function handler(): HandlerResult {
       background: C_FAIL,
     };
   }
-};
+}
 
 export default handler;

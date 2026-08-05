@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: nlziet
 // @name: NLZIET
 // @description: 检测 NLZIET 解锁状态
@@ -10,10 +6,39 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/NLZIET.go
 const NLZIET_SUPPORT_COUNTRY = [
-  "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES", "FR", "HR", "IT", "CY",
-  "LV", "LT", "LU", "HU", "MT", "NL", "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE",
+  "BE",
+  "BG",
+  "CZ",
+  "DK",
+  "DE",
+  "EE",
+  "IE",
+  "EL",
+  "ES",
+  "FR",
+  "HR",
+  "IT",
+  "CY",
+  "LV",
+  "LT",
+  "LU",
+  "HU",
+  "MT",
+  "NL",
+  "AT",
+  "PL",
+  "PT",
+  "RO",
+  "SI",
+  "SK",
+  "FI",
+  "SE",
 ];
 
 function handler(): HandlerResult {

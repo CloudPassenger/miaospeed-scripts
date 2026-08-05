@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: npostartplus
 // @name: NPO Start Plus
 // @description: 检测 NPO Start Plus 解锁状态
@@ -10,23 +6,24 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video, live
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/NPOStartPlus.go
 type NPOTokenResponse = {
   token: string;
 };
 
 function handler(): HandlerResult {
-  const tokenResp = fetch(
-    "https://npo.nl/start/api/domain/player-token?productId=LI_NL1_4188102",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-        Referer: "https://npo.nl/start/live?channel=NPO1",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const tokenResp = fetch("https://npo.nl/start/api/domain/player-token?productId=LI_NL1_4188102", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+      Referer: "https://npo.nl/start/live?channel=NPO1",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!tokenResp) {
     return {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: bilibili
 // @name: 哔哩国际
 // @description: 检测 Bilibili 国际版 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: tw, hk
 // @tags: stream, video, anime
 // @priority: 30
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // 国际电话区号 -> ISO alpha-2 地区码（仅覆盖 bilibili 分区测试用到的地区）
 const CALLING_CODE_TO_ALPHA2: Record<string, string> = {

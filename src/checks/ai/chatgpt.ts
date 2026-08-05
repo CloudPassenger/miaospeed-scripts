@@ -1,7 +1,3 @@
-import { C_NA, C_FAIL, C_UNL, C_UNK } from "@/lib/constants/colors";
-import { M_NETWORK, M_PARSE, M_RATE_LIMIT, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: chatgpt
 // @name: ChatGPT
 // @description: 检测 ChatGPT 在当前地区是否可用
@@ -9,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: ai
 // @priority: 6
+
+import { C_NA, C_FAIL, C_UNL, C_UNK } from "@/lib/constants/colors";
+import { M_NETWORK, M_PARSE, M_RATE_LIMIT, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 /** 支持使用 ChatGPT 的国家 */
 const GPT_SUPPORT_COUNTRY = [
@@ -178,7 +178,7 @@ const GPT_SUPPORT_COUNTRY = [
 const T_APP_ONLY = "仅App";
 const T_WEB_ONLY = "仅网页";
 
-function handler() {
+function handler(): HandlerResult {
   // 获取地区信息
   const traceResponse = fetch("https://chatgpt.com/cdn-cgi/trace", {
     method: "GET",
@@ -216,30 +216,27 @@ function handler() {
     };
   }
 
-  const mainResponse = fetch(
-    "https://api.openai.com/compliance/cookie_requirements",
-    {
-      headers: {
-        authority: "api.openai.com",
-        accept: "*/*",
-        "accept-language": "zh-CN,zh;q=0.9",
-        authorization: "Bearer null",
-        "response-type": "application/json",
-        origin: "https://platform.openai.com",
-        referer: "https://platform.openai.com/",
-        "sec-ch-ua": SEC_CH_UA,
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-        "user-agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const mainResponse = fetch("https://api.openai.com/compliance/cookie_requirements", {
+    headers: {
+      authority: "api.openai.com",
+      accept: "*/*",
+      "accept-language": "zh-CN,zh;q=0.9",
+      authorization: "Bearer null",
+      "response-type": "application/json",
+      origin: "https://platform.openai.com",
+      referer: "https://platform.openai.com/",
+      "sec-ch-ua": SEC_CH_UA,
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": '"Windows"',
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "user-agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 5000,
+  });
   const appResponse = fetch("https://ios.chat.openai.com/", {
     headers: {
       authority: "ios.chat.openai.com",

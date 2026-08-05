@@ -1,8 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, M_TOKEN, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-import { hmacSha1Base64 } from "@/lib/hmacSha1";
-
 // @id: navertv
 // @name: Naver TV
 // @description: 检测 Naver TV 的解锁状态
@@ -10,6 +5,11 @@ import { hmacSha1Base64 } from "@/lib/hmacSha1";
 // @regions: kr
 // @tags: stream, ott
 // @priority: 50
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, M_TOKEN, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+import { hmacSha1Base64 } from "@/lib/hmacSha1";
 
 /** Type */
 export interface ResponseBody {
@@ -147,14 +147,14 @@ function handler(): HandlerResult {
   const timestamp = Date.now();
   const signature = hmacSha1Base64(
     "nbxvs5nwNG9QKEWK0ADjYA4JZoujF4gHcIwvoCxFTPAeamq5eemvt5IWAYXxrbYM",
-    `https://apis.naver.com/now_web2/now_web_api/v1/clips/31030608/play-info${timestamp}`
+    `https://apis.naver.com/now_web2/now_web_api/v1/clips/31030608/play-info${timestamp}`,
   );
 
   println("[Naver TV] timestamp: " + timestamp);
   println("[Naver TV] signature: " + signature);
 
   const requestUrl = `https://apis.naver.com/now_web2/now_web_api/v1/clips/31030608/play-info?msgpad=${timestamp}&md=${encodeURIComponent(
-    signature
+    signature,
   )}`;
 
   println("[Naver TV] requestUrl: " + requestUrl);

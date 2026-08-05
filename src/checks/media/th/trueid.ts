@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: trueid
 // @name: TrueID
 // @description: 检测 TrueID TV 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: th
 // @tags: stream, video, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/th/TrueID.go
 function handler(): HandlerResult {
@@ -40,19 +40,16 @@ function handler(): HandlerResult {
   }
   const authKey = authUser.slice(10);
 
-  const resp2 = fetch(
-    `https://tv.trueid.net/api/stream/checkedPlay?channelId=${channelId}&lang=en&country=th`,
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-        Authorization: `${authUser}:${authKey}`,
-        Accept: "application/json, text/plain, */*",
-        Referer: "https://tv.trueid.net/th-en/live/thairathtv-hd",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const resp2 = fetch(`https://tv.trueid.net/api/stream/checkedPlay?channelId=${channelId}&lang=en&country=th`, {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+      Authorization: `${authUser}:${authKey}`,
+      Accept: "application/json, text/plain, */*",
+      Referer: "https://tv.trueid.net/th-en/live/thairathtv-hd",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!resp2) {
     return {
@@ -64,11 +61,7 @@ function handler(): HandlerResult {
   const billboardMatch = resp2.body.match(/"billboardType":"([^"]*)"/);
   const billboardType = billboardMatch ? billboardMatch[1] : "";
 
-  if (
-    billboardType === "GEO_BLOCK" ||
-    resp2.body.indexOf("Access denied") > -1 ||
-    resp1.statusCode === 401
-  ) {
+  if (billboardType === "GEO_BLOCK" || resp2.body.indexOf("Access denied") > -1 || resp1.statusCode === 401) {
     return {
       text: T_FAIL,
       background: C_FAIL,

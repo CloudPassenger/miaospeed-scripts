@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: skygonz
 // @name: Sky Go NZ
 // @description: 检测 Sky Go 新西兰站解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: nz
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/nz/SkyGO.go
 function handler(): HandlerResult {
@@ -35,7 +35,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!resp2) {

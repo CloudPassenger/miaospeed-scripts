@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: discoveryplus-us
 // @name: Discovery+
 // @description: 检测 Discovery+ 美国站解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: us
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DiscoveryPlus.go
 // 采用动态获取 token 的方式，避免依赖硬编码且易过期的 Cookie
@@ -37,7 +37,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!tokenResp) {

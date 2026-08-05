@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: niconico
 // @name: Niconico
 // @description: 检测 Niconico 动画/直播 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: jp
 // @tags: stream, video, anime
 // @priority: 41
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/NicoNico.go
 function handler(): HandlerResult {

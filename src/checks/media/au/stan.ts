@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: stan
 // @name: Stan
 // @description: 检测 Stan 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: au
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/au/Stan.go
 function handler(): HandlerResult {
@@ -30,11 +30,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    response.body.indexOf("Access Denied") > -1 ||
-    response.statusCode === 404 ||
-    response.statusCode === 451
-  ) {
+  if (response.body.indexOf("Access Denied") > -1 || response.statusCode === 404 || response.statusCode === 451) {
     return {
       text: T_FAIL,
       background: C_FAIL,

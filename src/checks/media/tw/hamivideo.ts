@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, M_NETWORK, M_PARSE, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: hamivideo
 // @name: Hami Video
 // @description: 检测 Hami Video 解锁状态
@@ -10,6 +6,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video, live
 // @priority: 33
 
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, M_NETWORK, M_PARSE, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 type ResponseBody = {
   LogSN: string;
   code: string;
@@ -17,18 +17,15 @@ type ResponseBody = {
 };
 
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://hamivideo.hinet.net/api/play.do?id=OTT_VOD_0000249064&freeProduct=1",
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const response = fetch("https://hamivideo.hinet.net/api/play.do?id=OTT_VOD_0000249064&freeProduct=1", {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
 
   if (!response || response.statusCode !== 200) {
     return {

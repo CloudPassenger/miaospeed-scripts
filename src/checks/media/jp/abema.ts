@@ -1,14 +1,3 @@
-import { C_FAIL, C_UNL, C_NA, C_WARN } from "@/lib/constants/colors";
-import {
-  M_IP_BLOCK,
-  M_NETWORK,
-  M_RESPONSE,
-  T_FAIL,
-  T_OVERSEAS,
-  T_UNL,
-} from "@/lib/constants/text";
-import { UA_ANDROID } from "@/lib/constants/ua";
-
 // @id: abema
 // @name: Abema
 // @description: 检测 Abema TV 网络电视解锁状态
@@ -16,6 +5,10 @@ import { UA_ANDROID } from "@/lib/constants/ua";
 // @regions: jp
 // @tags: stream, video, live
 // @priority: 40
+
+import { C_FAIL, C_UNL, C_NA, C_WARN } from "@/lib/constants/colors";
+import { M_IP_BLOCK, M_NETWORK, M_RESPONSE, T_FAIL, T_OVERSEAS, T_UNL } from "@/lib/constants/text";
+import { UA_ANDROID } from "@/lib/constants/ua";
 
 type ResponseBody = {
   isoCountryCode?: string;
@@ -63,11 +56,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    !data.isoCountryCode &&
-    (content.indexOf("blocked_location") > -1 ||
-      content.indexOf("anonymous_ip") > -1)
-  ) {
+  if (!data.isoCountryCode && (content.indexOf("blocked_location") > -1 || content.indexOf("anonymous_ip") > -1)) {
     return {
       text: T_FAIL,
       background: C_FAIL,

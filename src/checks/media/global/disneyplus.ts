@@ -1,7 +1,3 @@
-import { C_NA, C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_IP_BLOCK, M_RATE_LIMIT, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: disneyplus
 // @name: Disney+
 // @description: 检测 Disney+ 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 3
+
+import { C_NA, C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_IP_BLOCK, M_RATE_LIMIT, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // 参考:
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DisneyPlus.go
@@ -39,27 +39,23 @@ function regionFromMainPage(): string {
 function handler(): HandlerResult {
   try {
     // First request
-    const deviceResponse = fetch(
-      "https://disney.api.edge.bamgrid.com/devices",
-      {
-        method: "POST",
-        headers: {
-          authorization:
-            "Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
-          "content-type": "application/json; charset=UTF-8",
-          "user-agent": UA_WINDOWS,
-        },
-        body: JSON.stringify({
-          deviceFamily: "browser",
-          applicationRuntime: "chrome",
-          deviceProfile: "windows",
-          attributes: {},
-        }),
-        noRedir: true,
-        retry: 3,
-        timeout: 5000,
-      }
-    );
+    const deviceResponse = fetch("https://disney.api.edge.bamgrid.com/devices", {
+      method: "POST",
+      headers: {
+        authorization: "Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+        "content-type": "application/json; charset=UTF-8",
+        "user-agent": UA_WINDOWS,
+      },
+      body: JSON.stringify({
+        deviceFamily: "browser",
+        applicationRuntime: "chrome",
+        deviceProfile: "windows",
+        attributes: {},
+      }),
+      noRedir: true,
+      retry: 3,
+      timeout: 5000,
+    });
 
     if (!deviceResponse) {
       return {
@@ -67,10 +63,7 @@ function handler(): HandlerResult {
         background: C_NA,
       };
     }
-    if (
-      deviceResponse.statusCode === 403 ||
-      deviceResponse.body.includes("403 ERROR")
-    ) {
+    if (deviceResponse.statusCode === 403 || deviceResponse.body.includes("403 ERROR")) {
       return {
         text: `${T_FAIL}(${M_IP_BLOCK})`,
         background: C_FAIL,
@@ -97,8 +90,7 @@ function handler(): HandlerResult {
     const tokenResponse = fetch("https://disney.api.edge.bamgrid.com/token", {
       method: "POST",
       headers: {
-        authorization:
-          "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+        authorization: "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
         "user-agent": UA_WINDOWS,
         "content-type": "application/x-www-form-urlencoded",
       },
@@ -108,11 +100,7 @@ function handler(): HandlerResult {
       body: assertionCookie,
     });
 
-    if (
-      !tokenResponse ||
-      tokenResponse.statusCode === 403 ||
-      tokenResponse.body.includes("forbidden-location")
-    ) {
+    if (!tokenResponse || tokenResponse.statusCode === 403 || tokenResponse.body.includes("forbidden-location")) {
       return {
         text: `${T_FAIL}(${M_IP_BLOCK})`,
         background: C_FAIL,
@@ -135,21 +123,17 @@ function handler(): HandlerResult {
     }
     // Third request (graph)
     const payload = gql.replace("ILOVEDISNEY", refreshToken);
-    const graphResponse = fetch(
-      "https://disney.api.edge.bamgrid.com/graph/v1/device/graphql",
-      {
-        method: "POST",
-        headers: {
-          "User-Agent": UA_WINDOWS,
-          Authorization:
-            "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
-        },
-        body: payload,
-        noRedir: true,
-        retry: 3,
-        timeout: 5000,
-      }
-    );
+    const graphResponse = fetch("https://disney.api.edge.bamgrid.com/graph/v1/device/graphql", {
+      method: "POST",
+      headers: {
+        "User-Agent": UA_WINDOWS,
+        Authorization: "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+      },
+      body: payload,
+      noRedir: true,
+      retry: 3,
+      timeout: 5000,
+    });
     if (!graphResponse) {
       return {
         text: T_NA,
@@ -161,9 +145,7 @@ function handler(): HandlerResult {
     // 不依赖具体 JSON 嵌套路径，避免因响应结构调整导致误判
     const countryMatch = graphResponse.body.match(/"countryCode"\s*:\s*"([^"]+)/);
     const region = countryMatch ? countryMatch[1].toUpperCase() : "";
-    const supportedMatch = graphResponse.body.match(
-      /"inSupportedLocation"\s*:\s*(false|true)/
-    );
+    const supportedMatch = graphResponse.body.match(/"inSupportedLocation"\s*:\s*(false|true)/);
     const inSupportedLocation = supportedMatch ? supportedMatch[1] === "true" : null;
 
     // GraphQL 响应异常（无 region 信息）时，回退尝试从主页 HTML 中提取地区
@@ -197,8 +179,7 @@ function handler(): HandlerResult {
       timeout: 5000,
     });
     const finalUrl = previewResponse ? previewResponse.url || "" : "";
-    const isUnavailable =
-      finalUrl.includes("preview") || finalUrl.includes("unavailable");
+    const isUnavailable = finalUrl.includes("preview") || finalUrl.includes("unavailable");
 
     if (isUnavailable) {
       return {

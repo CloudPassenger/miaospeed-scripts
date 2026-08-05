@@ -1,6 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-
 // @id: hbomax
 // @name: HBO Max
 // @description: 检测 HBO Max(Max) 解锁状态
@@ -8,6 +5,9 @@ import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 // @regions: us
 // @tags: stream, video
 // @priority: 40
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Max.go
 const HEADERS = {
@@ -34,7 +34,7 @@ function handler(): HandlerResult {
       headers: HEADERS,
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!tokenResp) {
@@ -54,16 +54,13 @@ function handler(): HandlerResult {
     };
   }
 
-  const bootstrapResp = fetch(
-    "https://default.any-any.prd.api.max.com/session-context/headwaiter/v1/bootstrap",
-    {
-      method: "POST",
-      body: "{}",
-      headers: { ...HEADERS, Cookie: `st=${token}`, "Content-Type": "application/json" },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const bootstrapResp = fetch("https://default.any-any.prd.api.max.com/session-context/headwaiter/v1/bootstrap", {
+    method: "POST",
+    body: "{}",
+    headers: { ...HEADERS, Cookie: `st=${token}`, "Content-Type": "application/json" },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!bootstrapResp) {
     return {
@@ -85,14 +82,11 @@ function handler(): HandlerResult {
     };
   }
 
-  const meResp = fetch(
-    `https://default.${tenant}-${homeMarket}.${env}.${domain}/users/me`,
-    {
-      headers: { ...HEADERS, Cookie: `st=${token}` },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const meResp = fetch(`https://default.${tenant}-${homeMarket}.${env}.${domain}/users/me`, {
+    headers: { ...HEADERS, Cookie: `st=${token}` },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!meResp) {
     return {

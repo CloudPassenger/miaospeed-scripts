@@ -1,8 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-import { parseCookies } from "@/lib";
-
 // @id: steam
 // @name: Steam 货币
 // @description: 检测 Steam 货币
@@ -10,6 +5,11 @@ import { parseCookies } from "@/lib";
 // @regions: global
 // @tags: game
 // @priority: 12
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+import { parseCookies } from "@/lib";
 
 function handler(): HandlerResult {
   const steamResponse = fetch("https://store.steampowered.com", {

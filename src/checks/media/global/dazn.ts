@@ -1,14 +1,3 @@
-import { C_FAIL, C_UNL, C_NA } from "@/lib/constants/colors";
-import {
-  M_NETWORK,
-  M_RESPONSE,
-  T_FAIL,
-  T_NA,
-  T_UNK,
-  T_UNL,
-} from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: dazn
 // @name: Dazn
 // @description: 检测 Dazn 在当前地区是否可用
@@ -16,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 4
+
+import { C_FAIL, C_UNL, C_NA } from "@/lib/constants/colors";
+import { M_NETWORK, M_RESPONSE, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch("https://startup.core.indazn.com/misl/v5/Startup", {

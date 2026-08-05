@@ -2,23 +2,17 @@ const Mustache = require('mustache');
 const fs = require('fs');
 const path = require('path');
 const { input, number, select } = require('@inquirer/prompts');
+const {
+  ID_PATTERN,
+  KNOWN_CATEGORIES,
+  KNOWN_REGIONS,
+  KNOWN_TAGS,
+  parseMetadataHeader,
+} = require('./metadata');
 
 const rootDir = path.resolve(__dirname, '..');
 const checksDir = path.join(rootDir, 'src', 'checks');
 const template = fs.readFileSync(path.resolve(__dirname, 'templates/fetch.ts.mustache'), 'utf8');
-const KNOWN_CATEGORIES = ['ai', 'games', 'media', 'network', 'search', 'social'];
-const KNOWN_REGIONS = [
-  'global', 'africa', 'au', 'ca', 'ch', 'cn', 'de', 'es', 'eu', 'fr',
-  'hk', 'in', 'it', 'jp', 'kr', 'latam', 'nl', 'nz', 'ru', 'sg', 'th',
-  'tw', 'uk', 'us', 'vn',
-];
-const KNOWN_TAGS = [
-  'stream', 'video', 'live', 'movie', 'anime', 'ott', 'music', 'radio',
-  'game', 'ai', 'social', 'search-engine', 'scholar',
-  'tool', 'ip', 'quality',
-];
-const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
 function ensureDirExistence(file) {
   const dir = path.dirname(file);
   if (!fs.existsSync(dir)) {
@@ -45,9 +39,9 @@ function getExistingIds() {
   const ids = new Map();
   getAllFiles(checksDir, '.ts').forEach((filePath) => {
     const content = fs.readFileSync(filePath, 'utf8');
-    const match = content.match(/\/\/\s*@id:\s*(.+)/);
-    if (match) {
-      ids.set(match[1].trim(), path.relative(checksDir, filePath));
+    const { metadata } = parseMetadataHeader(content);
+    if (metadata.id) {
+      ids.set(metadata.id, path.relative(checksDir, filePath));
     }
   });
   return ids;
@@ -57,9 +51,9 @@ function getExistingNames() {
   const names = new Map();
   getAllFiles(checksDir, '.ts').forEach((filePath) => {
     const content = fs.readFileSync(filePath, 'utf8');
-    const match = content.match(/\/\/\s*@name:\s*(.+)/);
-    if (match) {
-      names.set(match[1].trim(), path.relative(checksDir, filePath));
+    const { metadata } = parseMetadataHeader(content);
+    if (metadata.name) {
+      names.set(metadata.name, path.relative(checksDir, filePath));
     }
   });
   return names;
@@ -143,6 +137,9 @@ function getDefaultTags(category) {
     required: true,
     validate: (value) => {
       const name = value.trim();
+      if (!name) {
+        return '脚本名称不能为空';
+      }
       const existingPath = existingNames.get(name);
       return !existingPath || `脚本名称已存在于 src/checks/${existingPath}`;
     },

@@ -89,9 +89,7 @@ function queryIpQuality(protocol: "4" | "6"): HandlerResult {
 
   const isp = data.isp.isp || data.isp.org || T_UNK;
   const rawAsn = data.isp.asn || T_UNK;
-  const asn = rawAsn === T_UNK || rawAsn.indexOf("AS") === 0
-    ? rawAsn
-    : `AS${rawAsn}`;
+  const asn = rawAsn === T_UNK || rawAsn.indexOf("AS") === 0 ? rawAsn : `AS${rawAsn}`;
   const city = data.location.city || data.location.state || T_UNK;
   const country = data.location.country_code || data.location.country || T_UNK;
 

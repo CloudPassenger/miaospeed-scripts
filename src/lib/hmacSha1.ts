@@ -20,17 +20,13 @@ function toUtf8Bytes(value: string): number[] {
     } else if (codePoint <= 0x7ff) {
       bytes.push(0xc0 | (codePoint >>> 6), 0x80 | (codePoint & 0x3f));
     } else if (codePoint <= 0xffff) {
-      bytes.push(
-        0xe0 | (codePoint >>> 12),
-        0x80 | ((codePoint >>> 6) & 0x3f),
-        0x80 | (codePoint & 0x3f)
-      );
+      bytes.push(0xe0 | (codePoint >>> 12), 0x80 | ((codePoint >>> 6) & 0x3f), 0x80 | (codePoint & 0x3f));
     } else {
       bytes.push(
         0xf0 | (codePoint >>> 18),
         0x80 | ((codePoint >>> 12) & 0x3f),
         0x80 | ((codePoint >>> 6) & 0x3f),
-        0x80 | (codePoint & 0x3f)
+        0x80 | (codePoint & 0x3f),
       );
     }
   }
@@ -69,18 +65,14 @@ function sha1(bytes: number[]): number[] {
   for (let offset = 0; offset < message.length; offset += 64) {
     for (let index = 0; index < 16; index += 1) {
       const wordOffset = offset + index * 4;
-      words[index] = (
+      words[index] =
         (message[wordOffset] << 24) |
         (message[wordOffset + 1] << 16) |
         (message[wordOffset + 2] << 8) |
-        message[wordOffset + 3]
-      );
+        message[wordOffset + 3];
     }
     for (let index = 16; index < 80; index += 1) {
-      words[index] = rotateLeft(
-        words[index - 3] ^ words[index - 8] ^ words[index - 14] ^ words[index - 16],
-        1
-      );
+      words[index] = rotateLeft(words[index - 3] ^ words[index - 8] ^ words[index - 14] ^ words[index - 16], 1);
     }
 
     let a = h0;
@@ -90,8 +82,8 @@ function sha1(bytes: number[]): number[] {
     let e = h4;
 
     for (let index = 0; index < 80; index += 1) {
-      let value;
-      let constant;
+      let value: number;
+      let constant: number;
 
       if (index < 20) {
         value = (b & c) | (~b & d);
@@ -124,12 +116,7 @@ function sha1(bytes: number[]): number[] {
 
   const digest: number[] = [];
   [h0, h1, h2, h3, h4].forEach((word) => {
-    digest.push(
-      (word >>> 24) & 0xff,
-      (word >>> 16) & 0xff,
-      (word >>> 8) & 0xff,
-      word & 0xff
-    );
+    digest.push((word >>> 24) & 0xff, (word >>> 16) & 0xff, (word >>> 8) & 0xff, word & 0xff);
   });
   return digest;
 }

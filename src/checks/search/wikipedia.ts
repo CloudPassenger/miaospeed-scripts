@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNK, C_UNL } from "@/lib/constants/colors";
-import { M_RATE_LIMIT, T_ALLOW, T_BLOCK, T_FAIL, T_NA, T_UNK } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: wikipedia
 // @name: Wikipedia 编辑权限
 // @description: 检测 Wikipedia 编辑权限是否已解锁
@@ -10,18 +6,19 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: scholar
 // @priority: 12
 
+import { C_FAIL, C_NA, C_UNK, C_UNL } from "@/lib/constants/colors";
+import { M_RATE_LIMIT, T_ALLOW, T_BLOCK, T_FAIL, T_NA, T_UNK } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 function handler(): HandlerResult {
-  var content = fetch(
-    "https://zh.wikipedia.org/w/index.php?title=Wikipedia%3A%E6%B2%99%E7%9B%92&action=edit",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  var content = fetch("https://zh.wikipedia.org/w/index.php?title=Wikipedia%3A%E6%B2%99%E7%9B%92&action=edit", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!content) {
     return {

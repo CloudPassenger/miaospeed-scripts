@@ -1,7 +1,3 @@
-import { T_FAIL, T_UNL, M_NETWORK, M_STATUS, M_PARSE } from "@/lib/constants/text";
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { UA_ANDROID } from "@/lib/constants/ua";
-
 // @id: viutv
 // @name: ViuTV
 // @description: 检测 ViuTV 本地内容 解锁状态
@@ -10,7 +6,11 @@ import { UA_ANDROID } from "@/lib/constants/ua";
 // @tags: stream, video
 // @priority: 20
 
-function handler() {
+import { T_FAIL, T_UNL, M_NETWORK, M_STATUS, M_PARSE } from "@/lib/constants/text";
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { UA_ANDROID } from "@/lib/constants/ua";
+
+function handler(): HandlerResult {
   const response = fetch("https://api.viu.now.com/p8/3/getLiveURL", {
     method: "POST",
     headers: {
@@ -71,6 +71,6 @@ function handler() {
         };
     }
   }
-};
+}
 
 export default handler;

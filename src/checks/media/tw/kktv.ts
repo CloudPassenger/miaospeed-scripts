@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: kktv
 // @name: KKTV
 // @description: 检测 KKTV 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: tw
 // @tags: stream, video, live
 // @priority: 37
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 type ResponseBody = {
   status: {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
-import { M_IP_BLOCK, M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: bing
 // @name: Bing
 // @description: 检测 Bing 是否为国际版
@@ -9,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: search-engine, ai
 // @priority: 6
+
+import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
+import { M_IP_BLOCK, M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.bing.com/", {

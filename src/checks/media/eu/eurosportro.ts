@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: eurosportro
 // @name: Eurosport 罗马尼亚
 // @description: 检测 Eurosport 罗马尼亚站解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: eu
 // @tags: stream, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/EurosportRO.go
 type EurosportTokenResponse = {
@@ -22,20 +22,17 @@ type EurosportTokenResponse = {
 function handler(): HandlerResult {
   const deviceId = `${Date.now()}-device`;
 
-  const tokenResp = fetch(
-    "https://eu3-prod-direct.eurosport.ro/token?realm=eurosport",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-        Origin: "https://www.eurosport.ro",
-        Referer: "https://www.eurosport.ro/",
-        "x-device-info": `escom/0.295.1 (unknown/unknown; Windows/10; ${deviceId})`,
-        "x-disco-client": "WEB:UNKNOWN:escom:0.295.1",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const tokenResp = fetch("https://eu3-prod-direct.eurosport.ro/token?realm=eurosport", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+      Origin: "https://www.eurosport.ro",
+      Referer: "https://www.eurosport.ro/",
+      "x-device-info": `escom/0.295.1 (unknown/unknown; Windows/10; ${deviceId})`,
+      "x-disco-client": "WEB:UNKNOWN:escom:0.295.1",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!tokenResp) {
     return {
@@ -63,7 +60,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!playbackResp) {

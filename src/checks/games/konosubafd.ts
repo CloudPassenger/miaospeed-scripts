@@ -1,6 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-
 // @id: konosubafd
 // @name: 为美好的世界献上祝福 Fantastic Days
 // @description: 检测 このすば ファンタスティックデイズ 日服解锁状态
@@ -8,6 +5,9 @@ import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 // @regions: jp
 // @tags: game
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/KonosubaFD.go
 function handler(): HandlerResult {

@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: erogamescape
 // @name: ErogameScape
 // @description: 检测 ErogameScape(エロゲー批評空間) 年龄验证解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: jp
 // @tags: stream
 // @priority: 45
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/ErogameScape.go
 function handler(): HandlerResult {

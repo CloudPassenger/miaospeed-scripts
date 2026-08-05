@@ -1,7 +1,3 @@
-import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: nowe
 // @name: Now E
 // @description: 检测 Now E 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: hk
 // @tags: stream, video
 // @priority: 20
+
+import { C_NA, C_UNL, C_FAIL, C_UNK } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 type ResponseBody = {
   responseCode: string;

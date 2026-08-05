@@ -8,7 +8,6 @@ const UA_IOS =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/151.0.7922.105 Mobile/15E148 Safari/604.1";
 const UA_CURL = "curl/8.21.0";
 
-const SEC_CH_UA =
-  '"Google Chrome";v="151", "Chromium";v="151", "Not_A Brand";v="8"';
+const SEC_CH_UA = '"Google Chrome";v="151", "Chromium";v="151", "Not_A Brand";v="8"';
 
 export { UA_WINDOWS, UA_MACOS, UA_ANDROID, UA_IOS, UA_CURL, SEC_CH_UA };

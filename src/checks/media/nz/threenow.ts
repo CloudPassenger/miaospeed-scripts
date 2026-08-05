@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: threenow
 // @name: ThreeNow
 // @description: 检测 ThreeNow 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: nz
 // @tags: stream, video, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/nz/ThreeNow.go
 function handler(): HandlerResult {
@@ -27,11 +27,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    response.body.indexOf("Access Denied") > -1 ||
-    response.statusCode === 403 ||
-    response.statusCode === 451
-  ) {
+  if (response.body.indexOf("Access Denied") > -1 || response.statusCode === 403 || response.statusCode === 451) {
     return {
       text: T_FAIL,
       background: C_FAIL,

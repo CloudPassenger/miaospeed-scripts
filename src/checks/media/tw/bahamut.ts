@@ -1,15 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import {
-  M_DEVICE,
-  M_NETWORK,
-  M_TOKEN,
-  T_FAIL,
-  T_NA,
-  T_UNL,
-} from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-import { parseCookies } from "@/lib";
-
 // @id: bahamut
 // @name: 動畫瘋
 // @description: 检测 Bahamut / 動畫瘋 解锁状态
@@ -18,6 +6,11 @@ import { parseCookies } from "@/lib";
 // @tags: stream, video, anime
 // @priority: 31
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_DEVICE, M_NETWORK, M_TOKEN, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { parseCookies } from "@/lib";
+
 type TokenResponse = {
   animeSn?: number;
   deviceid?: string;
@@ -25,18 +18,15 @@ type TokenResponse = {
 
 function handler(): HandlerResult {
   // 获取设备ID
-  const deviceIdResponse = fetch(
-    "https://ani.gamer.com.tw/ajax/getdeviceid.php",
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const deviceIdResponse = fetch("https://ani.gamer.com.tw/ajax/getdeviceid.php", {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
 
   if (!deviceIdResponse || deviceIdResponse.statusCode !== 200) {
     return {
@@ -65,19 +55,16 @@ function handler(): HandlerResult {
   }
 
   // 检查全球可看内容是否可播放
-  const tokenResponse = fetch(
-    `https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=37783&device=${deviceId}`,
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      cookies: cookies,
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const tokenResponse = fetch(`https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=37783&device=${deviceId}`, {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    cookies: cookies,
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
   if (!tokenResponse || tokenResponse.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK}2)`,
@@ -95,19 +82,16 @@ function handler(): HandlerResult {
   }
 
   // 再检查台湾专属内容是否可播放，用于区分"全球解锁"与"台湾解锁"
-  const twOnlyResponse = fetch(
-    `https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=38832&device=${deviceId}`,
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      cookies: cookies,
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const twOnlyResponse = fetch(`https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=38832&device=${deviceId}`, {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    cookies: cookies,
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
 
   if (twOnlyResponse && twOnlyResponse.statusCode === 200) {
     const twOnlyData = safeParse<TokenResponse>(twOnlyResponse.body);

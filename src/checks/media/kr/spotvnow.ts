@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: spotvnow
 // @name: SPOTV NOW
 // @description: 检测 SPOTV NOW 解锁状态
@@ -10,22 +6,23 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video, live
 // @priority: 41
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/SpotvNow.go
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://edge.api.brightcove.com/playback/v1/accounts/5764318566001/videos/6349973203112",
-    {
-      headers: {
-        "User-Agent": UA_WINDOWS,
-        Accept:
-          "application/json;pk=BCpkADawqM0U3mi_PT566m5lvtapzMq3Uy7ICGGjGB6v4Ske7ZX_ynzj8ePedQJhH36nym_5mbvSYeyyHOOdUsZovyg2XlhV6rRspyYPw_USVNLaR0fB_AAL2HSQlfuetIPiEzbUs1tpNF9NtQxt3BAPvXdOAsvy1ltLPWMVzJHiw9slpLRgI2NUufc",
-        Origin: "https://www.spotvnow.co.kr",
-        Referer: "https://www.spotvnow.co.kr/",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://edge.api.brightcove.com/playback/v1/accounts/5764318566001/videos/6349973203112", {
+    headers: {
+      "User-Agent": UA_WINDOWS,
+      Accept:
+        "application/json;pk=BCpkADawqM0U3mi_PT566m5lvtapzMq3Uy7ICGGjGB6v4Ske7ZX_ynzj8ePedQJhH36nym_5mbvSYeyyHOOdUsZovyg2XlhV6rRspyYPw_USVNLaR0fB_AAL2HSQlfuetIPiEzbUs1tpNF9NtQxt3BAPvXdOAsvy1ltLPWMVzJHiw9slpLRgI2NUufc",
+      Origin: "https://www.spotvnow.co.kr",
+      Referer: "https://www.spotvnow.co.kr/",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

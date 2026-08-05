@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: skych
 // @name: Sky CH
 // @description: 检测 Sky Switzerland 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: ch
 // @tags: stream, video
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/ch/Sky.go
 function handler(): HandlerResult {

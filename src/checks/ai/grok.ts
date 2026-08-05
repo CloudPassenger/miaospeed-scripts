@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: grok
 // @name: Grok
 // @description: 检测 xAI Grok 在当前地区是否可用
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: ai
 // @priority: 8
+
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Grok.go
 const GROK_RESTRICTED_COUNTRY = ["CN", "RU", "IR", "KP", "CU", "SY"];

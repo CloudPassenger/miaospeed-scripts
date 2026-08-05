@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: primevideo
 // @name: Amazon Prime Video
 // @description: 检测 Amazon Prime Video 在当前地区是否可用
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 5
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.primevideo.com", {
@@ -33,7 +33,7 @@ function handler(): HandlerResult {
   // 若当前页面没有地区信息，尝试从页面中提取 storefront 跳转链接二次请求
   if (body.indexOf('"currentTerritory":') === -1) {
     const linkMatches = body.match(/https:\/\/www\.amazon\.[a-z.]+\/[^"'\s>]+/g) || [];
-    for (var i = 0; i < linkMatches.length; i++) {
+    for (let i = 0; i < linkMatches.length; i++) {
       if (linkMatches[i].indexOf("storefront") > -1) {
         const storefrontUrl = linkMatches[i].replace(/&amp;/g, "&");
         const storefrontResponse = fetch(storefrontUrl, {

@@ -65,13 +65,15 @@ scripts/
 
 `@category` 只能是 `ai`、`games`、`media`、`network`、`search`、`social`。`@id` 必须全仓库唯一且不依赖文件路径；`@name` 作为 Koipy 脚本注册与规则引用名称，也必须全仓库唯一。移动或重命名脚本时，不应随意修改稳定 ID。同一服务存在多个独立实现时可使用主要市场后缀，例如 `britbox-us` 和 `britbox-uk`。
 
+metadata 必须作为脚本的第一段内容，并按示例顺序连续声明。每个 `src/checks/` 脚本必须提供同步、无参数的 `function handler(): HandlerResult`，并通过 `export default handler` 导出。
+
 首次引入稳定 ID 时，`netflix_cdn`、`ipquality_v6` 分别规范化为 `netflix-cdn`、`ipquality-v6`；`rakutentv`、`britbox`、`discoveryplus` 的多地区实现增加了 `-eu`、`-jp`、`-uk` 或 `-us` 后缀。依赖旧 `index.json` ID 的外部工具需要同步更新。
 
 Fork 并克隆项目后，运行 `pnpm install` 安装依赖，再执行 `pnpm run new`，按交互提示选择 category、regions，以及媒体脚本的主要市场，并填写脚本 ID 和文件名。
 
 共享常量位于 `src/lib/constants/`，通用模块位于 `src/lib/`，goja 全局类型声明位于 `src/types/`。
 
-脚本开发完成后，运行 `pnpm run build`。构建会先校验全部元数据、ID 唯一性、category 与目录的一致性，再将每个脚本编译并压缩为单个 JavaScript 文件。产物会保留元数据文件头，并附带 AGPL-3.0-only 版权与 SPDX 声明：
+使用 `pnpm run format` 格式化 `src/`，使用 `pnpm run check` 检查 Biome 格式、默认 lint 规则、源码契约与 TypeScript 类型。脚本开发完成后，运行 `pnpm run build`。构建会先执行完整检查，再将每个脚本编译并压缩为单个 JavaScript 文件。产物会保留元数据文件头，并附带 AGPL-3.0-only 版权与 SPDX 声明：
 
 ```text
 dist/

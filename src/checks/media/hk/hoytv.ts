@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: hoytv
 // @name: 香港開電視
 // @description: 检测 HoyTV / 香港開電視 解锁状态
@@ -10,19 +6,20 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video
 // @priority: 20
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://hoytv-live-stream.hoy.tv/ch78/index-fhd.m3u8",
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 15000,
-    }
-  );
+  const response = fetch("https://hoytv-live-stream.hoy.tv/ch78/index-fhd.m3u8", {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 15000,
+  });
 
   if (!response) {
     return {

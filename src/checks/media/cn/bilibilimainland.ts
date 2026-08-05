@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: bilibilimainland
 // @name: 哔哩哔哩大陆
 // @description: 检测大陆限定内容 (api.bilibili.com) 是否可播放，适用于回国/中转节点场景
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: cn
 // @tags: stream, video
 // @priority: 30
+
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // 参考:
 // https://github.com/oneclickvirt/UnlockTests/blob/main/asia/BilibiliMainland.go
@@ -26,7 +26,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!response) {
@@ -43,10 +43,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    response.body.indexOf("抱歉您所在地区不可观看") > -1 ||
-    response.body.indexOf("The area is inaccessible") > -1
-  ) {
+  if (response.body.indexOf("抱歉您所在地区不可观看") > -1 || response.body.indexOf("The area is inaccessible") > -1) {
     return {
       text: T_FAIL,
       background: C_FAIL,

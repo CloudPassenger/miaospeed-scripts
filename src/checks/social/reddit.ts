@@ -1,15 +1,3 @@
-import { C_FAIL, C_UNL, C_NA, C_UNK } from "@/lib/constants/colors";
-import {
-  M_NETWORK,
-  M_RATE_LIMIT,
-  T_ALLOW,
-  T_DENY,
-  T_FAIL,
-  T_PASS,
-  T_UNK,
-} from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: reddit
 // @name: Reddit
 // @description: 检测 Reddit 是否可匿名浏览
@@ -18,7 +6,11 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: social
 // @priority: 11
 
-function handler() {
+import { C_FAIL, C_UNL, C_NA, C_UNK } from "@/lib/constants/colors";
+import { M_NETWORK, M_RATE_LIMIT, T_ALLOW, T_DENY, T_FAIL, T_PASS, T_UNK } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+
+function handler(): HandlerResult {
   const redditResponse = fetch("https://www.reddit.com/", {
     method: "GET",
     headers: {

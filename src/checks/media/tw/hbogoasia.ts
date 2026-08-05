@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL, C_UNK } from "@/lib/constants/colors";
-import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: hbogoasia
 // @name: HBO Go Asia
 // @description: 检测 HBO Go Asia 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: tw, hk
 // @tags: stream, video, movie, anime
 // @priority: 33
+
+import { C_FAIL, C_UNL, C_UNK } from "@/lib/constants/colors";
+import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 type ResponseBody = {
   territory?: string;
@@ -21,18 +21,15 @@ type ResponseBody = {
 };
 
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://api2.hbogoasia.com/v1/geog?lang=undefined&version=0&bundleId=www.hbogoasia.com",
-    {
-      method: "GET",
-      headers: {
-        "User-Agent": UA_WINDOWS,
-      },
-      noRedir: false,
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://api2.hbogoasia.com/v1/geog?lang=undefined&version=0&bundleId=www.hbogoasia.com", {
+    method: "GET",
+    headers: {
+      "User-Agent": UA_WINDOWS,
+    },
+    noRedir: false,
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

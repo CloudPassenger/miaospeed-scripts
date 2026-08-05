@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: spotify
 // @name: Spotify
 // @description: 检测 Spotify 在当前地区是否可用
@@ -10,13 +6,16 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, music
 // @priority: 9
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // 参考 oneclickvirt/UnlockTests 的实现：改用 open.spotify.com 首页解析
 // appServerConfig 中的 market 字段，避免 spclient.wg.spotify.com 注册接口
 // 自带的代理/VPN 检测导致误判（该接口面向反欺诈场景，与实际内容区域可用性无关）。
 // https://github.com/oneclickvirt/UnlockTests/blob/main/transnation/Spotify.go
 
-const BASE64_CHARS =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /** 纯 JS 实现的 base64 解码，避免依赖运行环境未必提供的 atob/Buffer */
 function decodeBase64(input: string): string {
@@ -63,9 +62,7 @@ function handler(): HandlerResult {
     };
   }
 
-  const match = response.body.match(
-    /<script[^>]+id="appServerConfig"[^>]*type="text\/plain"[^>]*>([^<]+)<\/script>/
-  );
+  const match = response.body.match(/<script[^>]+id="appServerConfig"[^>]*type="text\/plain"[^>]*>([^<]+)<\/script>/);
   if (!match) {
     return {
       text: T_FAIL,

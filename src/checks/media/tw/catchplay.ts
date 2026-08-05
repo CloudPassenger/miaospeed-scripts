@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_STATUS, M_NETWORK, M_PARSE, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: catchplay
 // @name: CatchPlay+
 // @description: 检测 CatchPlay+ 解锁状态
@@ -10,8 +6,11 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video, movie
 // @priority: 39
 
-const AUTHORIZATION_HEADER =
-  "Basic NTQ3MzM0NDgtYTU3Yi00MjU2LWE4MTEtMzdlYzNkNjJmM2E0Ok90QzR3elJRR2hLQ01sSDc2VEoy";
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_STATUS, M_NETWORK, M_PARSE, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
+const AUTHORIZATION_HEADER = "Basic NTQ3MzM0NDgtYTU3Yi00MjU2LWE4MTEtMzdlYzNkNjJmM2E0Ok90QzR3elJRR2hLQ01sSDc2VEoy";
 
 function handler(): HandlerResult {
   const response = fetch("https://sunapi.catchplay.com/geo", {
@@ -67,6 +66,6 @@ function handler(): HandlerResult {
       background: C_FAIL,
     };
   }
-};
+}
 
 export default handler;

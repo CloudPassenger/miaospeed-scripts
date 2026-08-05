@@ -1,6 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-
 // @id: pjsk
 // @name: 世界计划 彩色舞台
 // @description: 检测 プロジェクトセカイ カラフルステージ! 日服解锁状态
@@ -9,18 +6,18 @@ import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 // @tags: game
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/PJSK.go
 function handler(): HandlerResult {
-  const response = fetch(
-    "https://game-version.sekai.colorfulpalette.org/1.8.1/3ed70b6a-8352-4532-b819-108837926ff5",
-    {
-      headers: {
-        "User-Agent": "pjsekai/48 CFNetwork/1240.0.4 Darwin/20.6.0",
-      },
-      retry: 3,
-      timeout: 5000,
-    }
-  );
+  const response = fetch("https://game-version.sekai.colorfulpalette.org/1.8.1/3ed70b6a-8352-4532-b819-108837926ff5", {
+    headers: {
+      "User-Agent": "pjsekai/48 CFNetwork/1240.0.4 Darwin/20.6.0",
+    },
+    retry: 3,
+    timeout: 5000,
+  });
 
   if (!response) {
     return {

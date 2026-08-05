@@ -1,14 +1,14 @@
-import { C_FAIL, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, M_STATUS, T_FAIL, T_UNL } from "@/lib/constants/text";
-import { {{#is_mobile}}UA_ANDROID{{/is_mobile}}{{^is_mobile}}UA_WINDOWS{{/is_mobile}} } from "@/lib/constants/ua";
-
 // @id: {{id}}
-// @category: {{category}}
 // @name: {{name}}
 // @description: 检测 {{name}} 的解锁状态
+// @category: {{category}}
 // @regions: {{regions}}
 // @tags: {{tags}}
 // @priority: {{priority}}
+
+import { C_FAIL, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, M_STATUS, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { {{#is_mobile}}UA_ANDROID{{/is_mobile}}{{^is_mobile}}UA_WINDOWS{{/is_mobile}} } from "@/lib/constants/ua";
 
 type ResponseBody = {
   code: number;

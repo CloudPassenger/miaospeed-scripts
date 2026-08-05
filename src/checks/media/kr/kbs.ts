@@ -1,7 +1,3 @@
-import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: kbs
 // @name: KBS
 // @description: 检测 KBS 的解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: kr
 // @tags: stream, ott
 // @priority: 50
+
+import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 function handler(): HandlerResult {
   const response = fetch(
@@ -21,7 +21,7 @@ function handler(): HandlerResult {
       noRedir: false,
       retry: 3,
       timeout: 15000,
-    }
+    },
   );
 
   if (!response || response.statusCode !== 200) {

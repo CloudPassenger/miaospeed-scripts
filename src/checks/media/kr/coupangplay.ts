@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_ANDROID } from "@/lib/constants/ua";
-
 // @id: coupangplay
 // @name: Coupang Play
 // @description: 检测 Coupang Play 解锁状态
@@ -9,6 +5,10 @@ import { UA_ANDROID } from "@/lib/constants/ua";
 // @regions: kr
 // @tags: stream, video
 // @priority: 41
+
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_ANDROID } from "@/lib/constants/ua";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/CoupangPlay.go
 function handler(): HandlerResult {
@@ -28,10 +28,7 @@ function handler(): HandlerResult {
     };
   }
 
-  if (
-    response.statusCode === 302 &&
-    response.headers["location"] === "https://www.coupangplay.com/not-available"
-  ) {
+  if (response.statusCode === 302 && response.headers["location"] === "https://www.coupangplay.com/not-available") {
     return {
       text: T_FAIL,
       background: C_FAIL,

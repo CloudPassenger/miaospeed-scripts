@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: channel5
 // @name: Channel 5
 // @description: 检测 Channel 5 解锁状态
@@ -9,6 +5,10 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: uk
 // @tags: stream, video, live
 // @priority: 45
+
+import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/uk/Channel5.go
 const CHANNEL5_AUTH = "0_rZDiY0hp_TNcDyk2uD-Kl40HqDbXs7hOawxyqPnbI";
@@ -20,7 +20,7 @@ type Channel5Response = {
 function handler(): HandlerResult {
   const response = fetch(
     `https://cassie.channel5.com/api/v2/live_media/my5desktopng/C5.json?timestamp=${Date.now()}&auth=${encodeURIComponent(
-      CHANNEL5_AUTH
+      CHANNEL5_AUTH,
     )}`,
     {
       headers: {
@@ -28,7 +28,7 @@ function handler(): HandlerResult {
       },
       retry: 3,
       timeout: 5000,
-    }
+    },
   );
 
   if (!response) {
@@ -48,10 +48,7 @@ function handler(): HandlerResult {
   const res = safeParse<Channel5Response>(response.body);
   const code = get<string>(res, "code", "");
 
-  if (
-    code === "3000" ||
-    response.body.indexOf("this service is only available in restricted regions") > -1
-  ) {
+  if (code === "3000" || response.body.indexOf("this service is only available in restricted regions") > -1) {
     return {
       text: T_FAIL,
       background: C_FAIL,

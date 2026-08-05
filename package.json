@@ -4,12 +4,18 @@
   "description": "Regional Availability and Network Checking Scripts for MiaoSpeed",
   "scripts": {
     "new": "node scripts/template.js",
-    "build": "rimraf dist && tsc --noEmit && node scripts/build.js"
+    "format": "biome format --write src",
+    "format:check": "biome format src",
+    "lint": "biome lint src",
+    "check:source": "node scripts/check-source.js",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run check:source && tsc --noEmit",
+    "build": "rimraf dist && pnpm run check && node scripts/build.js"
   },
   "keywords": [],
   "author": "CloudPassenger",
   "license": "AGPL-3.0-only",
   "devDependencies": {
+    "@biomejs/biome": "^2.5.7",
     "@inquirer/prompts": "^8.5.2",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",

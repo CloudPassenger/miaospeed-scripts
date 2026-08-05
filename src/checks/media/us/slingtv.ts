@@ -1,7 +1,3 @@
-import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
-import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
-import { UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: slingtv
 // @name: Sling TV
 // @description: 检测 Sling TV 解锁状态
@@ -10,11 +6,27 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 // @tags: stream, video, live
 // @priority: 45
 
+import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
+import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { UA_WINDOWS } from "@/lib/constants/ua";
+
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/SlingTV.go
 // ISO 3166-1 alpha-3 -> alpha-2 国家/地区代码映射表（仅本脚本使用）
 const ALPHA3_TO_ALPHA2: Record<string, string> = {
-  USA: "US", CAN: "CA", GBR: "GB", MEX: "MX", AUS: "AU", DEU: "DE", FRA: "FR",
-  ITA: "IT", ESP: "ES", JPN: "JP", KOR: "KR", CHN: "CN", IND: "IN", BRA: "BR",
+  USA: "US",
+  CAN: "CA",
+  GBR: "GB",
+  MEX: "MX",
+  AUS: "AU",
+  DEU: "DE",
+  FRA: "FR",
+  ITA: "IT",
+  ESP: "ES",
+  JPN: "JP",
+  KOR: "KR",
+  CHN: "CN",
+  IND: "IN",
+  BRA: "BR",
 };
 
 function threeToTwoCode(code: string): string {

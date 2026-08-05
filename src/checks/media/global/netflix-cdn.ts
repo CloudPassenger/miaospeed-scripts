@@ -1,14 +1,3 @@
-import { C_NA, C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
-import {
-  M_IP_BLOCK,
-  M_STATUS,
-  T_FAIL,
-  T_NA,
-  T_UNK,
-  T_UNL,
-} from "@/lib/constants/text";
-import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
-
 // @id: netflix-cdn
 // @name: Netflix CDN
 // @description: 检测 Netflix CDN 地理位置
@@ -16,6 +5,10 @@ import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 // @regions: global
 // @tags: stream, video
 // @priority: 2
+
+import { C_NA, C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
+import { M_IP_BLOCK, M_STATUS, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
+import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 
 type Location = {
   city: string;
@@ -58,7 +51,7 @@ function handler(): HandlerResult {
       noRedir: true,
       retry: 3,
       timeout: 15000,
-    }
+    },
   );
 
   if (!response) {
