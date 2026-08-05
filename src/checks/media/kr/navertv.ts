@@ -10,6 +10,7 @@ import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_TOKEN, T_FAIL, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
 import { hmacSha1Base64 } from "@/lib/hmacSha1";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 /** Type */
 export interface ResponseBody {
@@ -177,6 +178,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -190,16 +193,20 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_TOKEN})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_TOKEN,
     };
   } else if (data.result.play.playable === "NOT_COUNTRY_AVAILABLE") {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   } else {
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   }
 }

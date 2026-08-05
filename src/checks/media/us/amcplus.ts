@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/AMCPlus.go
 function handler(): HandlerResult {
@@ -25,6 +26,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -42,6 +45,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_FAIL}(${M_NETWORK})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_NETWORK,
       };
     }
     if (resp2.statusCode === 301) {
@@ -50,6 +55,7 @@ function handler(): HandlerResult {
         return {
           text: T_FAIL,
           background: C_FAIL,
+          status: S_FAIL,
         };
       }
       const match = location1.match(/^https:\/\/www\.amcplus\.com\/countries\/(\w{2})/);
@@ -57,11 +63,14 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}${region ? `(${region})` : ""}`,
         background: C_UNL,
+        status: S_UNL,
+        region,
       };
     }
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -69,18 +78,21 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(US)`,
       background: C_UNL,
+      status: S_UNL,
     };
   }
   if (resp1.statusCode === 403) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DeepSeek.go
 // 直连固定 IP + 自定义 SNI/Host，绕开可能的国内解析劫持
@@ -27,6 +28,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -34,6 +37,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -44,17 +48,21 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}(${region})`,
         background: C_UNL,
+        status: S_UNL,
+        region,
       };
     }
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

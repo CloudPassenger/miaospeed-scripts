@@ -9,6 +9,7 @@
 import { C_NA, C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
 import { M_IP_BLOCK, M_STATUS, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNK, S_UNL } from "@/lib/constants/status";
 
 type Location = {
   city: string;
@@ -58,6 +59,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -65,6 +67,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_IP_BLOCK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_IP_BLOCK,
     };
   }
 
@@ -75,6 +79,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_STATUS})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_STATUS,
     };
   }
 
@@ -83,12 +89,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${country})`,
       background: C_UNL,
+      status: S_UNL,
+      region: country,
     };
   }
 
   return {
     text: T_UNK,
     background: C_UNK,
+    status: S_UNK,
   };
 }
 

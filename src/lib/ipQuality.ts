@@ -1,6 +1,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_RESPONSE, T_FAIL, T_NA, T_UNK } from "@/lib/constants/text";
 import { UA_CURL } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 interface IPQueryResponse {
   ip?: string;
@@ -59,6 +60,7 @@ function queryIpQuality(protocol: "4" | "6"): HandlerResult {
     return {
       text: `${T_NA} - 无IPv${protocol}`,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -76,6 +78,8 @@ function queryIpQuality(protocol: "4" | "6"): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -84,6 +88,8 @@ function queryIpQuality(protocol: "4" | "6"): HandlerResult {
     return {
       text: `${T_FAIL}(${M_RESPONSE})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RESPONSE,
     };
   }
 
@@ -92,10 +98,21 @@ function queryIpQuality(protocol: "4" | "6"): HandlerResult {
   const asn = rawAsn === T_UNK || rawAsn.indexOf("AS") === 0 ? rawAsn : `AS${rawAsn}`;
   const city = data.location.city || data.location.state || T_UNK;
   const country = data.location.country_code || data.location.country || T_UNK;
+  const risk = formatQuality(data.risk);
 
   return {
-    text: `${data.ip} - ${isp} (${asn}) - ${city}, ${country} - ${formatQuality(data.risk)}`,
+    text: `${data.ip} - ${isp} (${asn}) - ${city}, ${country} - ${risk}`,
     background: C_UNL,
+    status: S_UNL,
+    region: country,
+    extra: [
+      { key: "ip", label: "IP地址", value: data.ip, type: "string" },
+      { key: "isp", label: "运营商", value: isp, type: "string" },
+      { key: "asn", label: "ASN", value: asn, type: "string" },
+      { key: "city", label: "城市", value: city, type: "string" },
+      { key: "country", label: "国家/地区", value: country, type: "string" },
+      { key: "risk", label: "风控标签", value: risk, type: "string" },
+    ],
   };
 }
 

@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/au/Channel10.go
 type Channel10GeoResponse = {
@@ -29,12 +30,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
   if (resp1.body.indexOf("Sorry, 10 play is not available in your region.") > -1) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -50,12 +54,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
   if (resp2.body.indexOf("not available") > -1) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -67,18 +74,22 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
   if (state) {
     return {
       text: `${T_UNL}(${state})`,
       background: C_UNL,
+      status: S_UNL,
+      region: state,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 const headers = {
   Accept: "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -56,6 +57,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -63,6 +66,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -82,6 +86,8 @@ function handler(): HandlerResult {
     return {
       text: region ? `${T_UNL}(${region})` : T_UNL,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
@@ -97,6 +103,7 @@ function handler(): HandlerResult {
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   }
 
@@ -108,6 +115,8 @@ function handler(): HandlerResult {
     return {
       text: region ? `${T_UNL}(${region})` : T_UNL,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
@@ -117,6 +126,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -131,6 +141,8 @@ function handler(): HandlerResult {
     return {
       text: region ? `${T_UNL}(${region})` : T_UNL,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
@@ -138,12 +150,14 @@ function handler(): HandlerResult {
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   }
 
   return {
     text: T_FAIL,
     background: C_FAIL,
+    status: S_FAIL,
   };
 }
 

@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL, C_NA, C_UNK } from "@/lib/constants/colors";
 import { M_NETWORK, M_RATE_LIMIT, T_ALLOW, T_DENY, T_FAIL, T_PASS, T_UNK } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNK, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const redditResponse = fetch("https://www.reddit.com/", {
@@ -35,6 +36,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -45,6 +48,7 @@ function handler(): HandlerResult {
     return {
       text: T_ALLOW,
       background: C_UNL,
+      status: S_UNL,
     };
   }
 
@@ -52,6 +56,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -59,12 +64,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_RATE_LIMIT})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RATE_LIMIT,
     };
   }
 
   return {
     text: T_UNK,
     background: C_UNK,
+    status: S_UNK,
   };
 }
 

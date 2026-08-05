@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // 国际电话区号 -> ISO alpha-2 地区码（仅覆盖 bilibili 分区测试用到的地区）
 const CALLING_CODE_TO_ALPHA2: Record<string, string> = {
@@ -100,6 +101,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -108,6 +110,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -120,6 +123,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
@@ -128,16 +133,21 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   } else if (playable === false) {
     return {
       text: `${T_FAIL}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   } else {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 }

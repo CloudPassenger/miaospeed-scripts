@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Mistral.go
 const MISTRAL_RESTRICTED_COUNTRY = ["RU", "BY", "KP", "IR", "SY", "CU", "CN", "TM"];
@@ -25,6 +26,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
   const match = trace.body.match(/loc=([A-Z]{2})/);
@@ -42,6 +44,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -49,6 +52,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}${loc ? `(${loc})` : ""}`,
       background: C_FAIL,
+      status: S_FAIL,
+      region: loc,
     };
   }
 
@@ -57,17 +62,22 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}${loc ? `(${loc})` : ""}`,
         background: C_UNL,
+        status: S_UNL,
+        region: loc,
       };
     }
     return {
       text: `${T_FAIL}(${loc})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region: loc,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

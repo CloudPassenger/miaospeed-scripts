@@ -8,6 +8,7 @@
 
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/PCRJP.go
 const UA_DALVIK = "Dalvik/2.1.0 (Linux; U; Android 14; M2006J10C Build/RP1A.200720.011)";
@@ -25,6 +26,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -32,18 +34,21 @@ function handler(): HandlerResult {
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   }
   if (response.statusCode === 403) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

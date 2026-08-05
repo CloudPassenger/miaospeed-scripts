@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/oneclickvirt/UnlockTests/blob/main/africa/Showmax.go
 function handler(): HandlerResult {
@@ -24,6 +25,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -32,6 +35,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -43,12 +47,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region.toLowerCase()})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
   return {
     text: T_FAIL,
     background: C_FAIL,
+    status: S_FAIL,
   };
 }
 

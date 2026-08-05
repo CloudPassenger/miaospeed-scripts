@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL, C_UNK, C_WARN } from "@/lib/constants/colors";
 import { T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNK, S_UNL, S_WARN } from "@/lib/constants/status";
 
 const T_ORIGINAL_ONLY = "仅自制";
 
@@ -59,11 +60,11 @@ function handler(): HandlerResult {
   const resp2 = requestTitle("https://www.netflix.com/title/81280792"); // Originals
 
   if (resp1.statusCode === 404 && resp2.statusCode === 404) {
-    return { text: T_ORIGINAL_ONLY, background: C_WARN };
+    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN };
   }
 
   if (resp1.statusCode === 403 && resp2.statusCode === 403) {
-    return { text: T_FAIL, background: C_FAIL };
+    return { text: T_FAIL, background: C_FAIL, status: S_FAIL };
   }
 
   const resp1Ok = resp1.statusCode === 200 || resp1.statusCode === 301;
@@ -115,22 +116,22 @@ function handler(): HandlerResult {
           region = "Unknown";
         }
       }
-      return { text: `${T_UNL}(${region.toLowerCase()})`, background: C_UNL };
+      return { text: `${T_UNL}(${region.toLowerCase()})`, background: C_UNL, status: S_UNL, region };
     }
 
     if (hasOhNo1 && hasOhNo2) {
-      return { text: T_FAIL, background: C_FAIL };
+      return { text: T_FAIL, background: C_FAIL, status: S_FAIL };
     }
 
-    return { text: T_ORIGINAL_ONLY, background: C_WARN };
+    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN };
   }
 
   const redirects = (resp1.redirects || []).concat(resp2.redirects || []).join(" ");
   if (redirects.indexOf("browse") > -1) {
-    return { text: T_FAIL, background: C_FAIL };
+    return { text: T_FAIL, background: C_FAIL, status: S_FAIL };
   }
 
-  return { text: T_UNK, background: C_UNK };
+  return { text: T_UNK, background: C_UNK, status: S_UNK };
 }
 
 export default handler;

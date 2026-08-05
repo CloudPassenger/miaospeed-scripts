@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // 参考 oneclickvirt/UnlockTests 的实现：改用 open.spotify.com 首页解析
 // appServerConfig 中的 market 字段，避免 spclient.wg.spotify.com 注册接口
@@ -53,12 +54,14 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
   if (response.statusCode === 403) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -67,6 +70,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -83,12 +87,15 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
   return {
     text: `${T_UNL}(${market.toLowerCase()})`,
     background: C_UNL,
+    status: S_UNL,
+    region: market,
   };
 }
 

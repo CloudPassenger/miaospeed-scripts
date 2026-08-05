@@ -9,6 +9,7 @@
 import { C_NA, C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_IP_BLOCK, M_RATE_LIMIT, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // 参考:
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DisneyPlus.go
@@ -61,18 +62,23 @@ function handler(): HandlerResult {
       return {
         text: T_NA,
         background: C_NA,
+        status: S_NA,
       };
     }
     if (deviceResponse.statusCode === 403 || deviceResponse.body.includes("403 ERROR")) {
       return {
         text: `${T_FAIL}(${M_IP_BLOCK})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_IP_BLOCK,
       };
     }
     if (deviceResponse.statusCode === 429) {
       return {
         text: `${T_FAIL}(${M_RATE_LIMIT})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_RATE_LIMIT,
       };
     }
 
@@ -83,6 +89,7 @@ function handler(): HandlerResult {
       return {
         text: T_NA,
         background: C_NA,
+        status: S_NA,
       };
     }
 
@@ -104,12 +111,16 @@ function handler(): HandlerResult {
       return {
         text: `${T_FAIL}(${M_IP_BLOCK})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_IP_BLOCK,
       };
     }
     if (tokenResponse.statusCode === 429) {
       return {
         text: `${T_FAIL}(${M_RATE_LIMIT})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_RATE_LIMIT,
       };
     }
 
@@ -119,6 +130,7 @@ function handler(): HandlerResult {
       return {
         text: T_NA,
         background: C_NA,
+        status: S_NA,
       };
     }
     // Third request (graph)
@@ -138,6 +150,7 @@ function handler(): HandlerResult {
       return {
         text: T_NA,
         background: C_NA,
+        status: S_NA,
       };
     }
 
@@ -155,11 +168,14 @@ function handler(): HandlerResult {
         return {
           text: `${T_UNL}(${fallbackRegion})`,
           background: C_UNL,
+          status: S_UNL,
+          region: fallbackRegion,
         };
       }
       return {
         text: T_FAIL,
         background: C_FAIL,
+        status: S_FAIL,
       };
     }
 
@@ -168,6 +184,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}(${region})`,
         background: C_UNL,
+        status: S_UNL,
+        region,
       };
     }
 
@@ -185,30 +203,37 @@ function handler(): HandlerResult {
       return {
         text: T_FAIL,
         background: C_FAIL,
+        status: S_FAIL,
       };
     }
     if (inSupportedLocation === false) {
       return {
         text: `${T_FAIL}(${region})`,
         background: C_FAIL,
+        status: S_FAIL,
+        region,
       };
     }
     if (inSupportedLocation === true) {
       return {
         text: `${T_UNL}(${region})`,
         background: C_UNL,
+        status: S_UNL,
+        region,
       };
     }
 
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   } catch (error) {
     println("Error:", error);
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 }

@@ -8,6 +8,7 @@
 
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_UNL } from "@/lib/constants/text";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const response = fetch(
@@ -28,6 +29,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   } else if (response.statusCode === 200) {
     const isBlocked = response.body.includes("geolocation");
@@ -35,21 +38,25 @@ function handler(): HandlerResult {
       return {
         text: T_FAIL,
         background: C_FAIL,
+        status: S_FAIL,
       };
     }
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   } else if (response.statusCode === 403 || response.statusCode === 451) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   } else {
     return {
       text: `${T_FAIL}(${response.statusCode})`,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 }

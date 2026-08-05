@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL, C_NA, C_WARN } from "@/lib/constants/colors";
 import { M_IP_BLOCK, M_NETWORK, M_RESPONSE, T_FAIL, T_OVERSEAS, T_UNL } from "@/lib/constants/text";
 import { UA_ANDROID } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL, S_WARN } from "@/lib/constants/status";
 
 type ResponseBody = {
   isoCountryCode?: string;
@@ -31,18 +32,24 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
   if (response.statusCode === 403) {
     return {
       text: `${T_FAIL}(${M_IP_BLOCK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_IP_BLOCK,
     };
   }
   if (response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -53,6 +60,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_RESPONSE})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RESPONSE,
     };
   }
 
@@ -60,6 +69,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -69,6 +79,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -76,11 +87,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   } else {
     return {
       text: `${T_OVERSEAS}(${region})`,
       background: C_WARN,
+      status: S_WARN,
+      region,
     };
   }
 }

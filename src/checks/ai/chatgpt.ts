@@ -9,6 +9,7 @@
 import { C_NA, C_FAIL, C_UNL, C_UNK } from "@/lib/constants/colors";
 import { M_NETWORK, M_PARSE, M_RATE_LIMIT, T_FAIL, T_NA, T_UNK, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNK, S_UNL } from "@/lib/constants/status";
 
 /** 支持使用 ChatGPT 的国家 */
 const GPT_SUPPORT_COUNTRY = [
@@ -194,6 +195,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK}1)`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -203,6 +206,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNK}(${M_PARSE})`,
       background: C_UNK,
+      status: S_UNK,
+      message: M_PARSE,
     };
   }
 
@@ -213,6 +218,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   }
 
@@ -263,6 +270,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -270,6 +278,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_RATE_LIMIT})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RATE_LIMIT,
     };
   }
   const mainBody = mainResponse.body;
@@ -279,6 +289,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
   const unsupported_country = mainBody.includes("unsupported_country");
@@ -294,31 +305,42 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   } else if (vpn_detected && unsupported_country) {
     return {
       text: `${T_FAIL}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   } else if (!unsupported_country && vpn_detected && mainBody) {
     return {
       text: `${T_WEB_ONLY}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   } else if (unsupported_country && !vpn_detected) {
     return {
       text: `${T_APP_ONLY}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   } else if (!unsupported_country && appBody) {
     return {
       text: `${T_FAIL}(${region})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region,
     };
   } else {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 }

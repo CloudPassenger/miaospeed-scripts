@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNK, C_UNL } from "@/lib/constants/colors";
 import { M_RATE_LIMIT, T_ALLOW, T_BLOCK, T_FAIL, T_NA, T_UNK } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNK, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   var content = fetch("https://zh.wikipedia.org/w/index.php?title=Wikipedia%3A%E6%B2%99%E7%9B%92&action=edit", {
@@ -24,6 +25,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -31,23 +33,28 @@ function handler(): HandlerResult {
     return {
       text: T_BLOCK,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
   if (content.statusCode === 200) {
     return {
       text: T_ALLOW,
       background: C_UNL,
+      status: S_UNL,
     };
   }
   if (content.statusCode === 429) {
     return {
       text: `${T_FAIL}(${M_RATE_LIMIT})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RATE_LIMIT,
     };
   }
   return {
     text: T_UNK,
     background: C_UNK,
+    status: S_UNK,
   };
 }
 

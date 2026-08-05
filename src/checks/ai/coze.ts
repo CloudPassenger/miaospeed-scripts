@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL, C_WARN } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL, S_WARN } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/Coze.go
 type CozeResponse = {
@@ -32,6 +33,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -39,6 +42,7 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(WAF)`,
       background: C_WARN,
+      status: S_WARN,
     };
   }
 
@@ -46,6 +50,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -57,18 +62,23 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}${countryCode ? `(${countryCode})` : ""}`,
       background: C_FAIL,
+      status: S_FAIL,
+      region: countryCode,
     };
   }
   if (countryCode) {
     return {
       text: `${T_UNL}(${countryCode})`,
       background: C_UNL,
+      status: S_UNL,
+      region: countryCode,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

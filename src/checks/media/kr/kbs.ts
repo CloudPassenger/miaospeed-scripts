@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNK, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const response = fetch(
@@ -28,6 +29,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -37,16 +40,19 @@ function handler(): HandlerResult {
     return {
       text: T_UNL,
       background: C_UNL,
+      status: S_UNL,
     };
   } else if (body.includes(">새로고침<")) {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   } else {
     return {
       text: T_UNK,
       background: C_UNK,
+      status: S_UNK,
     };
   }
 }

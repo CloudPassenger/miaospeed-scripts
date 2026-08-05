@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNK, C_UNL } from "@/lib/constants/colors";
 import { M_IP_BLOCK, M_NETWORK, T_FAIL, T_UNK, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNK, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.bing.com/", {
@@ -35,6 +36,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -48,11 +51,15 @@ function handler(): HandlerResult {
       return {
         text: `${T_FAIL}(CN)`,
         background: C_FAIL,
+        status: S_FAIL,
+        region,
       };
     } else if (region) {
       return {
         text: `${T_UNL}(${region})`,
         background: C_UNL,
+        status: S_UNL,
+        region,
       };
     }
   }
@@ -61,6 +68,7 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(CN)`,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -68,12 +76,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_IP_BLOCK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_IP_BLOCK,
     };
   }
 
   return {
     text: T_UNK,
     background: C_UNK,
+    status: S_UNK,
   };
 }
 

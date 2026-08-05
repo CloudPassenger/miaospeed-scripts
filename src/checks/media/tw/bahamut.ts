@@ -10,6 +10,7 @@ import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_DEVICE, M_NETWORK, M_TOKEN, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
 import { parseCookies } from "@/lib";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 type TokenResponse = {
   animeSn?: number;
@@ -32,6 +33,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK}1)`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -40,6 +43,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -51,6 +55,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_DEVICE})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_DEVICE,
     };
   }
 
@@ -69,6 +75,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK}2)`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
   cookies = parseCookies(tokenResponse.cookies);
@@ -78,6 +86,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_TOKEN})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_TOKEN,
     };
   }
 
@@ -99,6 +109,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}(TW)`,
         background: C_UNL,
+        status: S_UNL,
+        region: "TW",
       };
     }
   }
@@ -124,6 +136,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}(${match[1]})`,
         background: C_UNL,
+        status: S_UNL,
+        region: match[1],
       };
     }
   }
@@ -131,6 +145,7 @@ function handler(): HandlerResult {
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

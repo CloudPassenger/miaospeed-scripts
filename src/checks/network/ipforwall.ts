@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_RESPONSE, T_FAIL, T_UNK } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 interface ResponseBody {
   code?: number;
@@ -37,6 +38,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -46,6 +49,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_RESPONSE})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_RESPONSE,
     };
   }
 
@@ -63,6 +68,12 @@ function handler(): HandlerResult {
   return {
     text: `${data.data.addr} - ${isp} - ${location}`,
     background: C_UNL,
+    status: S_UNL,
+    extra: [
+      { key: "ip", label: "IP地址", value: data.data.addr, type: "string" },
+      { key: "isp", label: "运营商", value: isp, type: "string" },
+      { key: "location", label: "位置", value: location, type: "string" },
+    ],
   };
 }
 

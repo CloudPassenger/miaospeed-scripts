@@ -9,6 +9,7 @@
 import { T_FAIL, T_UNL, M_NETWORK, M_STATUS, M_PARSE } from "@/lib/constants/text";
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { UA_ANDROID } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const response = fetch("https://api.viu.now.com/p8/3/getLiveURL", {
@@ -35,11 +36,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   } else if (response.statusCode !== 200) {
     return {
       text: `${T_FAIL}(${M_STATUS})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_STATUS,
     };
   } else {
     const content = response.body;
@@ -48,6 +53,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_FAIL}(${M_PARSE})`,
         background: C_FAIL,
+        status: S_FAIL,
+        error: M_PARSE,
       };
     }
 
@@ -58,16 +65,19 @@ function handler(): HandlerResult {
         return {
           text: T_FAIL,
           background: C_FAIL,
+          status: S_FAIL,
         };
       case "SUCCESS":
         return {
           text: T_UNL,
           background: C_UNL,
+          status: S_UNL,
         };
       default:
         return {
           text: T_FAIL,
           background: C_FAIL,
+          status: S_FAIL,
         };
     }
   }

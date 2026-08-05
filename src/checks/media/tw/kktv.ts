@@ -9,6 +9,7 @@
 import { C_FAIL, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_PARSE, T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 type ResponseBody = {
   status: {
@@ -38,6 +39,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -48,6 +51,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_PARSE})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_PARSE,
     };
   }
 
@@ -58,11 +63,15 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${country})`,
       background: C_UNL,
+      status: S_UNL,
+      region: country,
     };
   } else {
     return {
       text: `${T_FAIL}(${country})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region: country,
     };
   }
 }

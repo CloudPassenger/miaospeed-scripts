@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { T_FAIL, T_NA, T_UNL } from "@/lib/constants/text";
 import { UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/NLZIET.go
 const NLZIET_SUPPORT_COUNTRY = [
@@ -54,6 +55,7 @@ function handler(): HandlerResult {
     return {
       text: T_NA,
       background: C_NA,
+      status: S_NA,
     };
   }
 
@@ -64,18 +66,23 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${loc})`,
       background: C_UNL,
+      status: S_UNL,
+      region: loc,
     };
   }
   if (loc) {
     return {
       text: `${T_FAIL}(${loc})`,
       background: C_FAIL,
+      status: S_FAIL,
+      region: loc,
     };
   }
 
   return {
     text: T_NA,
     background: C_NA,
+    status: S_NA,
   };
 }
 

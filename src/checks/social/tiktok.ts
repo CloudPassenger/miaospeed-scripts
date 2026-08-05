@@ -9,6 +9,7 @@
 import { C_FAIL, C_NA, C_UNL } from "@/lib/constants/colors";
 import { M_NETWORK, M_RESPONSE, T_FAIL, T_UNL } from "@/lib/constants/text";
 import { SEC_CH_UA, UA_WINDOWS } from "@/lib/constants/ua";
+import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 function handler(): HandlerResult {
   const response = fetch("https://www.tiktok.com/explore", {
@@ -37,6 +38,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_FAIL}(${M_NETWORK})`,
       background: C_FAIL,
+      status: S_FAIL,
+      error: M_NETWORK,
     };
   }
 
@@ -46,6 +49,7 @@ function handler(): HandlerResult {
     return {
       text: T_FAIL,
       background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
@@ -56,6 +60,8 @@ function handler(): HandlerResult {
     return {
       text: `${T_UNL}(${region})`,
       background: C_UNL,
+      status: S_UNL,
+      region,
     };
   }
 
@@ -86,6 +92,7 @@ function handler(): HandlerResult {
       return {
         text: T_FAIL,
         background: C_FAIL,
+        status: S_FAIL,
       };
     }
     const rootMatch = rootResponse.body.match(/"region":"(\w+)"/);
@@ -94,6 +101,8 @@ function handler(): HandlerResult {
       return {
         text: `${T_UNL}(${rootRegion})`,
         background: C_UNL,
+        status: S_UNL,
+        region: rootRegion,
       };
     }
   }
@@ -101,6 +110,7 @@ function handler(): HandlerResult {
   return {
     text: T_FAIL,
     background: C_FAIL,
+    status: S_FAIL,
   };
 }
 
