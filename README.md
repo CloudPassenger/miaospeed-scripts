@@ -37,6 +37,8 @@
 - [lmc999/RegionRestrictionCheck](https://github.com/lmc999/RegionRestrictionCheck)
 - [oneclickvirt/UnlockTests](https://github.com/oneclickvirt/UnlockTests)
 - [HsukqiLee/MediaUnlockTest](https://github.com/HsukqiLee/MediaUnlockTest)
+- [1-stream/RegionRestrictionCheck](https://github.com/1-stream/RegionRestrictionCheck)
+- [clash-verge-rev/clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev/tree/main/crates/clash-verge-media-unlock)
 
 本项目的脚本基于以上项目使用 Typescript 重构而成
 
