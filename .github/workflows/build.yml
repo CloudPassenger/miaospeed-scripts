@@ -7,27 +7,35 @@ on:
   release:
     types: [ published ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && 'nightly' || github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-release:
     name: Build & Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout codebase
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install pnpm package manager
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
           version: 9
 
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 20
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
         run: pnpm run build
@@ -35,28 +43,181 @@ jobs:
       - name: Create release archive
         run: |
           cd dist
-          zip -r ../scripts.zip * -x koipy-config.yaml index.json
+          zip -r ../scripts.zip ./* -x './koipy-config.yaml' './index.json'
 
-      - name: Update Nightly Release
+      - name: Check Nightly freshness
+        id: nightly
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: softprops/action-gh-release@v2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq '.sha')"
+          if [ "$latest_sha" != "$GITHUB_SHA" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skip stale Nightly build for ${GITHUB_SHA}."
+            exit 0
+          fi
+
+          {
+            echo "publish=true"
+            echo "short_sha=${GITHUB_SHA:0:7}"
+            echo "built_at=$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Reset Nightly release and tag
+        id: nightly_release
+        if: steps.nightly.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest_sha="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq '.sha')"
+          if [ "$latest_sha" != "$GITHUB_SHA" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skip stale Nightly build for ${GITHUB_SHA}."
+            exit 0
+          fi
+
+          if gh release view nightly >/dev/null 2>&1; then
+            gh release delete nightly --yes
+          fi
+
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/nightly" >/dev/null 2>&1; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/nightly" \
+              -f sha="$GITHUB_SHA" \
+              -F force=true >/dev/null
+          else
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              -f ref='refs/tags/nightly' \
+              -f sha="$GITHUB_SHA" >/dev/null
+          fi
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create Nightly draft
+        if: steps.nightly_release.outputs.ready == 'true'
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
           files: |
             scripts.zip
             dist/koipy-config.yaml
             dist/index.json
-          name: 'Nightly Release'
-          tag_name: 'nightly'
+          name: '🌙 Nightly 构建 · ${{ steps.nightly.outputs.short_sha }}'
+          tag_name: nightly
+          draft: true
           prerelease: true
-          body: '🆕 Nightly Build'
-          generate_release_notes: true
+          make_latest: false
+          fail_on_unmatched_files: true
+          body: |
+            ## ⚠️ 预发布说明
+
+            这是从 `main` 分支自动构建的滚动预发布版本，可能包含尚未充分验证的功能。后续提交会自动覆盖当前版本，请勿将其视为稳定版本。
+
+            ## 📦 发布资产
+
+            - `scripts.zip`：全部检测脚本
+            - `koipy-config.yaml`：Koipy 配置文件
+            - `index.json`：脚本索引及元数据
+
+            ## 🧾 构建信息
+
+            - 🔖 提交：[`${{ steps.nightly.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+            - 🕒 构建时间：`${{ steps.nightly.outputs.built_at }}`
+            - 🌿 来源分支：`main`
+            - ⚙️ 工作流：[查看运行记录](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ## 🚀 使用提示
+
+            请同时使用本次发布中的 ZIP、配置和索引文件，避免因版本不一致导致加载失败。
+
+      - name: Publish Nightly prerelease
+        if: steps.nightly_release.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit nightly --draft=false --prerelease --latest=false
+
+      - name: Verify Nightly release
+        if: steps.nightly_release.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/nightly" --jq '.object.sha')"
+          release_state="$(gh release view nightly --json assets,isDraft,isPrerelease,publishedAt --jq '[.isDraft, .isPrerelease, .publishedAt, ([.assets[].name] | sort | join(","))] | @tsv')"
+          IFS=$'\t' read -r is_draft is_prerelease published_at assets <<< "$release_state"
+
+          if [ "$tag_sha" != "$GITHUB_SHA" ]; then
+            echo "Nightly tag points to ${tag_sha}, expected ${GITHUB_SHA}." >&2
+            exit 1
+          fi
+
+          if [ "$is_draft" != "false" ] || [ "$is_prerelease" != "true" ] || [ -z "$published_at" ]; then
+            echo "Nightly release was not published as a prerelease." >&2
+            exit 1
+          fi
+
+          if [ "$assets" != "index.json,koipy-config.yaml,scripts.zip" ]; then
+            echo "Nightly release assets are incomplete: ${assets}" >&2
+            exit 1
+          fi
 
       - name: Upload release
-        uses: softprops/action-gh-release@v2
         if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
           files: |
             scripts.zip
             dist/koipy-config.yaml
             dist/index.json
-          generate_release_notes: true
+          fail_on_unmatched_files: true
+
+      - name: Update release notes
+        if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release view "$RELEASE_TAG" --json body --jq '.body' > "$RUNNER_TEMP/current-release-notes.md"
+
+          node <<'NODE'
+          const fs = require('fs')
+
+          const startMarker = '<!-- automated-release-info:start -->'
+          const endMarker = '<!-- automated-release-info:end -->'
+          const currentBody = fs.readFileSync(`${process.env.RUNNER_TEMP}/current-release-notes.md`, 'utf8')
+          const startIndex = currentBody.indexOf(startMarker)
+          const endIndex = currentBody.indexOf(endMarker)
+          let existingNotes = currentBody
+
+          if (startIndex !== -1 && endIndex > startIndex) {
+            existingNotes = `${currentBody.slice(0, startIndex)}${currentBody.slice(endIndex + endMarker.length)}`
+          }
+
+          existingNotes = existingNotes.trim()
+
+          const releaseBlock = `${startMarker}
+          ## 🚀 发布说明
+
+          本版本已由 GitHub Actions 完成构建和产物校验，请从当前 Release 下载配套文件。
+
+          ## 📦 发布资产
+
+          - \`scripts.zip\`：全部检测脚本
+          - \`koipy-config.yaml\`：Koipy 配置文件
+          - \`index.json\`：脚本索引及元数据
+
+          ## 🧾 构建信息
+
+          - 🔖 发布标签：\`${process.env.RELEASE_TAG}\`
+          - ⚙️ 工作流：[查看运行记录](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})
+
+          ## ⚠️ 使用提示
+
+          请同时使用本次发布中的 ZIP、配置和索引文件，避免因版本不一致导致加载失败。
+
+          ## 📝 更新内容
+          ${endMarker}`
+
+          const releaseNotes = existingNotes ? `${releaseBlock}\n\n${existingNotes}\n` : `${releaseBlock}\n`
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/release-notes.md`, releaseNotes)
+          NODE
+
+          gh release edit "$RELEASE_TAG" --notes-file "$RUNNER_TEMP/release-notes.md"
