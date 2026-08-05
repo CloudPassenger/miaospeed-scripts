@@ -13,6 +13,66 @@ const distDir = path.resolve(__dirname, 'dist');
 const YAML = require('yaml');
 
 /**
+ * 已知的 @tags 白名单
+ * 新增标签前请先在此登记，避免拼写不一致（如 tool/tools）导致下方分组规则静默失效
+ */
+const KNOWN_TAGS = [
+  'stream', 'video', 'live', 'movie', 'anime', 'ott', 'music', 'radio',
+  'game', 'ai', 'social', 'search-engine', 'scholar',
+  'tool', 'ip', 'quality',
+];
+
+/**
+ * 已知的 @regions 白名单
+ */
+const KNOWN_REGIONS = [
+  'global', 'africa', 'au', 'ca', 'ch', 'cn', 'de', 'es', 'eu', 'fr',
+  'hk', 'in', 'it', 'jp', 'kr', 'latam', 'nl', 'nz', 'ru', 'sg', 'th',
+  'tw', 'uk', 'us', 'vn',
+];
+
+/**
+ * 规则分组配置：同一脚本可以同时出现在多个分组中（例如某脚本既属于 stream 也属于 tool）
+ * 新增分组只需在此追加一项，无需改动下方生成逻辑
+ */
+const RULE_GROUPS = [
+  { type: 'tag', key: 'tool', name: '实用工具' },
+  { type: 'region', key: 'global', name: '国际平台' },
+  { type: 'region', key: 'hk', name: '香港平台' },
+  { type: 'region', key: 'tw', name: '台湾平台' },
+  { type: 'tag', key: 'stream', name: '流媒体服务' },
+  { type: 'tag', key: 'ai', name: 'AI平台' },
+  { type: 'tag', key: 'game', name: '外服游戏' },
+];
+
+RULE_GROUPS.forEach(({ type, key }) => {
+  const whitelist = type === 'tag' ? KNOWN_TAGS : KNOWN_REGIONS;
+  if (!whitelist.includes(key)) {
+    throw new Error(`RULE_GROUPS 中的 "${key}" 不在 KNOWN_${type === 'tag' ? 'TAGS' : 'REGIONS'} 白名单内`);
+  }
+});
+
+/**
+ * 校验脚本元数据，防止 @tags / @regions 拼写错误导致分组规则静默失效
+ */
+function validateMetadata(metadata, filePath) {
+  const errors = [];
+  (metadata.tags || []).forEach((tag) => {
+    if (!KNOWN_TAGS.includes(tag)) {
+      errors.push(`未知的 tag "${tag}"，请检查拼写或将其加入 KNOWN_TAGS`);
+    }
+  });
+  (metadata.regions || []).forEach((region) => {
+    if (!KNOWN_REGIONS.includes(region)) {
+      errors.push(`未知的 region "${region}"，请检查拼写或将其加入 KNOWN_REGIONS`);
+    }
+  });
+  if (errors.length > 0) {
+    throw new Error(`${filePath}:\n  ${errors.join('\n  ')}`);
+  }
+}
+
+/**
  * 确保文件夹存在
  */
 function ensureDirExistence(dir) {
@@ -98,6 +158,7 @@ async function processFiles() {
   for (const inputPath of files) {
     const content = fs.readFileSync(inputPath, 'utf-8');
     const metadata = parseMetadata(content);
+    validateMetadata(metadata, path.relative(srcDir, inputPath));
     const relativePath = path.relative(srcDir, inputPath);
     const outputPath = path.join(distDir, relativePath.replace('.ts', '.js'));
 
@@ -205,34 +266,15 @@ async function processFiles() {
         name: '全部项目',
         script: metadataArray.map(item => item.name || item.id),
       },
-      {
-        name: '实用工具',
-        script: metadataArray.filter((item) => item.regions && item.tags.includes('tool')).map(item => item.name || item.id),
-      },
-      {
-        name: '国际平台',
-        script: metadataArray.filter((item) => item.regions && item.regions.includes('global')).map(item => item.name || item.id),
-      },
-      {
-        name: '香港平台',
-        script: metadataArray.filter((item) => item.regions && item.regions.includes('hk')).map(item => item.name || item.id),
-      },
-      {
-        name: '台湾平台',
-        script: metadataArray.filter((item) => item.regions && item.regions.includes('tw')).map(item => item.name || item.id),
-      },
-      {
-        name: '流媒体服务',
-        script: metadataArray.filter((item) => item.tags && item.tags.includes('stream')).map(item => item.name || item.id),
-      },
-      {
-        name: 'AI平台',
-        script: metadataArray.filter((item) => item.tags && item.tags.includes('ai')).map(item => item.name || item.id),
-      },
-      {
-        name: '外服游戏',
-        script: metadataArray.filter((item) => item.tags && item.tags.includes('game')).map(item => item.name || item.id),
-      }
+      ...RULE_GROUPS.map(({ type, key, name }) => ({
+        name,
+        script: metadataArray
+          .filter((item) => {
+            const list = type === 'tag' ? item.tags : item.regions;
+            return list && list.includes(key);
+          })
+          .map(item => item.name || item.id),
+      })),
     ]
   }
   const koipyYamlContent = YAML.stringify(koipyConfig);

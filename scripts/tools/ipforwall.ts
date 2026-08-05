@@ -10,7 +10,7 @@ import { UA_CURL, UA_WINDOWS } from "@/consts/ua";
 // @name: 回墙出口
 // @description: 检测回墙流量的出口，避免流量的统计学探测从而导致服务器被封锁
 // @regions: global
-// @tags: tools
+// @tags: tool
 // @priority: 5
 
 interface ResponseBody {
