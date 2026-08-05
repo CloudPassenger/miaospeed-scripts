@@ -32,26 +32,120 @@ declare function println(message?: any, ...optionalParams: any[]): void;
 declare function get<T = any>(data: any, path: string, defaults?: T): T;
 
 /**
- * 脚本运行的返回值
+ * 脚本运行的基础返回值
  *
- * @interface HandlerResult
+ * @interface HandlerBasicResult
  */
-interface HandlerResult {
+interface HandlerBasicResult {
   /**
    * 显示文本
    *
    * @type {string}
-   * @memberof HandlerResult
+   * @memberof HandlerBasicResult
    */
   text: string;
   /**
    * 背景颜色
    *
    * @type {string}
-   * @memberof HandlerResult
+   * @memberof HandlerBasicResult
    */
   background: string;
 }
+
+/**
+ * 附加信息条目，用于 {@link HandlerExtendedResult.extra}
+ *
+ * @interface ExtraField
+ */
+interface ExtraField {
+  /**
+   * 唯一标识
+   *
+   * @type {string}
+   * @memberof ExtraField
+   */
+  key: string;
+  /**
+   * 展示用标签
+   *
+   * @type {string}
+   * @memberof ExtraField
+   */
+  label?: string;
+  /**
+   * 具体数值
+   *
+   * @type {(string | number | boolean)}
+   * @memberof ExtraField
+   */
+  value: string | number | boolean;
+  /**
+   * 数值类型，用于渲染，默认为 "string"
+   *
+   * @type {("string" | "number" | "percent" | "bool")}
+   * @memberof ExtraField
+   */
+  type?: "string" | "number" | "percent" | "bool";
+  /**
+   * 单位
+   *
+   * @type {string}
+   * @memberof ExtraField
+   */
+  unit?: string;
+}
+
+/**
+ * 脚本运行的扩展返回值，在基础字段之上追加可选的扩展字段，用于更丰富的展示
+ *
+ * @interface HandlerExtendedResult
+ * @extends {HandlerBasicResult}
+ */
+interface HandlerExtendedResult extends HandlerBasicResult {
+  /**
+   * 显式解锁状态，缺省时由调用方根据 background 颜色回退推断
+   *
+   * @type {("unlocked" | "failed" | "warning" | "unknown" | "na")}
+   * @memberof HandlerExtendedResult
+   */
+  status?: "unlocked" | "failed" | "warning" | "unknown" | "na";
+  /**
+   * 动态检测到的地区，如 "US"，区别于脚本元数据中静态的 regions 配置
+   *
+   * @type {string}
+   * @memberof HandlerExtendedResult
+   */
+  region?: string;
+  /**
+   * 展示在 text 旁的详细说明
+   *
+   * @type {string}
+   * @memberof HandlerExtendedResult
+   */
+  message?: string;
+  /**
+   * 业务层面的失败原因（区别于脚本执行过程中的错误）
+   *
+   * @type {string}
+   * @memberof HandlerExtendedResult
+   */
+  error?: string;
+  /**
+   * 附加信息列表，按顺序展示
+   *
+   * @type {ExtraField[]}
+   * @memberof HandlerExtendedResult
+   */
+  extra?: ExtraField[];
+}
+
+/**
+ * 脚本运行的返回值，兼容基础与扩展两种结构
+ *
+ * @interface HandlerResult
+ */
+type HandlerResult = HandlerBasicResult | HandlerExtendedResult;
 
 interface FetchParams {
   /**
