@@ -283,7 +283,13 @@ function handler() {
     };
   }
   const unsupported_country = mainBody.includes("unsupported_country");
-  const vpn_detected = appBody.includes("VPN");
+  // 参考 clash-verge-rev 的 media-unlock crate：除 "VPN" 关键词外，
+  // OpenAI iOS 端点也可能返回更具体的拒绝文案，一并纳入判断
+  const appBodyLower = appBody.toLowerCase();
+  const vpn_detected =
+    appBody.includes("VPN") ||
+    appBodyLower.includes("you may be connected to a disallowed isp") ||
+    appBodyLower.includes("sorry, you have been blocked");
 
   if (!unsupported_country && !vpn_detected && mainBody && appBody) {
     return {

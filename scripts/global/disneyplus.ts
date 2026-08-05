@@ -8,10 +8,31 @@ import { UA_WINDOWS } from "@/consts/ua";
 // @tags: stream, video
 // @priority: 3
 
+// 参考:
+// https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DisneyPlus.go
+// https://github.com/oneclickvirt/UnlockTests/blob/main/transnation/Disney.go
+// https://github.com/clash-verge-rev/clash-verge-rev/blob/main/crates/clash-verge-media-unlock/src/disney_plus.rs
+// 三方实现均以正则在整段响应体中提取 countryCode / inSupportedLocation，
+// 而非依赖固定 JSON 路径，避免因响应结构调整导致误判。
+
 const cookie =
   "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&latitude=0&longitude=0&platform=browser&subject_token=DISNEYASSERTION&subject_token_type=urn%3Abamtech%3Aparams%3Aoauth%3Atoken-type%3Adevice";
 const gql =
   '{"query":"mutation refreshToken($input: RefreshTokenInput!) {refreshToken(refreshToken: $input) {activeSession {sessionId}}}","variables":{"input":{"refreshToken":"ILOVEDISNEY"}}}';
+
+/**
+ * 兜底方案：GraphQL 主流程失败时，尝试从 disneyplus.com 首页 HTML 中提取 region 字段
+ */
+function regionFromMainPage(): string {
+  const response = fetch("https://www.disneyplus.com/", {
+    headers: { "user-agent": UA_WINDOWS },
+    retry: 2,
+    timeout: 5000,
+  });
+  if (!response) return "";
+  const match = response.body.match(/region"\s*:\s*"([^"]+)/);
+  return match ? match[1].toUpperCase() : "";
+}
 
 function handler(): HandlerResult {
   try {
@@ -40,7 +61,7 @@ function handler(): HandlerResult {
 
     if (!deviceResponse) {
       return {
-        text: T_NA + "1",
+        text: T_NA,
         background: C_NA,
       };
     }
@@ -65,7 +86,7 @@ function handler(): HandlerResult {
     const assertionCookie = cookie.replace("DISNEYASSERTION", assertion);
     if (!assertion) {
       return {
-        text: T_NA + "2",
+        text: T_NA,
         background: C_NA,
       };
     }
@@ -106,7 +127,7 @@ function handler(): HandlerResult {
     const refreshToken = tokenData.refresh_token || "";
     if (!refreshToken) {
       return {
-        text: T_NA + "3",
+        text: T_NA,
         background: C_NA,
       };
     }
@@ -129,21 +150,42 @@ function handler(): HandlerResult {
     );
     if (!graphResponse) {
       return {
-        text: "N/A4",
+        text: T_NA,
         background: C_NA,
       };
     }
 
-    const graphData = safeParse(graphResponse.body) || {};
-    var region = (
-      get<string>(graphData, "extensions.sdk.session.location.countryCode") ||
-      ""
-    ).toLocaleUpperCase();
-    const inSupportedLocation = get(
-      graphData,
-      "extensions.sdk.session.inSupportedLocation"
+    // 与上游 Go/Rust 实现保持一致：在整段响应体中用正则提取字段，
+    // 不依赖具体 JSON 嵌套路径，避免因响应结构调整导致误判
+    const countryMatch = graphResponse.body.match(/"countryCode"\s*:\s*"([^"]+)/);
+    const region = countryMatch ? countryMatch[1].toUpperCase() : "";
+    const supportedMatch = graphResponse.body.match(
+      /"inSupportedLocation"\s*:\s*(false|true)/
     );
-    //        print("region:", region, "  inSupportedLocation: ", inSupportedLocation)
+    const inSupportedLocation = supportedMatch ? supportedMatch[1] === "true" : null;
+
+    // GraphQL 响应异常（无 region 信息）时，回退尝试从主页 HTML 中提取地区
+    if (!region) {
+      const fallbackRegion = regionFromMainPage();
+      if (fallbackRegion) {
+        return {
+          text: `${T_UNL}(${fallbackRegion})`,
+          background: C_UNL,
+        };
+      }
+      return {
+        text: T_FAIL,
+        background: C_FAIL,
+      };
+    }
+
+    // 日本地区存在已知特例：即使 inSupportedLocation 返回 false 也已实际上线
+    if (region === "JP") {
+      return {
+        text: `${T_UNL}(${region})`,
+        background: C_UNL,
+      };
+    }
 
     // Preview check
     const previewResponse = fetch("https://disneyplus.com", {
@@ -152,24 +194,13 @@ function handler(): HandlerResult {
       retry: 2,
       timeout: 5000,
     });
-    let finalUrl = "https://disneyplus.com";
-    try {
-      finalUrl = previewResponse.redirects.pop();
-    } catch (error) {
-      finalUrl = "https://disneyplus.com";
-    }
+    const finalUrl = previewResponse ? previewResponse.url || "" : "";
     const isUnavailable =
       finalUrl.includes("preview") || finalUrl.includes("unavailable");
 
-    if (!region) {
-      return {
-        text: T_FAIL + "1",
-        background: C_FAIL,
-      };
-    }
     if (isUnavailable) {
       return {
-        text: T_FAIL + "2",
+        text: T_FAIL,
         background: C_FAIL,
       };
     }
@@ -187,7 +218,7 @@ function handler(): HandlerResult {
     }
 
     return {
-      text: T_NA + "5",
+      text: T_NA,
       background: C_NA,
     };
   } catch (error) {

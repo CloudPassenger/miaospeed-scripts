@@ -1,5 +1,9 @@
 # 适配计划
 
+## 中国大陆
+- [x] 哔哩哔哩大陆限定内容（对比 clash-verge-rev media-unlock 与 oneclickvirt/UnlockTests 的
+  BilibiliMainland 后新增，用于回国/中转节点场景）
+
 ## 全球
 
 - [x] Netflix
