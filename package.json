@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Regional Availability and Network Checking Scripts for MiaoSpeed",
   "scripts": {
-    "new": "node template.js",
-    "build": "rimraf dist && tsc --noEmit && node build.js"
+    "new": "node scripts/template.js",
+    "build": "rimraf dist && tsc --noEmit && node scripts/build.js"
   },
   "keywords": [],
   "author": "CloudPassenger",

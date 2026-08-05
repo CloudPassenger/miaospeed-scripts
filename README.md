@@ -23,21 +23,29 @@ resources/scripts/network/ipquality.js
 
 ## 开发文档
 
-本项目使用 TypeScript 开发，每个检测脚本都是独立入口。`scripts/` 按业务分类组织，只有媒体脚本保留地区子目录：
+本项目使用 TypeScript 开发，每个检测脚本都是独立入口。检测入口位于 `src/checks/`，共享实现位于 `src/lib/`，Node.js 构建与脚手架工具位于根目录 `scripts/`：
 
 ```text
+src/
+├── checks/
+│   ├── ai/
+│   ├── games/
+│   ├── media/<region>/
+│   ├── network/
+│   ├── search/
+│   └── social/
+├── lib/
+│   └── constants/
+└── types/
+
 scripts/
-├── ai/
-├── games/
-├── media/
-│   └── <region>/
-├── network/
-├── search/
-└── social/
+├── build.js
+├── template.js
+└── templates/
 ```
 
-- `ai`、`games`、`network`、`search`、`social` 下的脚本保持扁平，路径为 `scripts/<category>/<service>.ts`
-- 媒体脚本使用 `scripts/media/<region>/<service>.ts`
+- `ai`、`games`、`network`、`search`、`social` 下的脚本保持扁平，路径为 `src/checks/<category>/<service>.ts`
+- 媒体脚本使用 `src/checks/media/<region>/<service>.ts`
 - `media/<region>` 表示主要目标市场；脚本完整适用范围仍以 `@regions` 为准，且目录地区必须包含在 `@regions` 中
 - 原 `tools/` 下的 IP 与网络诊断脚本统一归入 `network/`
 - `stream` 继续作为 tag 使用，不作为目录或 category
@@ -61,7 +69,7 @@ scripts/
 
 Fork 并克隆项目后，运行 `pnpm install` 安装依赖，再执行 `pnpm run new`，按交互提示选择 category、regions，以及媒体脚本的主要市场，并填写脚本 ID 和文件名。
 
-共享常量位于 `consts/`，通用工具函数位于 `utils/`。
+共享常量位于 `src/lib/constants/`，通用模块位于 `src/lib/`，goja 全局类型声明位于 `src/types/`。
 
 脚本开发完成后，运行 `pnpm run build`。构建会先校验全部元数据、ID 唯一性、category 与目录的一致性，再将每个脚本编译为单个 JavaScript 文件：
 
@@ -77,7 +85,7 @@ dist/
 └── koipy-config.yaml
 ```
 
-源码相对路径会映射到 `dist/`，例如 `scripts/media/jp/radiko.ts` 构建为 `dist/media/jp/radiko.js`。Release 中的 `scripts.zip` 包含六个业务分类目录，不包含 `index.json` 和 `koipy-config.yaml`；后两者作为独立 Release 资产发布。
+检测入口相对于 `src/checks/` 的路径会映射到 `dist/`，例如 `src/checks/media/jp/radiko.ts` 构建为 `dist/media/jp/radiko.js`。Release 中的 `scripts.zip` 包含六个业务分类目录，不包含 `index.json` 和 `koipy-config.yaml`；后两者作为独立 Release 资产发布。
 
 ## 适配进度
 
