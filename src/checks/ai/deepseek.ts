@@ -12,7 +12,8 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 import { S_FAIL, S_NA, S_UNL } from "@/lib/constants/status";
 
 // https://github.com/HsukqiLee/MediaUnlockTest/blob/main/pkg/providers/DeepSeek.go
-// 直连固定 IP + 自定义 SNI/Host，绕开可能的国内解析劫持
+// 域名当前经 CloudFront，会触发 AWS WAF JS Challenge（返回 202 空 body），
+// 因此直连固定 IP + 自定义 SNI/Host 绕过 CloudFront 前置校验
 function handler(): HandlerResult {
   const response = fetch("https://116.205.40.114/sign_in", {
     headers: {
@@ -56,6 +57,14 @@ function handler(): HandlerResult {
       text: T_UNL,
       background: C_UNL,
       status: S_UNL,
+    };
+  }
+
+  if (response.statusCode === 202) {
+    return {
+      text: T_FAIL,
+      background: C_FAIL,
+      status: S_FAIL,
     };
   }
 
