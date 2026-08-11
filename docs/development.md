@@ -60,6 +60,13 @@ scripts/                     # Node.js 构建与脚手架工具
 
 每个 `src/checks/` 脚本必须提供同步、无参数的 `function handler(): HandlerResult`，并通过 `export default handler` 导出。`HandlerResult` 为 `{ text, background }`，其中 `background` 是 RGB 三元组字符串（如 `'239,107,115'`）。
 
+Warning results must set `statusReason` to a stable machine-readable value:
+
+- `waf_blocked`: the probe was obstructed by WAF or anti-bot protection.
+- `originals_only`: only the service's original catalog is available.
+- `overseas_only`: a non-target regional variant is available.
+- `partial_access`: the service is usable with another limitation that has no more specific reason.
+
 运行时使用 goja 内置全局函数与同步 `fetch`，不要假设 Node 的 `JSON.parse` 等可用：
 
 - `fetch(url, params?)` 是**同步**的，返回 `FetchResponse`（`statusCode`、`body`、`headers`、`cookies`、`redirects`），**不是 Promise**；参数支持 `useHost`、`noRedir`、`retry`（≤10）、`timeout`（ms）、`sni`、`headers`、`cookies`

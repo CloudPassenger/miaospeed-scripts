@@ -50,12 +50,7 @@ function handler(): HandlerResult {
 
   if (response.statusCode === 403) {
     if (!restricted) {
-      return {
-        text: `${T_FAIL}(WAF)`,
-        background: C_WARN,
-        status: S_WARN,
-        region: loc,
-      };
+      return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked", region: loc };
     }
     return {
       text: `${T_FAIL}${loc ? `(${loc})` : ""}`,

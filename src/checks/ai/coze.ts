@@ -39,11 +39,7 @@ function handler(): HandlerResult {
   }
 
   if (response.statusCode === 403) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
 
   if (response.body.indexOf("Your region is not supported") > -1) {

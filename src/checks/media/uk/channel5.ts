@@ -42,11 +42,7 @@ function handler(): HandlerResult {
   }
 
   if (response.statusCode === 403) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
 
   const res = safeParse<Channel5Response>(response.body);

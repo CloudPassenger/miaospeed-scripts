@@ -95,6 +95,7 @@ function handler(): HandlerResult {
       text: `${T_OVERSEAS}(${region})`,
       background: C_WARN,
       status: S_WARN,
+      statusReason: "overseas_only",
       region,
     };
   }

@@ -55,11 +55,7 @@ function handler(): HandlerResult {
   }
 
   if (response.statusCode === 406) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
   if (response.statusCode === 200) {
     return {

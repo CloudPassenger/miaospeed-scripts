@@ -60,7 +60,7 @@ function handler(): HandlerResult {
   const resp2 = requestTitle("https://www.netflix.com/title/81280792"); // Originals
 
   if (resp1.statusCode === 404 && resp2.statusCode === 404) {
-    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN };
+    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN, statusReason: "originals_only" };
   }
 
   if (resp1.statusCode === 403 && resp2.statusCode === 403) {
@@ -123,7 +123,7 @@ function handler(): HandlerResult {
       return { text: T_FAIL, background: C_FAIL, status: S_FAIL };
     }
 
-    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN };
+    return { text: T_ORIGINAL_ONLY, background: C_WARN, status: S_WARN, statusReason: "originals_only" };
   }
 
   const redirects = (resp1.redirects || []).concat(resp2.redirects || []).join(" ");

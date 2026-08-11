@@ -32,11 +32,7 @@ function handler(): HandlerResult {
   }
 
   if (resp1.statusCode === 403) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
 
   const location1 = resp1.headers["location"] || "";

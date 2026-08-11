@@ -96,6 +96,9 @@ interface ExtraField {
   unit?: string;
 }
 
+/** Stable machine-readable reasons for a warning result. */
+type WarningStatusReason = "waf_blocked" | "originals_only" | "overseas_only" | "partial_access";
+
 /**
  * 脚本运行的扩展返回值，在基础字段之上追加可选的扩展字段，用于更丰富的展示
  *
@@ -110,6 +113,13 @@ interface HandlerExtendedResult extends HandlerBasicResult {
    * @memberof HandlerExtendedResult
    */
   status?: "unlocked" | "failed" | "warning" | "unknown" | "na";
+  /**
+   * Machine-readable explanation for a warning status.
+   *
+   * @type {WarningStatusReason}
+   * @memberof HandlerExtendedResult
+   */
+  statusReason?: WarningStatusReason;
   /**
    * 动态检测到的地区，如 "US"，区别于脚本元数据中静态的 regions 配置
    *

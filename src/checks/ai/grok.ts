@@ -57,12 +57,7 @@ function handler(): HandlerResult {
   }
   if (response.statusCode === 403) {
     if (loc && GROK_RESTRICTED_COUNTRY.indexOf(loc) === -1) {
-      return {
-        text: `${T_FAIL}(WAF)`,
-        background: C_WARN,
-        status: S_WARN,
-        region: loc,
-      };
+      return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked", region: loc };
     }
     return {
       text: `${T_FAIL}${loc ? `(${loc})` : ""}`,

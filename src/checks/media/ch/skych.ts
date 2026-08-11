@@ -38,11 +38,7 @@ function handler(): HandlerResult {
         status: S_FAIL,
       };
     }
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
 
   if (resp1.statusCode === 405) {

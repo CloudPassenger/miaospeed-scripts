@@ -35,11 +35,7 @@ function handler(): HandlerResult {
     };
   }
   if (tokenResp.statusCode === 403) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
 
   const tokenRes = safeParse<NPOTokenResponse>(tokenResp.body);
@@ -80,11 +76,7 @@ function handler(): HandlerResult {
   }
 
   if (streamResp.statusCode === 403) {
-    return {
-      text: `${T_FAIL}(WAF)`,
-      background: C_WARN,
-      status: S_WARN,
-    };
+    return { text: `${T_FAIL}(WAF)`, background: C_WARN, status: S_WARN, statusReason: "waf_blocked" };
   }
   if (streamResp.statusCode === 451 || streamResp.statusCode === 401) {
     return {
