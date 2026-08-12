@@ -12,23 +12,17 @@ import { UA_WINDOWS } from "@/lib/constants/ua";
 import { S_FAIL, S_UNL } from "@/lib/constants/status";
 
 interface ResponseBody {
-  code?: number;
+  ret?: string;
   data?: IpInfoData;
 }
 
 interface IpInfoData {
-  addr?: string;
-  country?: string;
-  province?: string;
-  city?: string;
-  isp?: string;
-  latitude?: number;
-  longitude?: number;
-  country_code?: number;
+  ip?: string;
+  location?: string[];
 }
 
 function handler(): HandlerResult {
-  const response = fetch("https://api.bilibili.com/x/web-interface/zone", {
+  const response = fetch("https://myip.ipip.net/json", {
     method: "GET",
     headers: {
       "User-Agent": UA_WINDOWS,
@@ -48,7 +42,7 @@ function handler(): HandlerResult {
 
   const data = safeParse<ResponseBody>(response.body);
 
-  if (data?.code !== 0 || !data.data?.addr) {
+  if (data?.ret !== "ok" || !data.data?.ip) {
     return {
       text: `${T_FAIL}(${M_RESPONSE})`,
       background: C_FAIL,
@@ -57,21 +51,21 @@ function handler(): HandlerResult {
     };
   }
 
-  const country = data.data.country || T_UNK;
-  const province = data.data.province || T_UNK;
-  const city = data.data.city || T_UNK;
+  const locations = data.data.location || [];
+  const country = locations[0] || T_UNK;
+  const province = locations[1] || T_UNK;
+  const city = locations[2] || T_UNK;
+  const isp = locations[4] || T_UNK;
   const locationParts: string[] = [];
-  const locations = [data.data.country, data.data.province, data.data.city];
-  locations.forEach((location) => {
+  [locations[0], locations[1], locations[2]].forEach((location) => {
     if (location && locationParts.indexOf(location) === -1) {
       locationParts.push(location);
     }
   });
 
-  const isp = data.data.isp || T_UNK;
   const location = locationParts.length > 0 ? locationParts.join(", ") : T_UNK;
   const extra: ExtraField[] = [
-    { key: "ip", label: "IP地址", value: data.data.addr, type: "string" },
+    { key: "ip", label: "IP地址", value: data.data.ip, type: "string" },
     { key: "isp", label: "运营商", value: isp, type: "string" },
     { key: "location", label: "位置", value: location, type: "string" },
     { key: "country", label: "国家/地区", value: country, type: "string" },
@@ -79,18 +73,8 @@ function handler(): HandlerResult {
     { key: "city", label: "城市", value: city, type: "string" },
   ];
 
-  if (typeof data.data.country_code === "number") {
-    extra.push({ key: "countryCode", label: "国家/地区代码", value: data.data.country_code, type: "number" });
-  }
-  if (typeof data.data.latitude === "number") {
-    extra.push({ key: "latitude", label: "纬度", value: data.data.latitude, type: "number" });
-  }
-  if (typeof data.data.longitude === "number") {
-    extra.push({ key: "longitude", label: "经度", value: data.data.longitude, type: "number" });
-  }
-
   return {
-    text: `${data.data.addr} - ${isp} - ${location}`,
+    text: `${data.data.ip} - ${isp} - ${location}`,
     background: C_UNL,
     status: S_UNL,
     extra,
